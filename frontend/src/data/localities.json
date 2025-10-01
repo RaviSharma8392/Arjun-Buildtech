@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Noida",
+    "image": "https://images.unsplash.com/photo-1599423300746-b62533397364",
+    "link": "/property/noida",
+    "propertiesCount": 120
+  },
+  {
+    "name": "Gurugram",
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+    "link": "/property/gurugram",
+    "propertiesCount": 95
+  },
+  {
+    "name": "Mukteshwar",
+    "image": "https://catalog.wlimg.com/3/2263736/other-images/487362.jpg",
+    "link": "/property/mukteshwar",
+    "propertiesCount": 60
+  }
+]

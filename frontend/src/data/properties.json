@@ -1,0 +1,234 @@
+[
+  {
+    "id": 1,
+    "name": "Individual Houses For Sale In Mukteshwar, Nainital",
+    "shortTitle": "Individual Houses For Sale In Mukteshwar, Nainital",
+    "reference": "REI1380042",
+    "location": "Mukteshwar, Nainital",
+    "area": "200 Sq. Meter",
+    "price": "35 Lac @ Rs 17500 per Sq. Meter",
+    "bedrooms": "1 RK",
+    "bathrooms": 1,
+    "facing": "East",
+    "furnishing": "Row House",
+    "transactionType": "Resale Property",
+    "totalFloor": 1,
+    "builtUpArea": "200 Sq. Meter",
+    "propertyType": "Independent House",
+    "description": "Property distance from Mukteshwar 25 km. It's a standalone 1 RK type pahadi house, renovation needed, 1.25 nali land area. Alone house, pahadi traditional type.",
+    "features": [
+      "Reputed Builder",
+      "Well ventilated",
+      "Vastu compliant",
+      "Gated Society",
+      "Luxury lifestyle",
+      "Width of facing Road",
+      "Servant Room",
+      "Other Room"
+    ],
+    "amenities": [
+      "Parking",
+      "Garden",
+      "Security",
+      "Water Supply",
+      "Power Backup"
+    ],
+    "contact": {
+      "name": "Naitik Bisht",
+      "mobile": "7617711003"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1572120360610-d971b9a1c122?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "house"
+  },
+  {
+    "id": 2,
+    "name": "500 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "shortTitle": "500 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "reference": "REI1343914",
+    "location": "Mukteshwar, Nainital",
+    "area": "500 Sq. Yards",
+    "price": "Call for Price",
+    "landArea": "500 Sq. Yards",
+    "propertyType": "Residential Plot",
+    "description": "Premium residential plot in the beautiful hills of Mukteshwar. Perfect for building your dream home with panoramic mountain views.",
+    "features": [
+      "Mountain View",
+      "Road Access",
+      "Clear Title",
+      "Water Connection",
+      "Electricity Available",
+      "Peaceful Location"
+    ],
+    "amenities": ["Road Access", "Water Connection", "Electricity"],
+    "contact": {
+      "name": "Rajesh Kumar",
+      "mobile": "9876543210"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "plot",
+    "facing": "North",
+    "transactionType": "New Property"
+  },
+  {
+    "id": 3,
+    "name": "200 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "shortTitle": "200 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "reference": "REI1343913",
+    "location": "Mukteshwar, Nainital",
+    "area": "200 Sq. Yards",
+    "price": "Call for Price",
+    "landArea": "200 Sq. Yards",
+    "propertyType": "Residential Plot",
+    "description": "Well located residential plot in developing area of Mukteshwar. Suitable for building a cozy home or vacation property.",
+    "features": [
+      "Affordable Price",
+      "Good Location",
+      "All Legal Clearances",
+      "Easy Installment Plan",
+      "Near Market Area"
+    ],
+    "amenities": ["Road Access", "Water Available", "Electricity"],
+    "contact": {
+      "name": "Priya Sharma",
+      "mobile": "8765432109"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "plot",
+    "facing": "West",
+    "transactionType": "New Property"
+  },
+  {
+    "id": 4,
+    "name": "100 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "shortTitle": "100 Sq. Yards Residential Plot For Sale In Mukteshwar, Nainital",
+    "reference": "REI1343912",
+    "location": "Mukteshwar, Nainital",
+    "area": "100 Sq. Yards",
+    "price": "Call for Price",
+    "landArea": "100 Sq. Yards",
+    "propertyType": "Residential Plot",
+    "description": "Compact residential plot ideal for building a small cottage or vacation home. Located in peaceful surroundings with basic amenities.",
+    "features": [
+      "Budget Friendly",
+      "Quick Possession",
+      "All Documents Verified",
+      "Peaceful Neighborhood",
+      "Easy to Maintain"
+    ],
+    "amenities": ["Road Access", "Water Available"],
+    "contact": {
+      "name": "Amit Singh",
+      "mobile": "7654321098"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "plot",
+    "facing": "South",
+    "transactionType": "New Property"
+  },
+  {
+    "id": 5,
+    "name": "2 BHK Individual Houses / Villas for Sale in Bhowali, Nainital",
+    "shortTitle": "2 BHK Individual Houses / Villas for Sale in Bhowali, Nainital",
+    "reference": "REI1380043",
+    "location": "Bhowali, Nainital",
+    "area": "1500 Sq.ft.",
+    "price": "3 Cr. @ Rs 20000 per Sq.ft.",
+    "bedrooms": "2 BHK",
+    "bathrooms": 2,
+    "facing": "North-East",
+    "furnishing": "Semi-Furnished",
+    "transactionType": "Resale Property",
+    "totalFloor": 2,
+    "builtUpArea": "1500 Sq.ft.",
+    "propertyType": "Independent Villa",
+    "description": "Beautiful 2 BHK villa in Bhowali with modern amenities and stunning mountain views. Recently renovated with high-quality materials.",
+    "features": [
+      "Mountain View",
+      "Modern Kitchen",
+      "Wooden Flooring",
+      "Modular Kitchen",
+      "Parking Space",
+      "Garden Area",
+      "Modular Wardrobes"
+    ],
+    "amenities": [
+      "Parking",
+      "Garden",
+      "Security",
+      "Water Supply",
+      "Power Backup",
+      "Club House"
+    ],
+    "contact": {
+      "name": "Neha Gupta",
+      "mobile": "6543210987"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "house"
+  },
+  {
+    "id": 6,
+    "name": "2 BHK Individual Houses / Villas for Sale in Bhowali, Nainital",
+    "shortTitle": "2 BHK Individual Houses / Villas for Sale in Bhowali, Nainital",
+    "reference": "REI1380043",
+    "location": "Bhowali, Nainital",
+    "area": "1500 Sq.ft.",
+    "price": "3 Cr. @ Rs 20000 per Sq.ft.",
+    "bedrooms": "2 BHK",
+    "bathrooms": 2,
+    "facing": "North-East",
+    "furnishing": "Semi-Furnished",
+    "transactionType": "Resale Property",
+    "totalFloor": 2,
+    "builtUpArea": "1500 Sq.ft.",
+    "propertyType": "Independent Villa",
+    "description": "Beautiful 2 BHK villa in Bhowali with modern amenities and stunning mountain views. Recently renovated with high-quality materials.",
+    "features": [
+      "Mountain View",
+      "Modern Kitchen",
+      "Wooden Flooring",
+      "Modular Kitchen",
+      "Parking Space",
+      "Garden Area",
+      "Modular Wardrobes"
+    ],
+    "amenities": [
+      "Parking",
+      "Garden",
+      "Security",
+      "Water Supply",
+      "Power Backup",
+      "Club House"
+    ],
+    "contact": {
+      "name": "Neha Gupta",
+      "mobile": "6543210987"
+    },
+    "images": [
+      "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80"
+    ],
+    "type": "house"
+  }
+]
