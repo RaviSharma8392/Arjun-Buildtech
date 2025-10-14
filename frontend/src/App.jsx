@@ -6,34 +6,32 @@ import { HelmetProvider, Helmet } from "react-helmet-async";
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import NotFoundPage from "./pages/NotFoundPage";
-import ManageProperties from "./pages/admin/ManageProperties";
+
+// Admin Pages
+import AdminPropertyManage from "./pages/admin/AdminPropertyManage";
 import AddEditPropertyPage from "./pages/admin/EditPropertyPage";
 
-// Lazy-loaded Pages (for performance)
+// Lazy-loaded Pages
 const Home = lazy(() => import("./pages/user/Home"));
 const Projects = lazy(() => import("./pages/Projects"));
 const PropertiesPage = lazy(() => import("./pages/PropertiesPage"));
-const PropertyDetails = lazy(() => import("./pages/PropertyDetails"));
+const PropertyDetails = lazy(() => import("./pages/user/PropertyDetails"));
 const ClientReviews = lazy(() => import("./components/ClientReviews"));
 const Profile = lazy(() => import("./pages/Profile"));
 const RealEstateServices = lazy(() =>
   import("./components/RealEstateServices")
 );
 const ContactUs = lazy(() => import("./pages/user/ContactUs"));
-const UserPropertyListing = lazy(() =>
-  import("./pages/user/UserPropertyListing")
-);
 
-// Admin Pages
+// Admin Lazy Pages
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const AdminPropertyManager = lazy(() => import("./services/AddButton"));
+const AdminReviews = lazy(() => import("./pages/admin/AdminReviews"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 
 const App = () => {
   return (
     <HelmetProvider>
       <Helmet>
-        {/* Global SEO Meta Tags */}
         <title>Arjun BuildTech | Real Estate Experts in India</title>
         <meta
           name="description"
@@ -55,24 +53,17 @@ const App = () => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {/* Router Wrapper */}
-      {/* Suspense wraps lazy-loaded routes for fallback */}
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-slate-100 text-center px-4">
-            {/* Logo / Illustration */}
             <img
               src="/arjunBuildTechLogo.png"
               alt="Arjun BuildTech"
               className="w-28 h-28 object-contain animate-pulse mb-6 drop-shadow-md"
             />
-
-            {/* Animated Spinner */}
             <div className="relative mb-5">
               <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
             </div>
-
-            {/* Loading Text */}
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Loading Your Dream Property...
             </h2>
@@ -91,10 +82,6 @@ const App = () => {
                 <>
                   <Helmet>
                     <title>Home | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Discover featured properties, latest projects, and trusted real estate services from Arjun BuildTech."
-                    />
                   </Helmet>
                   <Home />
                 </>
@@ -102,7 +89,6 @@ const App = () => {
             />
             <Route path="projects" element={<Projects />} />
             <Route path="properties" element={<PropertiesPage />} />
-
             <Route path="properties/:location" element={<PropertiesPage />} />
             <Route
               path="property/:location/:name/:id"
@@ -112,20 +98,42 @@ const App = () => {
             <Route path="contact" element={<ContactUs />} />
             <Route path="profile" element={<Profile />} />
             <Route path="services" element={<RealEstateServices />} />
-            <Route path="post-property" element={<UserPropertyListing />} />
           </Route>
 
           {/* ---------- Admin Routes ---------- */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="add-property" element={<AddEditPropertyPage />} />
-            <Route path="edit-property/:id" element={<AddEditPropertyPage />} />
-            <Route path="property-manager" element={<ManageProperties />} />
+
+            {/* Add New Property Routes */}
+            <Route
+              path="edit-property/:collectionName/new"
+              element={<AddEditPropertyPage />}
+            />
+            {/* Add Edit Property Routes */}
+
+            <Route
+              path="edit-property/:collectionName/:docId"
+              element={<AddEditPropertyPage />}
+            />
+
+            {/* Manage Properties */}
+            <Route path="properties" element={<AdminPropertyManage />} />
+            <Route
+              path="featuredproperties"
+              element={<AdminPropertyManage />}
+            />
+            <Route
+              path="featuredproperties"
+              element={<AdminPropertyManage />}
+            />
+
+            {/* Other Admin Routes */}
             <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="reviews" element={<AdminReviews />} />
           </Route>
 
-          {/* ---------- 404 Fallback Route ---------- */}
+          {/* ---------- 404 Fallback ---------- */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

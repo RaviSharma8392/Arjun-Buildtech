@@ -7,6 +7,8 @@ import {
   FaHome,
   FaBuilding,
   FaEnvelope,
+  FaStar,
+  FaUser,
 } from "react-icons/fa";
 
 export default function AdminNavbar() {
@@ -16,13 +18,20 @@ export default function AdminNavbar() {
 
   const navLinks = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FaHome /> },
-    { name: "Add Property", path: "/admin/add-property", icon: <FaBuilding /> },
+    // { name: "Add Property", path: "/admin/add-property", icon: <FaBuilding /> },
     {
       name: "Manage Properties",
-      path: "/admin/property-manager",
+      path: "/admin/properties",
       icon: <FaBuilding />,
     },
+    {
+      name: "Manage Featured",
+      path: "/admin/featuredproperties",
+      icon: <FaBuilding />,
+    },
+    { name: "Reviews", path: "/admin/reviews", icon: <FaStar /> },
     { name: "Inquiries", path: "/admin/inquiries", icon: <FaEnvelope /> },
+    { name: "Users", path: "/admin/users", icon: <FaUser /> },
   ];
 
   useEffect(() => {
@@ -34,7 +43,7 @@ export default function AdminNavbar() {
   useEffect(() => setIsMenuOpen(false), [location]);
 
   const handleLogout = () => {
-    // You can later replace this with Firebase signOut
+    // Replace with Firebase signOut in production
     alert("Logged out successfully");
   };
 

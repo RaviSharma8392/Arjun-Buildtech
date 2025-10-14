@@ -28,10 +28,11 @@ const getInitialFormData = (propertyType = "house", initialData = null) => ({
   propertyType: initialData?.propertyType || "",
   description: initialData?.description || "",
   features: initialData?.features || [],
-  amenities: initialData?.amenities || [],
   type: propertyType,
   images: initialData?.images || [],
   errors: {},
+  uploading: false,
+  imageError: "",
 });
 
 // Reducer
@@ -76,13 +77,12 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   const [propertyType, setPropertyType] = useState(
     initialData?.type || "house"
   );
-
   const [formData, dispatch] = useReducer(
     formReducer,
     getInitialFormData(propertyType, initialData)
   );
 
-  // Sync initialData on mount or change
+  // Sync initial data
   useEffect(() => {
     dispatch({ type: "RESET_FORM", propertyType, initialData });
   }, [initialData, propertyType]);
@@ -104,7 +104,12 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     dispatch({ type: "SET_IMAGE_UPLOAD_STATE", uploading, error });
   };
 
-  // Form validation
+  const handlePropertyTypeChange = (type) => {
+    setPropertyType(type);
+    dispatch({ type: "RESET_FORM", propertyType: type, initialData });
+  };
+
+  // Validate fields
   const validateForm = () => {
     const errors = {};
     if (!formData.name?.trim()) errors.name = "Property name is required";
@@ -128,30 +133,36 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const dataToSubmit = { ...formData };
-    delete dataToSubmit.errors;
-    delete dataToSubmit.uploading;
-    delete dataToSubmit.imageError;
+    const userFields = [
+      "name",
+      "shortTitle",
+      "reference",
+      "location",
+      "price",
+      "bedrooms",
+      "bathrooms",
+      "furnishing",
+      "totalFloor",
+      "builtUpArea",
+      "landArea",
+      "transactionType",
+      "propertyType",
+      "description",
+      "features",
+      "type",
+      "images",
+    ];
 
-    if (propertyType === "plot") {
-      delete dataToSubmit.bedrooms;
-      delete dataToSubmit.bathrooms;
-      delete dataToSubmit.furnishing;
-      delete dataToSubmit.totalFloor;
-      delete dataToSubmit.builtUpArea;
-    }
-    if (propertyType === "house") delete dataToSubmit.landArea;
+    const dataToSubmit = userFields.reduce((acc, key) => {
+      if (formData[key] !== undefined) acc[key] = formData[key];
+      return acc;
+    }, {});
 
     onSubmit(dataToSubmit);
   };
 
-  const handlePropertyTypeChange = (type) => {
-    setPropertyType(type);
-    dispatch({ type: "RESET_FORM", propertyType: type, initialData });
-  };
-
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+    <div className="p-6 bg-white rounded-lg shadow-lg">
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-2">
           {initialData ? "Edit Property" : "Add New Property"}
@@ -184,22 +195,32 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
       </FormSection>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Use existing sections: Basic Info, Details, Features, Description, Images */}
+        {/* Basic Info */}
         <FormSection title="Basic Information">
           <InputField
             label="Property Name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
             error={formData.errors.name}
+          />
+          <InputField
+            label="Short Title"
+            name="shortTitle"
+            value={formData.shortTitle}
+            onChange={handleChange}
+          />
+          <InputField
+            label="Reference"
+            name="reference"
+            value={formData.reference}
+            onChange={handleChange}
           />
           <InputField
             label="Location"
             name="location"
             value={formData.location}
             onChange={handleChange}
-            required
             error={formData.errors.location}
           />
           <InputField
@@ -207,11 +228,11 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
             name="price"
             value={formData.price}
             onChange={handleChange}
-            required
             error={formData.errors.price}
           />
         </FormSection>
 
+        {/* Property Details */}
         <FormSection title="Property Details">
           {propertyType === "house" && (
             <>
@@ -229,6 +250,31 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
                 onChange={handleChange}
                 error={formData.errors.bathrooms}
               />
+              <InputField
+                label="Furnishing"
+                name="furnishing"
+                value={formData.furnishing}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Total Floors"
+                name="totalFloor"
+                type="number"
+                value={formData.totalFloor}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Built-up Area (sq.ft)"
+                name="builtUpArea"
+                value={formData.builtUpArea}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Facing"
+                name="facing"
+                value={formData.facing}
+                onChange={handleChange}
+              />
             </>
           )}
           {propertyType === "plot" && (
@@ -240,23 +286,15 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               error={formData.errors.landArea}
             />
           )}
-        </FormSection>
-
-        <FormSection title="Features & Amenities">
-          <ArrayInputField
-            label="Features"
-            name="features"
-            value={formData.features}
-            onChange={handleArrayChange}
-          />
-          <ArrayInputField
-            label="Amenities"
-            name="amenities"
-            value={formData.amenities}
-            onChange={handleArrayChange}
+          <InputField
+            label="Transaction Type"
+            name="transactionType"
+            value={formData.transactionType}
+            onChange={handleChange}
           />
         </FormSection>
 
+        {/* Description */}
         <FormSection title="Description">
           <InputField
             label="Description"
@@ -267,13 +305,26 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
           />
         </FormSection>
 
-        <ImageUploader
-          images={formData.images}
-          onImagesChange={handleImageChange}
-          onUploadStateChange={handleImageUploadState}
-          uploading={formData.uploading}
-          error={formData.imageError}
-        />
+        {/* Features */}
+        <FormSection title="Features">
+          <ArrayInputField
+            label="Features"
+            name="features"
+            values={formData.features}
+            onChange={handleArrayChange}
+          />
+        </FormSection>
+
+        {/* Images */}
+        <FormSection title="Property Images">
+          <ImageUploader
+            images={formData.images}
+            onImagesChange={handleImageChange}
+            onUploadStateChange={handleImageUploadState}
+            uploading={formData.uploading}
+            error={formData.imageError}
+          />
+        </FormSection>
 
         <div className="text-center">
           <button

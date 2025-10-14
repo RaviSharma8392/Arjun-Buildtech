@@ -6,28 +6,28 @@ const HomeBanner = () => {
 
   const cards = [
     {
-      title: "Post Your Property Free !!",
-      buttonText: "List Your Property",
-      bgColor: "bg-blue-700",
-      link: "/post-property",
-    },
-    {
-      title: "Top Real Estate Agents & Property Dealers in Haryana",
-      buttonText: "Explore Now",
+      title: "Trusted Real Estate & Property Consulting in Rohtak, Haryana",
+      buttonText: "Explore Services",
       bgColor: "bg-pink-600",
-      link: "/agents",
+      link: "/services",
     },
     {
-      title: "Explore Haryana's Top Residential Plot",
-      buttonText: "Explore Now",
+      title: "Explore Top Residential Plots & Investment Properties",
+      buttonText: "View Properties",
       bgColor: "bg-yellow-300",
       textColor: "text-black",
       link: "/properties",
     },
     {
-      title: "Helping you to find your dream Property",
+      title: "Need Help Finding the Right Property?",
       buttonText: "Post Your Requirement",
       bgColor: "bg-teal-400",
+      link: "/contact",
+    },
+    {
+      title: "Visit Our Offices – Rohtak & Gurugram",
+      buttonText: "Get Directions",
+      bgColor: "bg-indigo-600",
       link: "/contact",
     },
   ];

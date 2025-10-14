@@ -3,24 +3,24 @@ import React from "react";
 const WhyChooseArjunBuiltech = () => {
   const reasons = [
     {
-      title: "Reach Millions of Buyers & Tenants",
-      desc: "Our user-friendly platform ensures your listing reaches potential buyers and tenants quickly.",
+      title: "Local Expertise in Rohtak",
+      desc: "We specialize only in Rohtak — with deep knowledge of HSVP and Suncity sectors to help you find the right property.",
       img: "https://static.realestateindia.com/rei/images/wh-img1.jpg",
     },
     {
-      title: "Free & Premium Plans",
-      desc: "Post free property ads or choose premium plans for exclusive features, zero charges for agents and builders.",
-      img: "https://static.realestateindia.com/rei/images/wh-img1.jpg",
+      title: "Buy, Sell & Invest with Confidence",
+      desc: "Whether you’re a first-time buyer or an investor, we make property deals transparent, safe, and profitable.",
+      img: "https://static.realestateindia.com/rei/images/wh-img2.jpg",
     },
     {
-      title: "Simple & Fast Process",
-      desc: "List your property easily—add details, upload images, and your ad goes live within minutes.",
-      img: "https://static.realestateindia.com/rei/images/wh-img1.jpg",
+      title: "Verified Properties & Genuine Deals",
+      desc: "Every property we list is verified and genuine, ensuring you connect with trusted buyers and sellers only.",
+      img: "https://static.realestateindia.com/rei/images/wh-img3.jpg",
     },
     {
-      title: "Verified Leads Only",
-      desc: "Connect only with verified buyers and tenants, ensuring safe and genuine deals.",
-      img: "https://static.realestateindia.com/rei/images/wh-img1.jpg",
+      title: "Personalized Support for Every Client",
+      desc: "Our dedicated team provides tailored assistance based on your property needs, budget, and goals.",
+      img: "https://static.realestateindia.com/rei/images/wh-img4.jpg",
     },
   ];
 
@@ -32,9 +32,9 @@ const WhyChooseArjunBuiltech = () => {
           Why Choose <span className="text-blue-600">Arjun Builtech?</span>
         </h2>
         <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
-          Arjun Builtech is one of the most trusted platforms for buying,
-          selling, or renting properties. Here’s why thousands of clients choose
-          us:
+          We’re Rohtak’s trusted real estate experts — helping clients buy,
+          sell, and invest in premium residential plots and homes. Here’s why
+          people choose us:
         </p>
 
         {/* Grid of Reasons */}

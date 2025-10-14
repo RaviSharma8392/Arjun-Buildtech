@@ -10,6 +10,7 @@ const PropertiesPage = () => {
   const [properties, setProperties] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
+  const [selectedSector, setSelectedSector] = useState("All");
 
   const { city } = useParams(); // Get city from URL if exists
 
@@ -27,45 +28,58 @@ const PropertiesPage = () => {
         console.error("Error fetching properties:", error);
       }
     };
-
     fetchProperties();
   }, []);
 
-  // Automatically select location based on URL param
+  // Auto-select location from URL (if /property/rohtak or similar)
   useEffect(() => {
     if (city && properties.length > 0) {
-      // Normalize the city name (handle hyphens and case)
-      const formattedCity =
-        city
-          .split("-")
-          .map(
-            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-          )
-          .join(" ") || "All";
+      const formattedCity = city
+        .split("-")
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        )
+        .join(" ");
 
-      // Match Firestore location values (case-insensitive)
       const matchedLocation = properties.find(
         (property) =>
           property.location.toLowerCase() === formattedCity.toLowerCase()
       );
 
-      if (matchedLocation) {
-        setSelectedLocation(matchedLocation.location);
-      } else {
-        setSelectedLocation("All");
-      }
+      if (matchedLocation) setSelectedLocation(matchedLocation.location);
+      else setSelectedLocation("All");
     }
   }, [city, properties]);
 
-  // Extract unique locations
+  // Extract unique locations dynamically
   const locations = ["All", ...new Set(properties.map((p) => p.location))];
 
-  // Filter properties
+  // ✅ Rohtak Sectors (Static List)
+  const rohtakSectors = [
+    "HSVP Sector-1",
+    "HSVP Sector-2",
+    "HSVP Sector-3",
+    "HSVP Sector-25",
+    "HSVP Sector-27",
+    "Suncity Sector-34",
+    "Suncity Sector-35",
+    "Suncity Sector-36",
+    "Suncity Sector-36A",
+  ];
+
+  // ✅ Filter Logic
   const filteredProperties = properties.filter((property) => {
     const locationMatch =
       selectedLocation === "All" || property.location === selectedLocation;
+
     const typeMatch = selectedType === "All" || property.type === selectedType;
-    return locationMatch && typeMatch;
+
+    const sectorMatch =
+      selectedSector === "All" ||
+      (property.sector &&
+        property.sector.toLowerCase() === selectedSector.toLowerCase());
+
+    return locationMatch && typeMatch && sectorMatch;
   });
 
   const BannerLocation =
@@ -80,7 +94,7 @@ const PropertiesPage = () => {
       />
 
       {/* Filters Section */}
-      <section className="bg-white">
+      <section className="bg-white border-b">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -91,7 +105,10 @@ const PropertiesPage = () => {
                 </label>
                 <select
                   value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedLocation(e.target.value);
+                    setSelectedSector("All"); // reset sector
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                   {locations.map((location) => (
                     <option key={location} value={location}>
@@ -115,6 +132,39 @@ const PropertiesPage = () => {
                   <option value="plot">Plot</option>
                 </select>
               </div>
+
+              {/* Sector Filter (only for Rohtak) */}
+              {selectedLocation.toLowerCase() === "rohtak" && (
+                <div className="w-full sm:w-64">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Sector
+                  </label>
+                  <select
+                    value={selectedSector}
+                    onChange={(e) => setSelectedSector(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    <option value="All">All Sectors</option>
+                    <optgroup label="HSVP">
+                      {rohtakSectors
+                        .filter((s) => s.includes("HSVP"))
+                        .map((sector) => (
+                          <option key={sector} value={sector}>
+                            {sector.replace("HSVP ", "")}
+                          </option>
+                        ))}
+                    </optgroup>
+                    <optgroup label="Suncity">
+                      {rohtakSectors
+                        .filter((s) => s.includes("Suncity"))
+                        .map((sector) => (
+                          <option key={sector} value={sector}>
+                            {sector.replace("Suncity ", "")}
+                          </option>
+                        ))}
+                    </optgroup>
+                  </select>
+                </div>
+              )}
             </div>
 
             <div className="text-sm text-gray-600">
@@ -143,7 +193,7 @@ const PropertiesPage = () => {
                 key={property.id}
                 to={`/property/${property.location
                   .toLowerCase()
-                  .replace(/\s+/g, "-")}/${property.title
+                  .replace(/\s+/g, "-")}/${property.name
                   ?.toLowerCase()
                   .replace(/\s+/g, "-")}/${property.id}`}
                 className="hover:shadow-lg transition">
@@ -155,7 +205,7 @@ const PropertiesPage = () => {
       </main>
 
       {/* Contact Section */}
-      <section className="bg-white">
+      <section className="bg-white border-t">
         <div className="container mx-auto px-4 py-12 text-center">
           <h2 className="text-2xl font-[Poppins] text-gray-900 mb-4">
             Looking for more properties in {BannerLocation}?

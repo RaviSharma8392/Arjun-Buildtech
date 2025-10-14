@@ -18,8 +18,8 @@ export default function BottomNavbar({ onHelpClick }) {
     { name: "Home", path: "/", icon: FaHome },
     { name: "Projects", path: "/projects", icon: FaBuilding },
     { name: "Properties", path: "/properties", icon: FaThLarge },
-    { name: "Post", path: "/post-property", icon: FaPlus, free: true },
-    { name: "Contact", path: "/contactus", icon: FaPhone },
+    { name: "Services", path: "/services", icon: FaPlus },
+    { name: "Contact", path: "/contact", icon: FaPhone },
   ];
 
   return (

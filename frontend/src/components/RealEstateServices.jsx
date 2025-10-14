@@ -1,61 +1,42 @@
 import React from "react";
 import {
+  FaHome,
+  FaHandshake,
+  FaChartLine,
   FaUserTie,
-  FaHardHat,
-  FaDraftingCompass,
-  FaPaintRoller,
-  FaCompass,
-  FaTools,
-  FaSearchLocation,
-  FaBriefcase,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 const services = [
   {
-    title: "Agents / Brokers",
+    title: "Buy Property in Rohtak",
     description:
-      "Here Are Hassle-Free Solutions! Buy - Sell - Rent Your Property",
-    icon: <FaUserTie className="text-3xl text-blue-600" />,
+      "Find verified plots and homes in Rohtak’s prime areas — HSVP Sectors 1, 2, 3, 25, 27, and Suncity 34, 35, 36, 36A.",
+    icon: <FaHome className="text-3xl text-blue-600" />,
   },
   {
-    title: "Builders / Developers",
+    title: "Sell Property in Rohtak",
     description:
-      "List of the most trusted and reliable builders to fulfill your Dream HOME.",
-    icon: <FaHardHat className="text-3xl text-yellow-600" />,
+      "Get the best market value for your property with expert help from our local real estate team.",
+    icon: <FaHandshake className="text-3xl text-green-600" />,
   },
   {
-    title: "Architects / Architecture",
+    title: "Investment Consulting",
     description:
-      "Professional Architecture will meet your needs and expectations.",
-    icon: <FaDraftingCompass className="text-3xl text-green-600" />,
+      "We guide you through high-return investment opportunities across top residential and commercial sectors in Rohtak.",
+    icon: <FaChartLine className="text-3xl text-yellow-500" />,
   },
   {
-    title: "Interior Decorators",
+    title: "Property Consultation",
     description:
-      "A One-Stop Solution for all your decor Needs to Match Your Lifestyle.",
-    icon: <FaPaintRoller className="text-3xl text-pink-500" />,
+      "Our experts help you choose the right property based on your needs, budget, and future value potential.",
+    icon: <FaUserTie className="text-3xl text-indigo-600" />,
   },
   {
-    title: "Vaastu Consultant",
-    description: "Connect to top most Vastu consultants for right direction.",
-    icon: <FaCompass className="text-3xl text-indigo-600" />,
-  },
-  {
-    title: "Building Contractors",
+    title: "Prime Areas We Cover",
     description:
-      "General contractor for a home repair, remodel, or construction.",
-    icon: <FaTools className="text-3xl text-gray-700" />,
-  },
-  {
-    title: "Home Inspection",
-    description: "A complete range of building and home inspection services.",
-    icon: <FaSearchLocation className="text-3xl text-red-500" />,
-  },
-  {
-    title: "Property Consultants",
-    description:
-      "List of Leading Real Estate Consultant for Professional Assistance Services.",
-    icon: <FaBriefcase className="text-3xl text-teal-600" />,
+      "We specialize in Rohtak’s major real estate zones: HSVP Sector 1–3, 25, 27, and Suncity Sector 34–36A.",
+    icon: <FaMapMarkerAlt className="text-3xl text-red-600" />,
   },
 ];
 
@@ -63,7 +44,8 @@ const RealEstateServices = () => {
   return (
     <div className="px-4 mt-8 py-12 bg-gray-50 ">
       <h2 className="text-3xl font-semibold text-center text-red-600 mb-8">
-        Explore our <span className="text-black">Real Estate</span> Services
+        Explore Our <span className="text-black">Real Estate Services</span> in
+        Rohtak
       </h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {services.map((service, index) => (

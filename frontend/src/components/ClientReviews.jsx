@@ -5,29 +5,12 @@ import {
   FaChevronRight,
   FaStar,
 } from "react-icons/fa";
-import Papa from "papaparse";
-
 import ReviewCard from "./common/card/ReviewCard";
+import { db } from "../services/firebase"; // your Firebase config
+import { collection, getDocs } from "firebase/firestore";
 
 const ClientReviews = () => {
   const [reviews, setReviews] = useState([]);
-  const sheetUrl = import.meta.env.VITE_REVIEWSSHEET_CSV;
-
-  useEffect(() => {
-    Papa.parse(sheetUrl, {
-      download: true,
-      header: true,
-      complete: function (results) {
-        console.log(results);
-        setReviews(results.data);
-      },
-      error: function (err) {
-        console.error("Error fetching sheet:", err);
-      },
-    });
-  }, []);
-
-  console.log(reviews);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -42,7 +25,6 @@ const ClientReviews = () => {
     setCurrentIndex(index);
   };
 
-  // Generate star rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <FaStar
@@ -53,6 +35,25 @@ const ClientReviews = () => {
       />
     ));
   };
+
+  // Fetch reviews from Firebase
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const reviewsRef = collection(db, "reviews");
+        const snapshot = await getDocs(reviewsRef);
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setReviews(data);
+      } catch (error) {
+        console.error("Error fetching reviews from Firebase:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   if (reviews.length === 0) {
     return (
@@ -165,7 +166,6 @@ const ClientReviews = () => {
         </div>
 
         {/* Additional Mini Reviews */}
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
           {reviews.map((review, index) => (
             <ReviewCard

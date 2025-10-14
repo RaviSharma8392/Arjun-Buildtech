@@ -6,10 +6,10 @@ import HomeBanner from "../../components/common/banner/HomeBanner";
 import FeaturedProperties from "../../components/FeaturedProperties";
 import RealEstateServices from "../../components/RealEstateServices";
 import WhyChooseArjunBuiltech from "../../components/common/WhyChooseArjunBuiltech";
+import FAQSection from "../../components/FAQSection";
 
 // --- Lazy-loaded (below the fold) sections ---
 const Testimonials = lazy(() => import("../Testimonials"));
-const BlogSection = lazy(() => import("../../components/BlogSection"));
 const ContactUs = lazy(() => import("./ContactUs"));
 
 // --- Reusable fallback component for lazy loading ---
@@ -57,12 +57,12 @@ const Home = () => {
       </Suspense>
 
       {/* 7️⃣ Blog / Insights — Lazy load for SEO content */}
-      <Suspense fallback={<LoadingFallback />}>
-        <BlogSection />
-      </Suspense>
+      <Suspense fallback={<LoadingFallback />}></Suspense>
 
       {/* 8️⃣ Contact Section — Lazy load inquiry form */}
       <Suspense fallback={<LoadingFallback />}>
+        <FAQSection />
+
         <ContactUs />
       </Suspense>
     </div>

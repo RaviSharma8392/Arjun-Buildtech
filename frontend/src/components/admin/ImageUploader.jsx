@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { uploadToCloudinary } from "../../../services/cloudinaryUpload";
+import { uploadToCloudinary } from "../../services/cloudinaryUpload";
 
 const ImageUploader = ({ images = [], onImagesChange }) => {
   const [uploading, setUploading] = useState(false);

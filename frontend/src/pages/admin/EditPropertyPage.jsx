@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../services/firebase";
 import { doc, getDoc, setDoc, collection } from "firebase/firestore";
-import DynamicPropertyForm from "../../components/common/admin/DynamicPropertyForm";
+import DynamicPropertyForm from "../../components/admin/DynamicPropertyForm";
 
 const AddEditPropertyPage = () => {
-  const { id } = useParams(); // if id exists, we are editing
+  const { docId } = useParams(); // Firestore doc ID if editing
+  const location = useLocation();
   const navigate = useNavigate();
+
   const [initialData, setInitialData] = useState(null);
-  const [loading, setLoading] = useState(!!id);
+  const [loading, setLoading] = useState(!!docId);
+
+  // Determine collection based on URL
+  const isFeatured = location.pathname.includes("featuredproperties");
+  const collectionName = isFeatured ? "featuredproperties" : "properties";
 
   useEffect(() => {
-    if (id) {
+    if (docId) {
       const fetchProperty = async () => {
         try {
-          const docRef = doc(db, "properties", id);
+          const docRef = doc(db, collectionName, docId);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             setInitialData({ id: docSnap.id, ...docSnap.data() });
@@ -24,27 +30,30 @@ const AddEditPropertyPage = () => {
           }
         } catch (err) {
           console.error("Error fetching property:", err);
+          alert("Failed to fetch property data.");
         } finally {
           setLoading(false);
         }
       };
       fetchProperty();
+    } else {
+      setLoading(false);
     }
-  }, [id, navigate]);
+  }, [docId, collectionName, navigate]);
 
   const handleSubmit = async (data) => {
     try {
-      if (id) {
+      if (docId) {
         // Update existing property
-        await setDoc(doc(db, "properties", id), data, { merge: true });
+        await setDoc(doc(db, collectionName, docId), data, { merge: true });
         alert("Property updated successfully!");
       } else {
         // Add new property
-        const newDocRef = doc(collection(db, "properties"));
+        const newDocRef = doc(collection(db, collectionName));
         await setDoc(newDocRef, data);
         alert("Property added successfully!");
       }
-      navigate("/admin/dashboard");
+      navigate("/admin");
     } catch (err) {
       console.error("Error saving property:", err);
       alert("Failed to save property. Try again.");

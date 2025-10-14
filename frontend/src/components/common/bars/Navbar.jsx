@@ -14,7 +14,6 @@ export default function Navbar() {
     { name: "Services", path: "/services" },
     { name: "Profile", path: "/profile" },
     { name: "Properties", path: "/properties" },
-    { name: "Post Property", path: "/post-property", free: true },
     { name: "Testimonials", path: "/testimonials" },
   ];
 
@@ -32,7 +31,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md" : "bg-white border-b border-gray-200"
+        isScrolled ? "bg-white shadow-lg" : "bg-white "
       }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center py-4">
@@ -53,12 +52,12 @@ export default function Navbar() {
                 to={link.path}
                 className={`px-3 py-2 text-[15px] font-medium transition-colors ${
                   location.pathname === link.path
-                    ? "text-orange-600 font-semibold border-b-2 border-orange-600"
-                    : "text-gray-700 hover:text-orange-600"
+                    ? "text-red-600 font-semibold border-b-2 border-red-600"
+                    : "text-gray-800 hover:text-red-600"
                 }`}>
                 {link.name}
                 {link.free && (
-                  <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                  <span className="ml-2 text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded">
                     Free
                   </span>
                 )}
@@ -68,8 +67,8 @@ export default function Navbar() {
             {/* Contact Us Button */}
             <Link
               to="/contact"
-              className="ml-4 bg-orange-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-orange-600 transition flex items-center gap-2">
-              <FaPhone /> Contact Us
+              className="ml-4 bg-red-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-red-700 transition flex items-center gap-2">
+              <FaPhone className="w-4 h-4" /> Contact Us
             </Link>
 
             {/* Help Center */}
@@ -78,43 +77,60 @@ export default function Navbar() {
                 onClick={() => setIsHelpOpen(!isHelpOpen)}
                 className="ml-2 p-2 rounded-md hover:bg-gray-100 transition"
                 title="Help Center">
-                <FaQuestionCircle className="w-5 h-5 text-gray-700" />
+                <FaQuestionCircle className="w-5 h-5 text-gray-800 hover:text-red-600 transition-colors" />
               </button>
 
               {isHelpOpen && (
-                <div className="absolute right-0 mt-3 w-64 bg-white border shadow-xl rounded-md p-4 z-50">
-                  <h3 className="font-semibold text-gray-900 mb-2">
+                <div className="absolute right-0 mt-3 w-72 bg-white border border-gray-300 shadow-xl rounded-lg p-4 z-50">
+                  <h3 className="font-semibold text-gray-900 mb-3 text-lg">
                     Help Center
                   </h3>
-                  <p className="text-sm text-gray-700">
-                    <strong>Phone:</strong> +91 76177 11003
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <strong>Email:</strong> support@arjunbuildtech.com
-                  </p>
-                  <p className="text-sm text-gray-700 mb-2">
-                    <strong>Hours:</strong> Mon–Sat, 10 AM – 6 PM
-                  </p>
-                  <button
-                    onClick={() => window.open("tel:+917617711003", "_self")}
-                    className="w-full bg-orange-500 text-white py-2 rounded-md font-semibold hover:bg-orange-600 transition mb-2">
-                    Request Call Back
-                  </button>
-                  <Link
-                    to="/help-center"
-                    className="block text-center w-full bg-gray-100 py-2 rounded-md hover:bg-gray-200 transition">
-                    Visit Help Center
-                  </Link>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-sm text-gray-700 flex items-center gap-2">
+                      <strong className="text-gray-900">Phone:</strong>
+                      <span className="text-red-600 font-medium">
+                        +91 76177 11003
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      <strong className="text-gray-900">Email:</strong>{" "}
+                      support@arjunbuildtech.com
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      <strong className="text-gray-900">Hours:</strong> Mon–Sat,
+                      10 AM – 6 PM
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => window.open("tel:+917617711003", "_self")}
+                      className="w-full bg-red-600 text-white py-2 rounded-md font-semibold hover:bg-red-700 transition">
+                      Request Call Back
+                    </button>
+                    <Link
+                      to="/help-center"
+                      className="block text-center w-full bg-gray-100 text-gray-800 py-2 rounded-md hover:bg-gray-200 transition font-medium">
+                      Visit Help Center
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden">
+          <div className="flex lg:hidden items-center gap-3">
+            {/* Mobile Help Button */}
+            <button
+              onClick={() => setIsHelpOpen(!isHelpOpen)}
+              className="p-2 rounded-md hover:bg-gray-100 transition"
+              title="Help Center">
+              <FaQuestionCircle className="w-5 h-5 text-gray-800" />
+            </button>
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 transition">
+              className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-800 transition">
               {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
             </button>
           </div>
@@ -123,20 +139,20 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-inner">
-          <div className="flex flex-col p-4 space-y-2">
+        <div className="lg:hidden bg-white border-t border-gray-300 shadow-inner">
+          <div className="flex flex-col p-4 space-y-3">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`px-3 py-2 rounded-md text-gray-700 hover:text-orange-600 ${
+                className={`px-3 py-3 rounded-md text-gray-800 hover:text-red-600 hover:bg-red-50 transition-colors ${
                   location.pathname === link.path
-                    ? "font-semibold text-orange-600"
+                    ? "font-semibold text-red-600 bg-red-50"
                     : ""
                 }`}>
                 {link.name}
                 {link.free && (
-                  <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 rounded">
+                  <span className="ml-2 text-xs bg-red-100 text-red-700 px-1.5 py-1 rounded">
                     Free
                   </span>
                 )}
@@ -145,9 +161,75 @@ export default function Navbar() {
 
             <Link
               to="/contact"
-              className="mt-2 bg-orange-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-orange-600 flex items-center gap-2">
+              className="mt-2 bg-red-600 text-white px-4 py-3 rounded-md font-semibold hover:bg-red-700 flex items-center justify-center gap-2">
               <FaPhone /> Contact Us
             </Link>
+
+            {/* Mobile Help Info */}
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <h4 className="font-semibold text-gray-900 mb-2">Need Help?</h4>
+              <p className="text-sm text-gray-700 mb-2">
+                Call us:{" "}
+                <span className="text-red-600 font-medium">
+                  +91 76177 11003
+                </span>
+              </p>
+              <button
+                onClick={() => window.open("tel:+917617711003", "_self")}
+                className="w-full bg-red-600 text-white py-2 rounded-md font-semibold hover:bg-red-700 transition">
+                Call Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Help Dropdown */}
+      {isHelpOpen && (
+        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50">
+          <div className="absolute top-20 right-4 w-72 bg-white border border-gray-300 shadow-xl rounded-lg p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-semibold text-gray-900 text-lg">
+                Help Center
+              </h3>
+              <button
+                onClick={() => setIsHelpOpen(false)}
+                className="p-1 rounded hover:bg-gray-100">
+                <FaTimes className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center gap-2 text-sm">
+                <strong className="text-gray-900 w-16">Phone:</strong>
+                <span className="text-red-600 font-medium">
+                  +91 76177 11003
+                </span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <strong className="text-gray-900 w-16">Email:</strong>
+                <span>support@arjunbuildtech.com</span>
+              </div>
+              <div className="flex items-start gap-2 text-sm">
+                <strong className="text-gray-900 w-16">Hours:</strong>
+                <span>Mon–Sat, 10 AM – 6 PM</span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  window.open("tel:+917617711003", "_self");
+                  setIsHelpOpen(false);
+                }}
+                className="w-full bg-red-600 text-white py-3 rounded-md font-semibold hover:bg-red-700 transition">
+                Request Call Back
+              </button>
+              <Link
+                to="/help-center"
+                className="block text-center w-full bg-gray-100 text-gray-800 py-3 rounded-md hover:bg-gray-200 transition font-medium"
+                onClick={() => setIsHelpOpen(false)}>
+                Visit Help Center
+              </Link>
+            </div>
           </div>
         </div>
       )}
