@@ -14,6 +14,7 @@ const Footer = () => {
     { name: "Services", path: "/services" },
     { name: "Property", path: "/property" },
     { name: "Testimonials", path: "/testimonials" },
+    { name: "Post Property", path: "/post-property", free: true },
   ];
 
   return (
@@ -25,8 +26,9 @@ const Footer = () => {
             Arjun Buildtech
           </h2>
           <p className="text-gray-400">
-            Building your dream properties with quality and trust. Serving
-            Mukteshwar & Nainital.
+            If you are looking for a property consultant to help you get your
+            dream plot or investment, you are at the right place. We provide
+            excellent quality and planning tailored to your needs.
           </p>
         </div>
 
@@ -49,9 +51,20 @@ const Footer = () => {
         {/* Contact & Social */}
         <div>
           <h3 className="text-xl font-semibold text-white mb-4">Contact Us</h3>
-          <p>123, Mukteshwar Road, Nainital, Uttarakhand</p>
-          <p className="mt-1">Phone: +91 76177 11003</p>
-          <p className="mt-1">Email: info@arjunbuildtech.com</p>
+
+          <div className="space-y-2 text-gray-300">
+            <p>
+              <strong>Contacts:</strong>
+            </p>
+            <p>Parveen Gehlawat: 93504-47531, 98994-81428</p>
+            <p>Naveen Gehlawat: 98121-50126</p>
+
+            <p className="mt-2">
+              <strong>Offices:</strong>
+            </p>
+            <p>G74P, Sector-27, Rohtak</p>
+            <p>828, Sector-1, Rohtak, 124001</p>
+          </div>
 
           <div className="flex gap-4 mt-4">
             <a href="#" className="hover:text-emerald-500 transition">

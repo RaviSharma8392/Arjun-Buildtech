@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
-  FaChevronLeft,
-  FaChevronRight,
   FaHeart,
   FaMapMarkerAlt,
   FaBed,
@@ -16,7 +14,7 @@ import propertiesData from "../data/properties.json";
 import ShareButton from "../components/common/button/ShareButton";
 import SendEnquiry from "../components/common/form/SendEnquiry";
 import RelatedProperties from "../components/common/RelatedProperties";
-import Breadcrumb from "../components/common/Breadcrumb";
+import Breadcrumb from "../components/common/bars/Breadcrumb";
 import MobileContactBar from "../components/common/bars/InquiryBar";
 import ImageGallery from "../components/common/gallery/ImageGallery";
 

@@ -14,10 +14,6 @@ const PropertyCard = ({ property }) => {
     : "unknown";
   const nameSlug = property.name ? slugify(property.name) : "property";
 
-  const handleInquiry = () => {
-    window.location.href = `mailto:naitikbisht1@gmail.com?subject=Inquiry about ${property.name}`;
-  };
-
   return (
     <div className="group block bg-white rounded-xl shadow-lg  duration-300 overflow-hidden border border-gray-100">
       {/* Image */}
@@ -122,7 +118,7 @@ const PropertyCard = ({ property }) => {
             View Details
           </Link>
           <button
-            onClick={handleInquiry}
+            // onClick={handleInquiry}
             // **Secondary Button:** White/Outline style (light gray border and text) to de-emphasize.
             className="w-full text-center bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-semibold py-3 px-4 rounded-lg transition duration-200 shadow-sm">
             Send Inquiry

@@ -1,16 +1,52 @@
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../services/firebase";
 import PropertyCard from "../common/card/PropertyCard";
-import properties from "../../data/properties.json";
 
 export default function RelatedProperties() {
-  const { locationSlug } = useParams();
-  const locationText = locationSlug ? locationSlug.replace(/-/g, " ") : "";
-  console.log(locationText);
+  const { location } = useParams(); // e.g. "gurgaon"
+  const [relatedProperties, setRelatedProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filter properties based on current location
-  const relatedProperties = properties.filter((p) =>
-    p.location.toLowerCase().includes(locationText.toLowerCase())
-  );
+  const formattedLocation =
+    location &&
+    location.charAt(0).toUpperCase() + location.slice(1).toLowerCase();
+
+  // Fetch related properties from Firebase
+  useEffect(() => {
+    const fetchRelatedProperties = async () => {
+      if (!formattedLocation) return;
+
+      try {
+        const q = query(
+          collection(db, "properties"),
+          where("location", "==", formattedLocation)
+        );
+
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setRelatedProperties(data);
+      } catch (error) {
+        console.error("Error fetching related properties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelatedProperties();
+  }, [formattedLocation]);
+
+  if (loading)
+    return (
+      <div className="flex justify-center py-12">
+        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
 
   if (relatedProperties.length === 0) return null;
 
@@ -19,28 +55,28 @@ export default function RelatedProperties() {
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-4xl font-[Poppins] text-gray-900 mb-4">
-            Related Properties in {locationText || "this area"}
+          <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3">
+            Related Properties in {formattedLocation}
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Explore other premium properties in {locationText || "this area"}{" "}
-            curated just for you.
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Explore more premium properties in {formattedLocation}, curated just
+            for you.
           </p>
         </div>
 
-        {/* Grid Layout */}
+        {/* Grid of Properties */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {relatedProperties.slice(2).map((property) => (
+          {relatedProperties.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
 
-        {/* Optional View All Button */}
+        {/* View All Button */}
         <div className="text-center mt-12">
-          <a
-            href={`/properties?location=${locationText.replace(/\s+/g, "-")}`}
+          <Link
+            to={`/properties/${formattedLocation.toLowerCase()}`}
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            View All Properties in {locationText || "this area"}
+            View All Properties in {formattedLocation}
             <svg
               className="w-5 h-5"
               fill="none"
@@ -53,7 +89,7 @@ export default function RelatedProperties() {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
