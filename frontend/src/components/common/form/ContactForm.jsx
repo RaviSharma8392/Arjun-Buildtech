@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { Send } from "lucide-react";
+import Notification from "../notification/Notification";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,13 @@ const ContactForm = () => {
     gdprAgreement: false,
   });
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+
+  // Notification state
+  const [notification, setNotification] = useState({
+    message: "",
+    type: "success", // success | error | warning | info
+    visible: false,
+  });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -43,30 +50,44 @@ const ContactForm = () => {
         location: "",
         gdprAgreement: false,
       });
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 5000);
+
+      // Show success notification
+      setNotification({
+        message:
+          "Message sent successfully! We'll get back to you within 24 hours.",
+        type: "success",
+        visible: true,
+      });
     } catch (error) {
       console.error("Error saving contact:", error);
-      alert("Error submitting the form. Please try again.");
+      setNotification({
+        message: "Error submitting the form. Please try again.",
+        type: "error",
+        visible: true,
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white md:rounded-2xl md:shadow-xl p-8 w-full">
+    <div className="bg-white md:rounded-2xl md:shadow-xl p-8 w-full relative">
+      {/* Notification */}
+      {notification.visible && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          duration={4000}
+          onClose={() => setNotification({ ...notification, visible: false })}
+        />
+      )}
+
       <div className="text-center mb-6 lg:text-left">
         <h2 className="text-3xl font-bold text-gray-900 mb-2">Contact Us</h2>
         <p className="text-gray-600 text-sm sm:text-base">
           Fill out the form and our team will respond promptly.
         </p>
       </div>
-
-      {submitted && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-center text-red-800 font-medium">
-          Message Sent Successfully! We'll get back to you within 24 hours.
-        </div>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -6,7 +6,7 @@ import {
   FaStar,
 } from "react-icons/fa";
 import ReviewCard from "./common/card/ReviewCard";
-import { db } from "../services/firebase"; // your Firebase config
+import { db } from "../services/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 const ClientReviews = () => {

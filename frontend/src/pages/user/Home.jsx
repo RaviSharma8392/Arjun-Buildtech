@@ -3,10 +3,11 @@ import React, { Suspense, lazy } from "react";
 // --- Always-loaded (above the fold) sections ---
 import HomeHeader from "../../components/common/banner/HomeHeader";
 import HomeBanner from "../../components/common/banner/HomeBanner";
-import FeaturedProperties from "../../components/FeaturedProperties";
 import RealEstateServices from "../../components/RealEstateServices";
 import WhyChooseArjunBuiltech from "../../components/common/WhyChooseArjunBuiltech";
 import FAQSection from "../../components/FAQSection";
+import FeaturedProperties from "../../components/FeaturedProperties";
+import MapSection from "../../components/MapSection";
 
 // --- Lazy-loaded (below the fold) sections ---
 const Testimonials = lazy(() => import("../Testimonials"));

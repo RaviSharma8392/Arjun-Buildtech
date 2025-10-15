@@ -24,7 +24,6 @@ const RealEstateServices = lazy(() =>
 const ContactUs = lazy(() => import("./pages/user/ContactUs"));
 
 // Admin Lazy Pages
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminReviews = lazy(() => import("./pages/admin/AdminReviews"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 
@@ -102,8 +101,7 @@ const App = () => {
 
           {/* ---------- Admin Routes ---------- */}
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route index element={<AdminPropertyManage />} />
 
             {/* Add New Property Routes */}
             <Route
@@ -119,10 +117,7 @@ const App = () => {
 
             {/* Manage Properties */}
             <Route path="properties" element={<AdminPropertyManage />} />
-            <Route
-              path="featuredproperties"
-              element={<AdminPropertyManage />}
-            />
+
             <Route
               path="featuredproperties"
               element={<AdminPropertyManage />}

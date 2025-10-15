@@ -17,7 +17,6 @@ export default function AdminNavbar() {
   const location = useLocation();
 
   const navLinks = [
-    { name: "Dashboard", path: "/admin/dashboard", icon: <FaHome /> },
     // { name: "Add Property", path: "/admin/add-property", icon: <FaBuilding /> },
     {
       name: "Manage Properties",
@@ -31,7 +30,6 @@ export default function AdminNavbar() {
     },
     { name: "Reviews", path: "/admin/reviews", icon: <FaStar /> },
     { name: "Inquiries", path: "/admin/inquiries", icon: <FaEnvelope /> },
-    { name: "Users", path: "/admin/users", icon: <FaUser /> },
   ];
 
   useEffect(() => {

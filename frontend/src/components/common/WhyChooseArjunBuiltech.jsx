@@ -25,13 +25,13 @@ const WhyChooseArjunBuiltech = () => {
   ];
 
   return (
-    <section className="py-20 px-6 md:px-16 bg-gray-50">
+    <section className="py-20 px-6 md:px-16 text-black bg-gray-50 ">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-          Why Choose <span className="text-blue-600">Arjun Builtech?</span>
+          Why Choose <span className="text-red-600">Arjun Builtech?</span>
         </h2>
-        <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">
+        <p className="text-black text-center max-w-2xl mx-auto mb-12">
           We’re Rohtak’s trusted real estate experts — helping clients buy,
           sell, and invest in premium residential plots and homes. Here’s why
           people choose us:
@@ -42,18 +42,18 @@ const WhyChooseArjunBuiltech = () => {
           {reasons.map((item, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition">
-              <div className="mb-4 w-20 h-20">
+              className="bg-neutral-900 rounded-2xl shadow-lg border border-neutral-800 hover:border-red-600 transition-all p-6 flex flex-col items-center text-center">
+              <div className="mb-4 w-20 h-20 rounded-full overflow-hidden ring-2 ring-red-600">
                 <img
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold text-white mb-2">
                 {item.title}
               </h3>
-              <p className="text-gray-600 text-sm">{item.desc}</p>
+              <p className="text-gray-400 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>

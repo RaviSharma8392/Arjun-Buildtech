@@ -247,7 +247,6 @@ const AdminInquiries = () => {
           </div>
 
           {/* Right Side */}
-          {/* Right Side */}
           <div className="w-2/3 flex flex-col">
             {selectedContact ? (
               <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
@@ -265,6 +264,27 @@ const AdminInquiries = () => {
                       : "Recently"}
                   </span>
                 </div>
+
+                {/* Admin Response (if exists) */}
+                {selectedContact.lastResponse && (
+                  <div className="bg-green-50 rounded-2xl p-4 shadow-sm border border-green-200 mb-4">
+                    <h4 className="font-semibold text-gray-800 mb-2">
+                      Admin Response
+                    </h4>
+                    <p className="text-gray-700">
+                      {selectedContact.lastResponse}
+                    </p>
+                    <span className="text-xs text-gray-500 block mt-1">
+                      {selectedContact.repliedAt
+                        ? new Date(
+                            selectedContact.repliedAt.toDate
+                              ? selectedContact.repliedAt.toDate()
+                              : selectedContact.repliedAt
+                          ).toLocaleString()
+                        : "Recently"}
+                    </span>
+                  </div>
+                )}
 
                 {/* From Email Input */}
                 <div className="mb-4">

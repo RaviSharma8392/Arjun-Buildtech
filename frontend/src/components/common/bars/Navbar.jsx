@@ -89,12 +89,12 @@ export default function Navbar() {
                     <p className="text-sm text-gray-700 flex items-center gap-2">
                       <strong className="text-gray-900">Phone:</strong>
                       <span className="text-red-600 font-medium">
-                        +91 76177 11003
+                        +91 98994 81428
                       </span>
                     </p>
                     <p className="text-sm text-gray-700">
                       <strong className="text-gray-900">Email:</strong>{" "}
-                      support@arjunbuildtech.com
+                      arjunbuildtech27@gmail.com{" "}
                     </p>
                     <p className="text-sm text-gray-700">
                       <strong className="text-gray-900">Hours:</strong> Mon–Sat,
@@ -103,7 +103,9 @@ export default function Navbar() {
                   </div>
                   <div className="space-y-2">
                     <button
-                      onClick={() => window.open("tel:+917617711003", "_self")}
+                      onClick={() =>
+                        window.open("tel:+91 98994 81428", "_self")
+                      }
                       className="w-full bg-red-600 text-white py-2 rounded-md font-semibold hover:bg-red-700 transition">
                       Request Call Back
                     </button>
@@ -171,11 +173,11 @@ export default function Navbar() {
               <p className="text-sm text-gray-700 mb-2">
                 Call us:{" "}
                 <span className="text-red-600 font-medium">
-                  +91 76177 11003
+                  +91 98994 81428
                 </span>
               </p>
               <button
-                onClick={() => window.open("tel:+917617711003", "_self")}
+                onClick={() => window.open("tel:+91 98994 81428", "_self")}
                 className="w-full bg-red-600 text-white py-2 rounded-md font-semibold hover:bg-red-700 transition">
                 Call Now
               </button>
@@ -202,12 +204,12 @@ export default function Navbar() {
               <div className="flex items-center gap-2 text-sm">
                 <strong className="text-gray-900 w-16">Phone:</strong>
                 <span className="text-red-600 font-medium">
-                  +91 76177 11003
+                  +91 98994 81428
                 </span>
               </div>
               <div className="flex items-start gap-2 text-sm">
                 <strong className="text-gray-900 w-16">Email:</strong>
-                <span>support@arjunbuildtech.com</span>
+                <span>arjunbuildtech27@gmail.com</span>
               </div>
               <div className="flex items-start gap-2 text-sm">
                 <strong className="text-gray-900 w-16">Hours:</strong>
@@ -217,7 +219,7 @@ export default function Navbar() {
             <div className="space-y-2">
               <button
                 onClick={() => {
-                  window.open("tel:+917617711003", "_self");
+                  window.open("tel:+9198994 81428", "_self");
                   setIsHelpOpen(false);
                 }}
                 className="w-full bg-red-600 text-white py-3 rounded-md font-semibold hover:bg-red-700 transition">

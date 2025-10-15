@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  deleteDoc,
-  doc,
-  orderBy,
-} from "firebase/firestore";
+import { collection, getDocs, query, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import { Plus } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropertyCard from "../../components/common/card/PropertyCard";
+import Notification from "../../components/common/notification/Notification";
 
 const AdminPropertyManage = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
 
+  // Notification state
+  const [notification, setNotification] = useState({
+    message: "",
+    type: "success", // success | error | warning | info
+    visible: false,
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
 
   // Determine collection robustly
-  const pathSegments = location.pathname.split("/").filter(Boolean);
-  const collectionName = pathSegments.includes("featuredproperties")
+  const collectionName = location.pathname.includes("featuredproperties")
     ? "featuredproperties"
     : "properties";
+
   const isFeatured = collectionName === "featuredproperties";
 
   // Fetch properties
@@ -32,19 +33,22 @@ const AdminPropertyManage = () => {
     const fetchProperties = async () => {
       setLoading(true);
       try {
-        const q = query(
-          collection(db, collectionName),
-          orderBy("createdAt", "desc")
-        );
+        let q = query(collection(db, collectionName));
+
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((docSnap) => ({
-          docId: docSnap.id,
-          ...docSnap.data(),
+        const data = snapshot.docs.map((d) => ({
+          docId: d.id,
+          ...d.data(),
         }));
+
         setProperties(data);
       } catch (err) {
-        console.error(`Error fetching ${collectionName}:`, err);
-        alert(`Failed to fetch ${collectionName}`);
+        console.error("Error fetching properties:", err);
+        setNotification({
+          message: "Failed to fetch properties. Check console for details.",
+          type: "error",
+          visible: true,
+        });
       } finally {
         setLoading(false);
       }
@@ -53,19 +57,27 @@ const AdminPropertyManage = () => {
     fetchProperties();
   }, [collectionName]);
 
-  console.log(isFeatured);
   // Delete property
   const handleDelete = async (docId) => {
     if (!window.confirm("Are you sure you want to delete this property?"))
       return;
+
     try {
       setDeletingId(docId);
       await deleteDoc(doc(db, collectionName, docId));
       setProperties((prev) => prev.filter((p) => p.docId !== docId));
-      alert("Property deleted successfully!");
+      setNotification({
+        message: "Property deleted successfully!",
+        type: "success",
+        visible: true,
+      });
     } catch (err) {
       console.error("Error deleting property:", err);
-      alert("Failed to delete property. Try again.");
+      setNotification({
+        message: "Failed to delete property. Try again.",
+        type: "error",
+        visible: true,
+      });
     } finally {
       setDeletingId(null);
     }
@@ -89,7 +101,17 @@ const AdminPropertyManage = () => {
     );
 
   return (
-    <div className="px-6 py-10 min-h-screen bg-gray-50">
+    <div className="px-6 py-10 min-h-screen bg-gray-50 relative">
+      {/* Notification */}
+      {notification.visible && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          duration={3000}
+          onClose={() => setNotification({ ...notification, visible: false })}
+        />
+      )}
+
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 capitalize">
           {isFeatured ? "Featured Properties" : "All Properties"} (Admin)
@@ -117,28 +139,6 @@ const AdminPropertyManage = () => {
                 onEdit={() => handleEdit(property.docId)}
                 onDelete={() => handleDelete(property.docId)}
               />
-
-              {/* Optional overlay buttons outside card (if needed)
-              <div className="absolute top-3 right-3 flex space-x-2">
-                <button
-                  onClick={() => handleEdit(property.docId)}
-                  className="bg-yellow-400 hover:bg-yellow-500 text-white p-2 rounded-lg"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(property.docId)}
-                  className={`${
-                    deletingId === property.docId
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-red-500 hover:bg-red-600"
-                  } text-white p-2 rounded-lg`}
-                  disabled={deletingId === property.docId}
-                >
-                  {deletingId === property.docId ? "Deleting..." : "Delete"}
-                </button>
-              </div>
-              */}
             </div>
           ))}
         </div>
