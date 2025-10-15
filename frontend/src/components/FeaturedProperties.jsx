@@ -11,6 +11,7 @@ const FeaturedProperties = () => {
     const fetchFeatured = async () => {
       setLoading(true);
       try {
+        // Optional: order by createdAt if you have timestamp
         const q = query(collection(db, "featuredproperties"));
         const snapshot = await getDocs(q);
 
@@ -22,7 +23,11 @@ const FeaturedProperties = () => {
         setProperties(fetchedProperties);
       } catch (err) {
         console.error("Error fetching featured properties:", err);
-        alert("Failed to load featured properties. Try again later.");
+        setNotification({
+          message: "Failed to load featured properties. Try again later.",
+          type: "error",
+          visible: true,
+        });
       } finally {
         setLoading(false);
       }
@@ -33,29 +38,32 @@ const FeaturedProperties = () => {
 
   if (loading)
     return (
-      <div className="py-16 flex justify-center text-gray-500 text-lg">
+      <div className="py-16 flex justify-center items-center text-gray-500 text-lg">
         Loading featured properties...
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-6">
+    <div className="min-h-screen bg-gray-50 py-12 px-6 relative">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-          Featured Properties Discover our handpicked selection of premium
-        </h1>{" "}
-        properties in Rohtak, each offering exceptional value and modern
-        amenities.{" "}
+        <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+          Featured Properties
+        </h1>
+        <p className="text-center text-gray-600 mb-12">
+          Discover our handpicked selection of premium properties in Rohtak,
+          each offering exceptional value and modern amenities.
+        </p>
+
         {properties.length === 0 ? (
-          <p className="text-center text-gray-500 text-lg">
-            No featured properties found.
-          </p>
+          <div className="text-center py-20 text-gray-500 text-lg">
+            No featured properties available at the moment.
+          </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {properties.map((property) => (
               <div
                 key={property.docId}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition border border-gray-100 overflow-hidden">
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition border border-gray-100 overflow-hidden">
                 <PropertyCard property={property} />
               </div>
             ))}
