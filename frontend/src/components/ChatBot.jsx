@@ -35,7 +35,7 @@ const ChatBot = () => {
     e.preventDefault();
     if (!userMessage.trim()) return;
 
-    const whatsappNumber = "919876543210"; // your WhatsApp number
+    const whatsappNumber = "919350447531"; // your WhatsApp number
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       userMessage
     )}`;
