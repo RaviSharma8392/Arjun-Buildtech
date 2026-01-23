@@ -44,11 +44,14 @@ const Footer = () => {
                 />
               </Link>
             </div>
-            <p className="text-gray-600 leading-relaxed">
+            {/* <p className="text-gray-600 leading-relaxed">
               If you are looking for a property consultant to help you get your
               dream plot or investment, you are at the right place. We provide
               excellent quality and planning tailored to your needs.
-            </p>
+            </p> */}
+<p className="text-gray-600 leading-relaxed">
+  If you are looking for a property consultant in Rohtak, Haryana to help you find your dream plot or investment, you are at the right place. We provide excellent quality services and planning tailored to your needs.
+</p>
 
             {/* Social Media Links */}
             <div className="flex gap-3 mt-6">
