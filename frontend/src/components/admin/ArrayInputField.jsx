@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ArrayInputField = ({
   label,
@@ -11,13 +11,20 @@ const ArrayInputField = ({
   className = "",
   helperText = "Separate multiple items with commas",
 }) => {
+  const [inputValue, setInputValue] = useState(value.join(", "));
+
   const handleChange = (e) => {
-    const { value } = e.target;
-    const arr = value
+    setInputValue(e.target.value); // update local state
+  };
+
+  const handleBlur = () => {
+    // Update parent only on blur
+    const arr = inputValue
       .split(",")
       .map((v) => v.trim())
-      .filter((v) => v !== "");
+      .filter(Boolean);
     onChange(name, arr);
+    setInputValue(arr.join(", ")); // clean formatting
   };
 
   return (
@@ -26,8 +33,9 @@ const ArrayInputField = ({
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <textarea
-        value={value.join(", ")}
+        value={inputValue}
         onChange={handleChange}
+        onBlur={handleBlur}
         placeholder={placeholder}
         rows="3"
         className={`p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
