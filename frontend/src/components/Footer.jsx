@@ -30,13 +30,12 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="mb-10 bg-white text-gray-800  py-12">
+    <footer className="mb-10 bg-white text-gray-800 py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Company Info & Logo */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              {/* Logo */}
               <Link to="/" className="flex items-center space-x-2">
                 <img
                   src="/arjunBuildTechLogo.png"
@@ -58,7 +57,8 @@ const Footer = () => {
                   key={index}
                   href={social.href}
                   className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 transition-all duration-300 hover:bg-gray-200 hover:scale-110"
-                  title={social.name}>
+                  title={social.name}
+                >
                   <img
                     src={social.icon}
                     alt={social.name}
@@ -79,7 +79,8 @@ const Footer = () => {
                 <li key={idx}>
                   <Link
                     to={link.path}
-                    className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors group">
+                    className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors group"
+                  >
                     <span className="w-1.5 h-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {link.name}
                   </Link>
@@ -115,13 +116,11 @@ const Footer = () => {
               {/* Office Locations */}
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8  rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                     <FaMapMarkerAlt className="w-3 h-3 text-red-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">
-                      Office Locations
-                    </p>
+                    <p className="font-medium text-gray-900">Office Locations</p>
                     <div className="text-gray-600 space-y-1 mt-1">
                       <p className="text-sm">G74P, Sector-27, Rohtak</p>
                     </div>
@@ -147,7 +146,7 @@ const Footer = () => {
               </div>
 
               {/* Call to Action */}
-              <div className="mt-4 p-3  rounded-lg ">
+              <div className="mt-4 p-3 rounded-lg">
                 <p className="text-sm text-red-800 font-medium text-center">
                   Ready to find your dream property?
                 </p>
@@ -159,12 +158,16 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Made & Managed By Ravi Sharma */}
+        <div className="mt-4 text-center text-gray-400 text-xs">
+          Made & Managed by <span className="font-medium text-gray-700">Ravi Sharma</span>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="border-t border-gray-300 mt-8 pt-6">
+        <div className="border-t border-gray-300 mt-4 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} Arjun Buildtech. All rights
-              reserved.
+              &copy; {new Date().getFullYear()} Arjun Buildtech. All rights reserved.
             </div>
 
             <div className="flex gap-6 text-sm text-gray-500">
