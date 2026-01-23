@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ArrayInputField = ({
   label,
@@ -13,18 +13,23 @@ const ArrayInputField = ({
 }) => {
   const [inputValue, setInputValue] = useState(value.join(", "));
 
+  // Keep local input in sync if parent value changes
+  useEffect(() => {
+    setInputValue(value.join(", "));
+  }, [value]);
+
   const handleChange = (e) => {
-    setInputValue(e.target.value); // update local state
+    setInputValue(e.target.value); // update local state only
   };
 
   const handleBlur = () => {
-    // Update parent only on blur
+    // Clean and send to parent on blur
     const arr = inputValue
       .split(",")
       .map((v) => v.trim())
-      .filter(Boolean);
+      .filter(Boolean); // remove empty strings
     onChange(name, arr);
-    setInputValue(arr.join(", ")); // clean formatting
+    setInputValue(arr.join(", ")); // format nicely
   };
 
   return (
@@ -35,7 +40,7 @@ const ArrayInputField = ({
       <textarea
         value={inputValue}
         onChange={handleChange}
-        onBlur={handleBlur}
+        onBlur={handleBlur} // update parent only on blur
         placeholder={placeholder}
         rows="3"
         className={`p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
