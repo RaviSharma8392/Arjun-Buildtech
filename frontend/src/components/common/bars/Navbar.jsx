@@ -30,7 +30,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         isScrolled ? "bg-white shadow-lg" : "bg-white "
       }`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -131,7 +131,7 @@ export default function Navbar() {
             </button>
 
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              // onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-800 transition">
               {isMenuOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
             </button>
@@ -188,7 +188,7 @@ export default function Navbar() {
 
       {/* Mobile Help Dropdown */}
       {isHelpOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50">
+        <div className="lg:hidden fixed inset-0 z-40 bg-opacity-50">
           <div className="absolute top-20 right-4 w-72 bg-white border border-gray-300 shadow-xl rounded-lg p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-gray-900 text-lg">

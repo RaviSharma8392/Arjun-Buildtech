@@ -12,6 +12,7 @@ import AdminPropertyManage from "./pages/admin/AdminPropertyManage";
 import AddEditPropertyPage from "./pages/admin/EditPropertyPage";
 import AdminReviewsList from "./pages/admin/AdminReviewsList";
 import AdminReviewForm from "./pages/admin/AdminReviewForm";
+import AdminRegister from "./pages/admin/Register";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("./pages/user/Home"));
@@ -26,15 +27,18 @@ const ContactUs = lazy(() => import("./pages/user/ContactUs"));
 
 // Admin Lazy Pages
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin")); // login/signup page
 
 // -------- Admin Route Guard --------
 const RequireAdmin = ({ children }) => {
-  // const isAdmin = localStorage.getItem("admin") === "true"; // check admin flag
-  const isAdmin = "true"; // check admin flag
+  const adminData = JSON.parse(localStorage.getItem("admin")); // get stored login info
 
-  if (!isAdmin) {
-    return <Navigate to="/" replace />; // redirect non-admin users
+  console.log(adminData);
+  // If not logged in or role is not admin, redirect to login
+  if (!adminData || !adminData.uid || adminData.role !== "admin") {
+    return <Navigate to="/admin/login" replace />;
   }
+
   return children;
 };
 
@@ -65,98 +69,23 @@ const App = () => {
         <Routes>
           {/* ---------- User Routes ---------- */}
           <Route path="/" element={<UserLayout />}>
-            <Route
-              index
-              element={
-                <>
-                  <Helmet>
-                    <title>Home | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Explore premium residential and commercial properties with Arjun BuildTech. Buy, sell, or rent your dream property with trusted experts."
-                    />
-                    <meta
-                      name="keywords"
-                      content="real estate, properties, homes, plots, villas, apartments, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <Home />
-                </>
-              }
-            />
-
+            <Route index element={<Home />} />
             <Route path="properties" element={<PropertiesPage />} />
             <Route path="properties/:location" element={<PropertiesPage />} />
-
             <Route
               path="property/:location/:name/:id"
               element={<PropertyDetails />}
             />
-
             <Route path="testimonials" element={<ClientReviews />} />
-
-            <Route
-              path="contact"
-              element={
-                <>
-                  <Helmet>
-                    <title>Contact Us | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Contact Arjun BuildTech for queries, property inquiries, or assistance. Reach out to our real estate experts today."
-                    />
-                    <meta
-                      name="keywords"
-                      content="contact, inquiries, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <ContactUs />
-                </>
-              }
-            />
-
-            <Route
-              path="profile"
-              element={
-                <>
-                  <Helmet>
-                    <title>Company Profile | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Arjun BuildTech – the best property seller in Rohtak, Haryana. Explore our services, and trusted real estate expertise."
-                    />
-                    <meta
-                      name="keywords"
-                      content="Huda, HSVP Rohtak, Suncity Rohtak, Plots for Sale, Property for Sale, Property Consultant, Property Dealer, Real estate Agent, Property Sale Purchase, House for Sale, Floors for Sale"
-                    />
-                  </Helmet>
-                  <Profile />
-                </>
-              }
-            />
-
-            <Route
-              path="services"
-              element={
-                <>
-                  <Helmet>
-                    <title>Real Estate Services | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Explore the comprehensive real estate services offered by Arjun BuildTech. Buying, selling, renting, and property management."
-                    />
-                    <meta
-                      name="keywords"
-                      content="real estate services, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <RealEstateServices />
-                </>
-              }
-            />
+            <Route path="contact" element={<ContactUs />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="services" element={<RealEstateServices />} />
           </Route>
-
-          {/* ---------- Admin Routes ---------- */}
+          {/* ---------- Admin Auth Routes ---------- */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/register" element={<AdminRegister />} />
+          {/* same component handles signup */}
+          {/* ---------- Admin Protected Routes ---------- */}
           <Route
             path="/admin"
             element={
@@ -165,7 +94,6 @@ const App = () => {
               </RequireAdmin>
             }>
             <Route index element={<AdminPropertyManage />} />
-
             <Route
               path="edit-property/:collectionName/new"
               element={<AddEditPropertyPage />}
@@ -174,17 +102,14 @@ const App = () => {
               path="edit-property/:collectionName/:docId"
               element={<AddEditPropertyPage />}
             />
-
             <Route path="properties" element={<AdminPropertyManage />} />
             <Route
               path="featuredproperties"
               element={<AdminPropertyManage />}
             />
-
             <Route path="inquiries" element={<AdminInquiries />} />
             <Route path="reviews" element={<AdminReviewsList />} />
           </Route>
-
           {/* Admin Review Forms */}
           <Route
             path="/admin/reviews/new"
@@ -202,7 +127,6 @@ const App = () => {
               </RequireAdmin>
             }
           />
-
           {/* ---------- 404 Fallback ---------- */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
