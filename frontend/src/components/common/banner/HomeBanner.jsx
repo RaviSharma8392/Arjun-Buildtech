@@ -25,7 +25,7 @@ const HomeBanner = () => {
       link: "/contact",
     },
     {
-      title: "Visit Our Offices – Rohtak & Gurugram",
+      title: "Visit Our Offices – Rohtak",
       buttonText: "Get Directions",
       bgColor: "bg-indigo-600",
       link: "/contact",

@@ -5,7 +5,7 @@ import { db } from "../../services/firebase";
 import PropertyCard from "../common/card/PropertyCard";
 
 export default function RelatedProperties() {
-  const { location } = useParams(); // e.g. "gurgaon"
+  const { location } = useParams(); //
   const [relatedProperties, setRelatedProperties] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +21,7 @@ export default function RelatedProperties() {
       try {
         const q = query(
           collection(db, "properties"),
-          where("location", "==", formattedLocation)
+          where("location", "==", formattedLocation),
         );
 
         const snapshot = await getDocs(q);

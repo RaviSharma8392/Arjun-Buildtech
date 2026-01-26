@@ -6,7 +6,7 @@ const PlotDetails = ({ property }) => {
     <>
       {property.images && <ImageGallery images={property.images} />}
 
-      <div className="md:bg-white md:rounded-2xl md:shadow-sm p-6">
+      <div className="md:bg-white md:rounded-2xl md:shadow-sm md:p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Plot Description
         </h2>

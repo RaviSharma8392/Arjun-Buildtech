@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
-import PropertyCard from "../components/common/card/PropertyCard";
 import CommonBanner from "../components/common/banner/CommonBanner";
 import Button from "../components/common/button/Button";
+import UserPropertyCard from "../components/common/card/UserPropertyCard";
+import PropertyCard from "../components/common/card/PropertyCard";
 
 const PropertiesPage = () => {
   const [properties, setProperties] = useState([]);
@@ -12,7 +13,24 @@ const PropertiesPage = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [selectedSector, setSelectedSector] = useState("All");
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { city } = useParams(); // Get city from URL if exists
+
+  const typeText = selectedType !== "All" ? selectedType : "Properties";
+
+  const locationText = `in ${selectedLocation === "All" ? "Rohtak" : selectedLocation}`;
+
+  const saleText = "for Sale";
 
   // Fetch properties from Firestore
   useEffect(() => {
@@ -37,13 +55,13 @@ const PropertiesPage = () => {
       const formattedCity = city
         .split("-")
         .map(
-          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
         )
         .join(" ");
 
       const matchedLocation = properties.find(
         (property) =>
-          property.location.toLowerCase() === formattedCity.toLowerCase()
+          property.location.toLowerCase() === formattedCity.toLowerCase(),
       );
 
       if (matchedLocation) setSelectedLocation(matchedLocation.location);
@@ -83,10 +101,10 @@ const PropertiesPage = () => {
   });
 
   const BannerLocation =
-    selectedLocation === "All" ? "Haryana" : selectedLocation;
+    selectedLocation === "All" ? "Rohtak" : selectedLocation;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen md:px-20  mt-5 md:mt-20 bg-gray-50">
       <CommonBanner
         image="https://content.r9cdn.net/rimg/dimg/1b/18/f2f80dcf-city-35183-1754ec6ebf4.jpg?width=2160&height=1215&xhint=1287&yhint=1101&crop=true"
         title={`Find Your Dream Property in ${BannerLocation}`}
@@ -94,10 +112,10 @@ const PropertiesPage = () => {
       />
 
       {/* Filters Section */}
-      <section className="bg-white border-b">
+      <section className="bg-white  ">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex  sm:flex-row gap-4 w-full sm:w-auto">
               {/* Location Filter */}
               <div className="w-full sm:w-64">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -168,15 +186,20 @@ const PropertiesPage = () => {
             </div>
 
             <div className="text-sm text-gray-600">
-              Showing {filteredProperties.length} of {properties.length}{" "}
-              properties
+              Showing{" "}
+              <span className="font-semibold">{filteredProperties.length}</span>{" "}
+              <span className="font-semibold">{typeText}</span>{" "}
+              <span className="font-semibold">{saleText}</span>{" "}
+              {locationText && (
+                <span className="font-semibold">{locationText}</span>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* Property Cards */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto py-2 md:py-8">
         {filteredProperties.length === 0 ? (
           <div className="text-center py-12">
             <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -186,8 +209,25 @@ const PropertiesPage = () => {
               Try adjusting your filters to see more results.
             </p>
           </div>
+        ) : isMobile ? (
+          /* 📱 Mobile Layout */
+          <div className="grid grid-cols-1 gap-2">
+            {filteredProperties.map((property) => (
+              <Link
+                key={property.id}
+                to={`/property/${property.location
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}/${property.name
+                  ?.toLowerCase()
+                  .replace(/\s+/g, "-")}/${property.id}`}
+                className="block">
+                <UserPropertyCard property={property} />
+              </Link>
+            ))}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          /* 💻 Desktop Layout */
+          <div className="grid grid-cols-4 gap-3">
             {filteredProperties.map((property) => (
               <Link
                 key={property.id}
@@ -205,7 +245,7 @@ const PropertiesPage = () => {
       </main>
 
       {/* Contact Section */}
-      <section className="bg-white border-t">
+      <section className="bg-white ">
         <div className="container mx-auto px-4 py-12 text-center">
           <h2 className="text-2xl font-[Poppins] text-gray-900 mb-4">
             Looking for more properties in {BannerLocation}?

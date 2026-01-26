@@ -3,16 +3,17 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../services/firebase";
 import { doc, getDoc, setDoc, collection } from "firebase/firestore";
 import DynamicPropertyForm from "../../components/admin/DynamicPropertyForm";
+import Notification from "../../components/common/notification/Notification"; // optional, if you have
 
 const AddEditPropertyPage = () => {
-  const { docId } = useParams(); // Firestore doc ID if editing
+  const { docId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
   const [initialData, setInitialData] = useState(null);
   const [loading, setLoading] = useState(!!docId);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Determine collection based on URL
   const isFeatured = location.pathname.includes("featuredproperties");
   const collectionName = isFeatured ? "featuredproperties" : "properties";
 
@@ -25,12 +26,13 @@ const AddEditPropertyPage = () => {
           if (docSnap.exists()) {
             setInitialData({ id: docSnap.id, ...docSnap.data() });
           } else {
-            alert("Property not found!");
-            navigate("/admin");
+            setErrorMessage("Property not found.");
           }
         } catch (err) {
           console.error("Error fetching property:", err);
-          alert("Failed to fetch property data.");
+          setErrorMessage(
+            "Failed to load property data. Please try again later.",
+          );
         } finally {
           setLoading(false);
         }
@@ -39,16 +41,15 @@ const AddEditPropertyPage = () => {
     } else {
       setLoading(false);
     }
-  }, [docId, collectionName, navigate]);
+  }, [docId, collectionName]);
 
   const handleSubmit = async (data) => {
+    setErrorMessage(""); // clear previous errors
     try {
       if (docId) {
-        // Update existing property
         await setDoc(doc(db, collectionName, docId), data, { merge: true });
         alert("Property updated successfully!");
       } else {
-        // Add new property
         const newDocRef = doc(collection(db, collectionName));
         await setDoc(newDocRef, data);
         alert("Property added successfully!");
@@ -56,7 +57,14 @@ const AddEditPropertyPage = () => {
       navigate("/admin");
     } catch (err) {
       console.error("Error saving property:", err);
-      alert("Failed to save property. Try again.");
+      // Simplify Firebase error for user
+      let message = "Failed to save property. Please try again.";
+      if (err.code === "permission-denied") {
+        message = "You don't have permission to perform this action.";
+      } else if (err.code === "unavailable") {
+        message = "Service is temporarily unavailable. Try again later.";
+      }
+      setErrorMessage(message);
     }
   };
 
@@ -69,7 +77,17 @@ const AddEditPropertyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 md:p-6">
+      {/* Show error notification if any */}
+      {errorMessage && (
+        <Notification
+          message={errorMessage}
+          type="error"
+          duration={5000}
+          onClose={() => setErrorMessage("")}
+        />
+      )}
+
       <DynamicPropertyForm initialData={initialData} onSubmit={handleSubmit} />
     </div>
   );

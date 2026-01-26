@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Projects", path: "/projects" },
     { name: "Services", path: "/services" },
     { name: "Property", path: "/property" },
     { name: "Testimonials", path: "/testimonials" },
@@ -49,9 +48,12 @@ const Footer = () => {
               dream plot or investment, you are at the right place. We provide
               excellent quality and planning tailored to your needs.
             </p> */}
-<p className="text-gray-600 leading-relaxed">
-  If you are looking for a property consultant in Rohtak, Haryana to help you find your dream plot or investment, you are at the right place. We provide excellent quality services and planning tailored to your needs.
-</p>
+            <p className="text-gray-600 leading-relaxed">
+              If you are looking for a property consultant in Rohtak, Haryana to
+              help you find your dream plot or investment, you are at the right
+              place. We provide excellent quality services and planning tailored
+              to your needs.
+            </p>
 
             {/* Social Media Links */}
             <div className="flex gap-3 mt-6">
@@ -60,8 +62,7 @@ const Footer = () => {
                   key={index}
                   href={social.href}
                   className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 transition-all duration-300 hover:bg-gray-200 hover:scale-110"
-                  title={social.name}
-                >
+                  title={social.name}>
                   <img
                     src={social.icon}
                     alt={social.name}
@@ -82,8 +83,7 @@ const Footer = () => {
                 <li key={idx}>
                   <Link
                     to={link.path}
-                    className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors group"
-                  >
+                    className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors group">
                     <span className="w-1.5 h-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     {link.name}
                   </Link>
@@ -123,7 +123,9 @@ const Footer = () => {
                     <FaMapMarkerAlt className="w-3 h-3 text-red-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Office Locations</p>
+                    <p className="font-medium text-gray-900">
+                      Office Locations
+                    </p>
                     <div className="text-gray-600 space-y-1 mt-1">
                       <p className="text-sm">G74P, Sector-27, Rohtak</p>
                     </div>
@@ -163,14 +165,16 @@ const Footer = () => {
 
         {/* Made & Managed By Ravi Sharma */}
         <div className="mt-4 text-center text-gray-400 text-xs">
-          Made & Managed by <span className="font-medium text-gray-700">Ravi Sharma</span>
+          Made & Managed by{" "}
+          <span className="font-medium text-gray-700">Ravi Sharma</span>
         </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-300 mt-4 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} Arjun Buildtech. All rights reserved.
+              &copy; {new Date().getFullYear()} Arjun Buildtech. All rights
+              reserved.
             </div>
 
             <div className="flex gap-6 text-sm text-gray-500">

@@ -5,7 +5,43 @@ import ArrayInputField from "./ArrayInputField";
 import ImageUploader from "./ImageUploader";
 import Notification from "../../components/common/notification/Notification";
 
-// Generate initial form state
+// Centralized Form Error Notification Component
+const FormErrorNotification = ({
+  messages = [],
+  visible,
+  onClose,
+  duration = 4000,
+}) => {
+  useEffect(() => {
+    if (visible && messages.length) {
+      const timer = setTimeout(() => onClose(), duration);
+      return () => clearTimeout(timer);
+    }
+  }, [visible, messages, duration, onClose]);
+
+  if (!visible || messages.length === 0) return null;
+
+  return (
+    <div className="fixed top-0 left-0 w-full bg-red-600 text-white shadow-md p-4 z-50">
+      <div className="max-w-3xl mx-auto flex justify-between items-start">
+        <ul className="list-disc pl-5">
+          {messages.map((msg, i) => (
+            <li key={i} className="text-sm">
+              {msg}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={onClose}
+          className="ml-4 font-bold text-lg hover:text-gray-200">
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Initial form state generator
 const getInitialFormData = (propertyType = "house", initialData = null) => ({
   id: initialData?.id || Date.now(),
   name: initialData?.name || "",
@@ -77,23 +113,43 @@ const formReducer = (state, action) => {
 
 const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   const [propertyType, setPropertyType] = useState(
-    initialData?.type || "house"
+    initialData?.type || "house",
   );
   const [formData, dispatch] = useReducer(
     formReducer,
-    getInitialFormData(propertyType, initialData)
+    getInitialFormData(propertyType, initialData),
   );
-
-  // Notification state
   const [notification, setNotification] = useState({
     message: "",
     type: "success",
     visible: false,
   });
 
-  // Sync initial data on mount or type change
+  // Centralized form errors
+  const [formErrors, setFormErrors] = useState([]);
+  const [errorVisible, setErrorVisible] = useState(false);
+
+  // Mobile stepper state
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    "Property Type",
+    "Basic Info",
+    propertyType === "house" ? "House Details" : "Plot Details",
+    "Description",
+    "Features & Amenities",
+    "Images",
+  ];
+
+  // Sync initial data and handle resize
   useEffect(() => {
     dispatch({ type: "RESET_FORM", propertyType, initialData });
+
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [initialData, propertyType]);
 
   // Handlers
@@ -112,15 +168,19 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
 
   const handleImageUploadState = (uploading, error = "") => {
     dispatch({ type: "SET_IMAGE_UPLOAD_STATE", uploading, error });
-    if (error) {
+    if (error)
       setNotification({ message: error, type: "error", visible: true });
-    }
   };
 
   const handlePropertyTypeChange = (type) => {
     setPropertyType(type);
     dispatch({ type: "RESET_FORM", propertyType: type, initialData });
   };
+
+  // Stepper navigation
+  const nextStep = () =>
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 0, 0));
 
   // Validation
   const validateForm = () => {
@@ -142,15 +202,13 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     return Object.keys(errors).length === 0;
   };
 
-  // Submit handler
+  // Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      setNotification({
-        message: "Please fix the errors in the form",
-        type: "error",
-        visible: true,
-      });
+      const messages = Object.values(formData.errors).filter(Boolean);
+      setFormErrors(messages);
+      setErrorVisible(true);
       return;
     }
 
@@ -189,6 +247,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
         type: "success",
         visible: true,
       });
+      setErrorVisible(false); // hide form errors on success
     } catch (error) {
       setNotification({
         message: "Failed to save property. Please try again.",
@@ -198,89 +257,71 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     }
   };
 
-  return (
-    <div className="p-6 bg-white rounded-lg shadow-lg relative">
-      {/* Notification */}
-      {notification.visible && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          duration={3000}
-          onClose={() => setNotification({ ...notification, visible: false })}
-        />
-      )}
-
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">
-          {initialData ? "Edit Property" : "Add New Property"}
-        </h2>
-        <p className="text-gray-600">
-          Fill in the details below to {initialData ? "update" : "list"} your
-          property
-        </p>
-      </div>
-
-      {/* Property Type Selection */}
-      <FormSection title="Property Type">
-        <div className="flex space-x-4">
-          {["house", "plot"].map((type) => (
-            <label key={type} className="flex items-center">
-              <input
-                type="radio"
-                name="propertyType"
-                value={type}
-                checked={propertyType === type}
-                onChange={(e) => handlePropertyTypeChange(e.target.value)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-              />
-              <span className="ml-2 text-sm text-gray-700 capitalize">
-                {type === "house" ? "House/Villa" : "Plot/Land"}
-              </span>
-            </label>
-          ))}
-        </div>
-      </FormSection>
-
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Basic Info */}
-        <FormSection title="Basic Information">
-          <InputField
-            label="Property Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            error={formData.errors.name}
-          />
-          <InputField
-            label="Short Title"
-            name="shortTitle"
-            value={formData.shortTitle}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Reference"
-            name="reference"
-            value={formData.reference}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            error={formData.errors.location}
-          />
-          <InputField
-            label="Price"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            error={formData.errors.price}
-          />
-        </FormSection>
-
-        {/* Conditional Property Details */}
-        {propertyType === "house" && (
+  // Render step content (same as before)
+  const renderStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <FormSection title="Property Type">
+            <div className="flex space-x-4">
+              {["house", "plot"].map((type) => (
+                <label key={type} className="flex items-center">
+                  <input
+                    type="radio"
+                    name="propertyType"
+                    value={type}
+                    checked={propertyType === type}
+                    onChange={(e) => handlePropertyTypeChange(e.target.value)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  />
+                  <span className="ml-2 text-sm text-gray-700 capitalize">
+                    {type === "house" ? "House/Villa" : "Plot/Land"}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </FormSection>
+        );
+      case 1:
+        return (
+          <FormSection title="Basic Information">
+            <InputField
+              label="Property Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              error={formData.errors.name}
+            />
+            <InputField
+              label="Short Title"
+              name="shortTitle"
+              value={formData.shortTitle}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Reference"
+              name="reference"
+              value={formData.reference}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              error={formData.errors.location}
+            />
+            <InputField
+              label="Price"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              error={formData.errors.price}
+            />
+          </FormSection>
+        );
+      case 2:
+        return propertyType === "house" ? (
           <FormSection title="House Details">
             <InputField
               label="Bedrooms"
@@ -328,9 +369,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               onChange={handleChange}
             />
           </FormSection>
-        )}
-
-        {propertyType === "plot" && (
+        ) : (
           <FormSection title="Plot Details">
             <InputField
               label="Land Area"
@@ -346,57 +385,146 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               onChange={handleChange}
             />
           </FormSection>
-        )}
+        );
+      case 3:
+        return (
+          <FormSection title="Description">
+            <InputField
+              label="Description"
+              name="description"
+              type="textarea"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </FormSection>
+        );
+      case 4:
+        return (
+          <FormSection title="Features & Amenities">
+            <ArrayInputField
+              label="Features"
+              name="features"
+              value={formData.features}
+              onChange={handleArrayChange}
+              helperText="Separate features with commas"
+            />
+            <ArrayInputField
+              label="Amenities"
+              name="amenities"
+              value={formData.amenities}
+              onChange={handleArrayChange}
+              helperText="Separate amenities with commas"
+            />
+          </FormSection>
+        );
+      case 5:
+        return (
+          <FormSection title="Property Images">
+            <ImageUploader
+              images={formData.images}
+              onImagesChange={handleImageChange}
+              onUploadStateChange={handleImageUploadState}
+              uploading={formData.uploading}
+              error={formData.imageError || formData.errors.images}
+            />
+          </FormSection>
+        );
+      default:
+        return null;
+    }
+  };
 
-        {/* Description */}
-        <FormSection title="Description">
-          <InputField
-            label="Description"
-            name="description"
-            type="textarea"
-            value={formData.description}
-            onChange={handleChange}
-          />
-        </FormSection>
+  return (
+    <div className="md:p-6 bg-white rounded-lg shadow-lg relative">
+      {/* Centralized Form Errors */}
+      <FormErrorNotification
+        messages={formErrors}
+        visible={errorVisible}
+        onClose={() => setErrorVisible(false)}
+      />
 
-        {/* Features & Amenities */}
-        <FormSection title="Features & Amenities">
-          <ArrayInputField
-            label="Features"
-            name="features"
-            value={formData.features}
-            onChange={handleArrayChange}
-            helperText="Separate features with commas"
-          />
-          <ArrayInputField
-            label="Amenities"
-            name="amenities"
-            value={formData.amenities}
-            onChange={handleArrayChange}
-            helperText="Separate amenities with commas"
-          />
-        </FormSection>
+      {/* Success/Error Notifications */}
+      {notification.visible && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          duration={3000}
+          onClose={() => setNotification({ ...notification, visible: false })}
+        />
+      )}
 
-        {/* Images */}
-        <FormSection title="Property Images">
-          <ImageUploader
-            images={formData.images}
-            onImagesChange={handleImageChange}
-            onUploadStateChange={handleImageUploadState}
-            uploading={formData.uploading}
-            error={formData.imageError || formData.errors.images}
-          />
-        </FormSection>
+      {/* Form */}
+      {isMobile ? (
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 p-4 bg-white rounded-lg shadow-lg">
+          {/* Stepper Progress */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-1 text-sm font-medium text-gray-700">
+              <span>
+                Step {currentStep + 1} of {steps.length}
+              </span>
+              <span>{steps[currentStep]}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: `${((currentStep + 1) / steps.length) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
 
-        <div className="text-center">
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition"
-            disabled={formData.uploading}>
-            {initialData ? "Update Property" : "Save Property Listing"}
-          </button>
-        </div>
-      </form>
+          {/* Step Content */}
+          <div className="p-2 mb-10">{renderStepContent(currentStep)}</div>
+
+          {/* Navigation */}
+          <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-2 flex justify-between items-center shadow-lg z-50">
+            {currentStep > 0 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                className="flex-1 bg-gray-300 text-gray-800 font-semibold py-1 px-1 rounded-lg mr-2 hover:bg-gray-400 transition">
+                Back
+              </button>
+            )}
+
+            {currentStep < steps.length - 1 ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className={`flex-1 ${currentStep > 0 ? "ml-2" : ""} bg-blue-600 text-white font-semibold py-1 px-1 rounded-lg hover:bg-blue-700 transition`}>
+                Next
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={formData.uploading}
+                className="flex-1 ml-2 bg-green-600 text-white font-semibold py-1 px-1 rounded-lg hover:bg-green-700 transition">
+                {initialData ? "Update Property" : "Save Property Listing"}
+              </button>
+            )}
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {renderStepContent(0)}
+          {renderStepContent(1)}
+          {renderStepContent(2)}
+          {renderStepContent(3)}
+          {renderStepContent(4)}
+          {renderStepContent(5)}
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition"
+              disabled={formData.uploading}>
+              {initialData ? "Update Property" : "Save Property Listing"}
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

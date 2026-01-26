@@ -3,34 +3,77 @@ import ImageGallery from "../gallery/ImageGallery";
 import SendEnquiry from "../form/SendEnquiry";
 import MobileContactBar from "../bars/InquiryBar";
 
+/* ---------- Helpers ---------- */
+const parseCommaList = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+};
+
+const formatPrice = (price) => {
+  if (!price) return "-";
+  return `₹${Number(price).toLocaleString("en-IN")}`;
+};
+
+/* ---------- Reusable Section ---------- */
+const BulletSection = ({ title, items, emptyText }) => (
+  <div className="bg-white rounded-lg shadow-md p-6">
+    <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
+    <ul className="list-disc list-inside space-y-2">
+      {items.length > 0 ? (
+        items.map((item, idx) => (
+          <li key={idx} className="text-gray-800 font-medium">
+            {item}
+          </li>
+        ))
+      ) : (
+        <li className="text-gray-600 italic">{emptyText}</li>
+      )}
+    </ul>
+  </div>
+);
+
+/* ---------- Detail Row ---------- */
+const Detail = ({ label, value }) => (
+  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+    <span className="text-gray-600 text-sm">{label}</span>
+    <span className="font-semibold text-gray-900">{value || "-"}</span>
+  </div>
+);
+
+/* ---------- Main Component ---------- */
 const HouseDetails = ({ property }) => {
+  const features = parseCommaList(property.features);
+  const amenities = parseCommaList(property.amenities);
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-full mx-auto px-4">
+      <div className="max-w-full mx-auto md:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Inquiry Form (Visible on desktop) */}
-          <div className="lg:col-span-1 hidden lg:block">
-            <div className="sticky top-8">
-              <SendEnquiry property={property} />
-            </div>
+          {/* Desktop Enquiry */}
+          <div className="hidden lg:block lg:col-span-1">
+            <SendEnquiry property={property} />
           </div>
 
-          {/* Right Column - Property Content */}
+          {/* Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Image Gallery */}
-            {property.images && property.images.length > 0 ? (
+            {/* Images */}
+            {property.images?.length > 0 ? (
               <ImageGallery images={property.images} />
             ) : (
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 <img
                   src="https://via.placeholder.com/1200x400"
-                  alt={property.name || "Property"}
+                  alt="Property"
                   className="w-full h-72 object-cover"
                 />
               </div>
             )}
 
-            {/* Property Overview */}
+            {/* Overview */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold mb-3">
                 <span className="text-red-600">Property</span>{" "}
@@ -38,13 +81,13 @@ const HouseDetails = ({ property }) => {
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <Detail label="Bedrooms" value={property.bedrooms} />
                   <Detail label="Bathrooms" value={property.bathrooms} />
-                  <Detail label="Price" value={`₹${property.price || "-"}`} />
+                  <Detail label="Price" value={formatPrice(property.price)} />
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <Detail label="Location" value={property.location} />
                   <Detail
                     label="Status"
@@ -54,65 +97,39 @@ const HouseDetails = ({ property }) => {
               </div>
             </div>
 
-            {/* Description Section */}
+            {/* Description */}
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold mb-3">
                 <span className="text-red-600">Property</span>{" "}
                 <span className="text-gray-900">Description</span>
               </h2>
-              <div className="space-y-3">
-                {property.description ? (
-                  property.description.split("\n").map((line, idx) => (
-                    <p key={idx} className="text-gray-800 leading-relaxed">
-                      {line.trim()}
-                    </p>
-                  ))
-                ) : (
-                  <p className="text-gray-600 italic">
-                    No description available.
+
+              {property.description ? (
+                property.description.split("\n").map((line, idx) => (
+                  <p key={idx} className="text-gray-800 leading-relaxed mb-2">
+                    {line.trim()}
                   </p>
-                )}
-              </div>
+                ))
+              ) : (
+                <p className="text-gray-600 italic">
+                  No description available.
+                </p>
+              )}
             </div>
 
-            {/* Features Section */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
-                Key Features
-              </h2>
-              <ul className="list-disc list-inside space-y-2">
-                {property.features && property.features.length > 0 ? (
-                  property.features.map((feature, idx) => (
-                    <li key={idx} className="text-gray-800 font-medium">
-                      {feature}
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-gray-800 font-medium">
-                    No features listed
-                  </li>
-                )}
-              </ul>
-            </div>
+            {/* Features */}
+            <BulletSection
+              title="Key Features"
+              items={features}
+              emptyText="No features listed"
+            />
 
-            {/* Additional Details
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-4">
-                <span className="text-red-600">Additional</span>{" "}
-                <span className="text-gray-900">Details</span>
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Detail label="Property Type" value={property.type} />
-                <Detail label="Furnishing" value={property.furnishing} />
-                <Detail label="Facing" value={property.facing} />
-                <Detail
-                  label="Transaction Type"
-                  value={property.transactionType}
-                />
-                <Detail label="Built Up Area" value={property.builtUpArea} />
-                <Detail label="Age of Construction" value={property.age} />
-              </div>
-            </div> */}
+            {/* Amenities */}
+            <BulletSection
+              title="Amenities"
+              items={amenities}
+              emptyText="No amenities listed"
+            />
           </div>
         </div>
       </div>
@@ -122,13 +139,5 @@ const HouseDetails = ({ property }) => {
     </div>
   );
 };
-
-// Helper component for each detail item
-const Detail = ({ label, value }) => (
-  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-    <span className="text-gray-600 text-sm">{label}</span>
-    <span className="font-semibold text-gray-900">{value || "-"}</span>
-  </div>
-);
 
 export default HouseDetails;
