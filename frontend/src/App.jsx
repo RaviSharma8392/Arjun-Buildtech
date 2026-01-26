@@ -85,84 +85,15 @@ const App = () => {
               }
             />
 
-            <Route
-              path="properties"
-              element={
-                <>
-                  <Helmet>
-                    <title>Properties | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Browse premium residential and commercial properties by Arjun BuildTech. Buy, sell, or rent your ideal home or plot."
-                    />
-                    <meta
-                      name="keywords"
-                      content="properties, houses, villas, apartments, plots, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <PropertiesPage />
-                </>
-              }
-            />
-            <Route
-              path="properties/:location"
-              element={
-                <>
-                  <Helmet>
-                    <title>Properties in Location | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Discover properties in your preferred location with Arjun BuildTech. Browse homes, villas, apartments, and plots."
-                    />
-                    <meta
-                      name="keywords"
-                      content="properties, location properties, real estate, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <PropertiesPage />
-                </>
-              }
-            />
+            <Route path="properties" element={<PropertiesPage />} />
+            <Route path="properties/:location" element={<PropertiesPage />} />
 
             <Route
               path="property/:location/:name/:id"
-              element={
-                <>
-                  <Helmet>
-                    <title>Property Details | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="View detailed information, images, and features of the property by Arjun BuildTech. Get in touch to buy or rent today."
-                    />
-                    <meta
-                      name="keywords"
-                      content="property details, buy property, rent property, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <PropertyDetails />
-                </>
-              }
+              element={<PropertyDetails />}
             />
 
-            <Route
-              path="testimonials"
-              element={
-                <>
-                  <Helmet>
-                    <title>Client Testimonials | Arjun BuildTech</title>
-                    <meta
-                      name="description"
-                      content="Read client reviews and testimonials about Arjun BuildTech. Trusted real estate experts delivering dream properties."
-                    />
-                    <meta
-                      name="keywords"
-                      content="client reviews, testimonials, Arjun BuildTech"
-                    />
-                  </Helmet>
-                  <ClientReviews />
-                </>
-              }
-            />
+            <Route path="testimonials" element={<ClientReviews />} />
 
             <Route
               path="contact"
@@ -189,14 +120,14 @@ const App = () => {
               element={
                 <>
                   <Helmet>
-                    <title>User Profile | Arjun BuildTech</title>
+                    <title>Company Profile | Arjun BuildTech</title>
                     <meta
                       name="description"
-                      content="Manage your Arjun BuildTech account, saved properties, and personal information."
+                      content="Arjun BuildTech – the best property seller in Rohtak, Haryana. Explore our services, and trusted real estate expertise."
                     />
                     <meta
                       name="keywords"
-                      content="profile, account, Arjun BuildTech"
+                      content="Huda, HSVP Rohtak, Suncity Rohtak, Plots for Sale, Property for Sale, Property Consultant, Property Dealer, Real estate Agent, Property Sale Purchase, House for Sale, Floors for Sale"
                     />
                   </Helmet>
                   <Profile />

@@ -20,7 +20,7 @@ const formatPrice = (price) => {
 
 /* ---------- Reusable Section ---------- */
 const BulletSection = ({ title, items, emptyText }) => (
-  <div className="bg-white rounded-lg shadow-md p-6">
+  <div className="bg-white md:rounded-lg md:shadow-md  p-6">
     <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
     <ul className="list-disc list-inside space-y-2">
       {items.length > 0 ? (
@@ -64,7 +64,7 @@ const HouseDetails = ({ property }) => {
             {property.images?.length > 0 ? (
               <ImageGallery images={property.images} />
             ) : (
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="bg-white  md:rounded-lg md:shadow-md  overflow-hidden">
                 <img
                   src="https://via.placeholder.com/1200x400"
                   alt="Property"
@@ -74,7 +74,7 @@ const HouseDetails = ({ property }) => {
             )}
 
             {/* Overview */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white md:rounded-lg md:shadow-md  p-6">
               <h2 className="text-xl font-semibold mb-3">
                 <span className="text-red-600">Property</span>{" "}
                 <span className="text-gray-900">Overview</span>
@@ -98,7 +98,7 @@ const HouseDetails = ({ property }) => {
             </div>
 
             {/* Description */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white md:rounded-lg md:shadow-md  p-6">
               <h2 className="text-xl font-semibold mb-3">
                 <span className="text-red-600">Property</span>{" "}
                 <span className="text-gray-900">Description</span>

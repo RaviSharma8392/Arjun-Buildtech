@@ -1,40 +1,140 @@
 import React from "react";
 import ImageGallery from "../gallery/ImageGallery";
+import SendEnquiry from "../form/SendEnquiry";
+import MobileContactBar from "../bars/InquiryBar";
 
+/* ---------- Helpers ---------- */
+const parseCommaList = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+};
+
+/* ---------- Reusable Section ---------- */
+const BulletSection = ({ title, items, emptyText }) => (
+  <div className="bg-white md:rounded-lg md:shadow-md p-6">
+    <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
+    <ul className="list-disc list-inside space-y-2">
+      {items.length > 0 ? (
+        items.map((item, idx) => (
+          <li key={idx} className="text-gray-800 font-medium">
+            {item}
+          </li>
+        ))
+      ) : (
+        <li className="text-gray-600 italic">{emptyText}</li>
+      )}
+    </ul>
+  </div>
+);
+
+/* ---------- Detail Row ---------- */
+const Detail = ({ label, value }) => (
+  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+    <span className="text-gray-600 text-sm">{label}</span>
+    <span className="font-semibold text-gray-900">{value || "-"}</span>
+  </div>
+);
+
+/* ---------- Main Component ---------- */
 const PlotDetails = ({ property }) => {
+  const features = parseCommaList(property.features || []);
+  const amenities = parseCommaList(property.amenities || []);
+
   return (
-    <>
-      {property.images && <ImageGallery images={property.images} />}
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-full mx-auto md:px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Desktop Enquiry */}
+          <div className="hidden lg:block lg:col-span-1">
+            <SendEnquiry property={property} />
+          </div>
 
-      <div className="md:bg-white md:rounded-2xl md:shadow-sm md:p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Plot Description
-        </h2>
-        <p className="text-gray-700 leading-relaxed">{property.description}</p>
+          {/* Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Images */}
+            {property.images?.length > 0 ? (
+              <ImageGallery images={property.images} />
+            ) : (
+              <div className="bg-white md:rounded-lg md:shadow-md overflow-hidden">
+                <img
+                  src="https://via.placeholder.com/1200x400"
+                  alt="Property"
+                  className="w-full h-72 object-cover"
+                />
+              </div>
+            )}
+
+            {/* Overview */}
+            <div className="bg-white md:rounded-lg md:shadow-md p-6">
+              <h2 className="text-xl font-semibold mb-3">
+                <span className="text-red-600">Plot</span>{" "}
+                <span className="text-gray-900">Overview</span>
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Detail label="Land Area" value={property.landArea} />
+                  <Detail
+                    label="Transaction Type"
+                    value={property.transactionType}
+                  />
+                  <Detail label="Price" value={property.price} />
+                </div>
+
+                <div className="space-y-2">
+                  <Detail label="Location" value={property.location} />
+                  <Detail
+                    label="Status"
+                    value={property.status || "Ready to Sell"}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="bg-white md:rounded-lg md:shadow-md p-6">
+              <h2 className="text-xl font-semibold mb-3">
+                <span className="text-red-600">Plot</span>{" "}
+                <span className="text-gray-900">Description</span>
+              </h2>
+
+              {property.description ? (
+                property.description.split("\n").map((line, idx) => (
+                  <p key={idx} className="text-gray-800 leading-relaxed mb-2">
+                    {line.trim()}
+                  </p>
+                ))
+              ) : (
+                <p className="text-gray-600 italic">
+                  No description available.
+                </p>
+              )}
+            </div>
+
+            {/* Features */}
+            <BulletSection
+              title="Key Features"
+              items={features}
+              emptyText="No features listed"
+            />
+
+            {/* Amenities */}
+            <BulletSection
+              title="Amenities"
+              items={amenities}
+              emptyText="No amenities listed"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="md:bg-white md:rounded-2xl md:shadow-sm p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Plot Details</h2>
-        <p>
-          <strong>Land Area:</strong> {property.landArea}
-        </p>
-        <p>
-          <strong>Transaction Type:</strong> {property.transactionType}
-        </p>
-      </div>
-
-      <div className="md:bg-white md:rounded-2xl md:shadow-sm p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Key Features</h2>
-        <ul className="space-y-2">
-          {property.features.map((feature, idx) => (
-            <li key={idx} className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+      {/* Mobile Contact Bar */}
+      <MobileContactBar property={property} />
+    </div>
   );
 };
 
