@@ -83,7 +83,7 @@ const App = () => {
           </Route>
           {/* ---------- Admin Auth Routes ---------- */}
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/register" element={<AdminRegister />} />
+          {/* <Route path="/admin/register" element={<AdminRegister />} /> */}
           {/* same component handles signup */}
           {/* ---------- Admin Protected Routes ---------- */}
           <Route
