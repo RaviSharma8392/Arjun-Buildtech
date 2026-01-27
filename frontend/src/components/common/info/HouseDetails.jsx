@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import ImageGallery from "../gallery/ImageGallery";
 import SendEnquiry from "../form/SendEnquiry";
 import MobileContactBar from "../bars/InquiryBar";
@@ -49,8 +50,54 @@ const HouseDetails = ({ property }) => {
   const features = parseCommaList(property.features);
   const amenities = parseCommaList(property.amenities);
 
+  // Prepare JSON-LD structured data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SingleFamilyResidence",
+    name: property.name || `House in ${property.location}`,
+    description:
+      property.description || `House for sale in ${property.location}`,
+    image: property.images?.[0] || "https://via.placeholder.com/1200x400",
+    url: window.location.href,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: property.location,
+      addressRegion: "Haryana",
+      addressCountry: "IN",
+    },
+    numberOfRooms: property.bedrooms || undefined,
+    numberOfBathroomsTotal: property.bathrooms || undefined,
+    offers: {
+      "@type": "Offer",
+      price: property.price ? property.price : undefined,
+      priceCurrency: "INR",
+      availability: "https://schema.org/InStock",
+      url: window.location.href,
+    },
+    seller: {
+      "@type": "RealEstateAgent",
+      name: "Arjun BuildTech",
+      url: "https://arjunbuildtech.com",
+    },
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <Helmet>
+        <title>
+          {property.name || `House in ${property.location}`} | Arjun BuildTech
+        </title>
+        <meta
+          name="description"
+          content={
+            property.description
+              ? property.description.slice(0, 160)
+              : `Explore houses for sale in ${property.location}. Contact Arjun BuildTech, your trusted property consultant and dealer.`
+          }
+        />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
+
       <div className="max-w-full mx-auto md:px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Desktop Enquiry */}
