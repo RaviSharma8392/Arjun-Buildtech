@@ -14,45 +14,47 @@ const parseCommaList = (value) => {
     .filter(Boolean);
 };
 
-/* ---------- Reusable Section ---------- */
+/* ---------- Detail Row ---------- */
+const Detail = ({ label, value }) => (
+  <div className="flex justify-between items-center py-3 border-b border-gray-200 last:border-none">
+    <span className="text-gray-500 text-sm">{label}</span>
+    <span className="font-semibold text-gray-900 text-sm sm:text-base">
+      {value || "-"}
+    </span>
+  </div>
+);
+
+/* ---------- Bullet Section ---------- */
 const BulletSection = ({ title, items, emptyText }) => (
-  <div className="bg-white md:rounded-lg md:shadow-md p-6">
-    <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
-    <ul className="list-disc list-inside space-y-2">
+  <div className="bg-white md:rounded-xl md:shadow-sm p-5 md:p-6">
+    <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">{title}</h2>
+
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc list-inside">
       {items.length > 0 ? (
         items.map((item, idx) => (
-          <li key={idx} className="text-gray-800 font-medium">
+          <li key={idx} className="text-gray-700 text-sm sm:text-base">
             {item}
           </li>
         ))
       ) : (
-        <li className="text-gray-600 italic">{emptyText}</li>
+        <li className="text-gray-500 italic">{emptyText}</li>
       )}
     </ul>
   </div>
 );
 
-/* ---------- Detail Row ---------- */
-const Detail = ({ label, value }) => (
-  <div className="flex justify-between items-center py-2 border-b border-gray-100">
-    <span className="text-gray-600 text-sm">{label}</span>
-    <span className="font-semibold text-gray-900">{value || "-"}</span>
-  </div>
-);
-
 /* ---------- Main Component ---------- */
 const PlotDetails = ({ property }) => {
-  const features = parseCommaList(property.features || []);
-  const amenities = parseCommaList(property.amenities || []);
+  const features = parseCommaList(property.features);
+  const amenities = parseCommaList(property.amenities);
 
-  // Prepare JSON-LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LandParcel", // could also use SingleFamilyResidence if house/floor
-    name: property.name || "Plot in " + property.location,
+    "@type": "LandParcel",
+    name: property.name || `Plot in ${property.location}`,
     description:
-      property.description || "Property for sale in " + property.location,
-    image: property.images?.[0] || "https://via.placeholder.com/1200x400",
+      property.description || `Property available in ${property.location}`,
+    image: property.images?.[0],
     url: window.location.href,
     address: {
       "@type": "PostalAddress",
@@ -62,20 +64,14 @@ const PlotDetails = ({ property }) => {
     },
     offers: {
       "@type": "Offer",
-      price: property.price || "Contact for price",
+      price: property.price,
       priceCurrency: "INR",
       availability: "https://schema.org/InStock",
-      url: window.location.href,
-    },
-    seller: {
-      "@type": "RealEstateAgent",
-      name: "Arjun BuildTech",
-      url: "https://arjunbuildtech.com",
     },
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen pb-24 md:pb-10">
       <Helmet>
         <title>
           {property.name || `Plot in ${property.location}`} | Arjun BuildTech
@@ -85,76 +81,76 @@ const PlotDetails = ({ property }) => {
           content={
             property.description
               ? property.description.slice(0, 160)
-              : `Explore properties for sale in ${property.location}. Contact Arjun BuildTech, your trusted property consultant and dealer.`
+              : `Best property deals in ${property.location}`
           }
         />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
-      <div className="max-w-full mx-auto md:px-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-20 py-6 space-y-6">
+        {/* Images on Top */}
+        <div className="bg-white shadow-sm overflow-hidden">
+          {property.images?.length ? (
+            <ImageGallery images={property.images} />
+          ) : (
+            <img
+              src="https://via.placeholder.com/1200x500"
+              alt="Property"
+              className="w-full h-72 object-cover"
+            />
+          )}
+        </div>
+
+        {/* Badges */}
+        <div className="flex flex-wrap gap-2">
+          {property.transactionType && (
+            <span className="bg-blue-100 text-blue-800 text-xs sm:text-sm font-semibold px-4 py-1.5">
+              {property.transactionType}
+            </span>
+          )}
+          <span className="bg-green-100 text-green-800 text-xs sm:text-sm font-semibold px-4 py-1.5">
+            {property.status || "Ready to Sell"}
+          </span>
+        </div>
+
+        {/* Two-column layout for desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Desktop Enquiry */}
-          <div className="hidden lg:block lg:col-span-1">
-            <SendEnquiry property={property} />
-          </div>
-
-          {/* Content */}
+          {/* Left – Property Details */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Images */}
-            {property.images?.length > 0 ? (
-              <ImageGallery images={property.images} />
-            ) : (
-              <div className="bg-white md:rounded-lg md:shadow-md overflow-hidden">
-                <img
-                  src="https://via.placeholder.com/1200x400"
-                  alt="Property"
-                  className="w-full h-72 object-cover"
-                />
-              </div>
-            )}
-
             {/* Overview */}
-            <div className="bg-white md:rounded-lg md:shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-3">
+            <div className="bg-white md:rounded-xl md:shadow-sm p-5 md:p-6">
+              <h2 className="text-lg sm:text-xl font-bold mb-4">
                 <span className="text-red-600">Plot</span>{" "}
                 <span className="text-gray-900">Overview</span>
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
                   <Detail label="Land Area" value={property.landArea} />
-                  <Detail
-                    label="Transaction Type"
-                    value={property.transactionType}
-                  />
                   <Detail label="Price" value={property.price} />
                 </div>
-
-                <div className="space-y-2">
+                <div>
                   <Detail label="Location" value={property.location} />
-                  <Detail
-                    label="Status"
-                    value={property.status || "Ready to Sell"}
-                  />
                 </div>
               </div>
             </div>
 
             {/* Description */}
-            <div className="bg-white md:rounded-lg md:shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-3">
-                <span className="text-red-600">Plot</span>{" "}
-                <span className="text-gray-900">Description</span>
+            <div className="bg-white md:rounded-xl md:shadow-sm p-5 md:p-6">
+              <h2 className="text-lg sm:text-xl font-bold mb-4">
+                <span className="text-gray-900">Property Description</span>
               </h2>
 
               {property.description ? (
-                property.description.split("\n").map((line, idx) => (
-                  <p key={idx} className="text-gray-800 leading-relaxed mb-2">
-                    {line.trim()}
+                property.description.split("\n").map((line, i) => (
+                  <p
+                    key={i}
+                    className="text-gray-700 leading-relaxed mb-2 text-sm sm:text-base">
+                    {line}
                   </p>
                 ))
               ) : (
-                <p className="text-gray-600 italic">
+                <p className="text-gray-500 italic">
                   No description available.
                 </p>
               )}
@@ -174,10 +170,15 @@ const PlotDetails = ({ property }) => {
               emptyText="No amenities listed"
             />
           </div>
+
+          {/* Right – Enquiry */}
+          <div className="hidden lg:block">
+            <SendEnquiry property={property} />
+          </div>
         </div>
       </div>
 
-      {/* Mobile Contact Bar */}
+      {/* Mobile CTA */}
       <MobileContactBar property={property} />
     </div>
   );

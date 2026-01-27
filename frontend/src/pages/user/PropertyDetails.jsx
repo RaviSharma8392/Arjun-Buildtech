@@ -15,16 +15,31 @@ const PropertyDetailsPage = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const docRef = doc(db, "properties", id);
-        const docSnap = await getDoc(docRef);
+        setLoading(true);
 
-        if (docSnap.exists()) {
-          setProperty({ id: docSnap.id, ...docSnap.data() });
-        } else {
-          console.warn("Property not found:", id);
+        /* 1️⃣ Try main properties collection */
+        const mainRef = doc(db, "properties", id);
+        const mainSnap = await getDoc(mainRef);
+
+        if (mainSnap.exists()) {
+          setProperty({ id: mainSnap.id, ...mainSnap.data() });
+          return;
         }
+
+        /* 2️⃣ Fallback to featuredproperties */
+        const featuredRef = doc(db, "featuredproperties", id);
+        const featuredSnap = await getDoc(featuredRef);
+
+        if (featuredSnap.exists()) {
+          setProperty({ id: featuredSnap.id, ...featuredSnap.data() });
+          return;
+        }
+
+        /* 3️⃣ Not found anywhere */
+        setProperty(null);
       } catch (error) {
         console.error("Error fetching property:", error);
+        setProperty(null);
       } finally {
         setLoading(false);
       }
@@ -64,12 +79,11 @@ const PropertyDetailsPage = () => {
     "Explore premium real estate properties with Arjun BuildTech.";
 
   return (
-    <div className="min-h-screen bg-gray-50 md:py-10 md:px-4 lg:px-8">
+    <div className="min-h-screen bg-gray-50 mt-10 md:mt-20 md:px-4 lg:px-8">
       {/* SEO */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         {property.images?.length > 0 && (
@@ -77,13 +91,21 @@ const PropertyDetailsPage = () => {
         )}
         <meta property="og:type" content="website" />
       </Helmet>
+      {property.type === "plot" ? (
+        <PlotDetails property={property} />
+      ) : (
+        <HouseDetails property={property} />
+      )}
+      <div className="flex justify-center md:justify-start md:mx-36 gap-4">
+        {/* Mobile / all devices: first image */}
+        <img src="/northIllustration.64463390.svg" alt="Illustration" />
 
-      <div className="mx-auto space-y-8">
-        {property.type === "plot" ? (
-          <PlotDetails property={property} />
-        ) : (
-          <HouseDetails property={property} />
-        )}
+        {/* Only show on md+ screens */}
+        <img
+          src="/northIllustration.64463390.svg"
+          alt="Illustration"
+          className="hidden md:block "
+        />
       </div>
     </div>
   );

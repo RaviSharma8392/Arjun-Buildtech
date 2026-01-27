@@ -14,7 +14,7 @@ const ImageGallery = ({ images }) => {
       <img
         src={images[current]}
         alt={`Property Image ${current + 1}`}
-        className="w-full h-80 md:h-[400px] lg:h-[500px] object-cover"
+        className="w-full h-50 md:h-[400px] lg:h-[400px] object-cover"
       />
       <button
         onClick={prevImage}

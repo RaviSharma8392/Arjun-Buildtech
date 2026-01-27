@@ -49,7 +49,7 @@ const SendEnquiry = ({ property }) => {
   return (
     <div
       id="inquiry"
-      className="bg-white shadow-lg rounded-2xl p-6 max-w-md mx-auto border border-gray-200">
+      className="bg-white  p-6 max-w-md mx-auto border border-gray-200">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
         Enquire via WhatsApp
       </h2>
@@ -69,7 +69,7 @@ const SendEnquiry = ({ property }) => {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 
                        bg-green-600 hover:bg-green-700 
-                       text-white font-bold py-3 px-6 rounded-lg 
+                       text-white font-bold py-3 px-6 
                        transition duration-200 shadow-lg">
             <FaWhatsapp className="w-6 h-6" />
             <span>Open WhatsApp Chat</span>
@@ -143,7 +143,7 @@ const SendEnquiry = ({ property }) => {
             type="submit"
             className="w-full inline-flex items-center justify-center gap-2 
                        bg-green-600 hover:bg-green-700 
-                       text-white font-bold py-3 rounded-lg 
+                       text-white font-bold py-3
                        transition duration-200 shadow-lg">
             <FaWhatsapp className="w-6 h-6" />
             <span>Send via WhatsApp</span>
