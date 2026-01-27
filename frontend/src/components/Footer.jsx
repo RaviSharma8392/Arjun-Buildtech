@@ -143,9 +143,9 @@ const Footer = () => {
             <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Monday - Friday</span>
+                  <span className="text-gray-600"> All 7 days available</span>
                   <span className="font-medium text-gray-900">
-                    9:00 AM - 6:00 PM
+                    10:00 AM - 7:00 PM
                   </span>
                 </div>
               </div>
