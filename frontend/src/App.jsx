@@ -13,6 +13,7 @@ import AddEditPropertyPage from "./pages/admin/EditPropertyPage";
 import AdminReviewsList from "./pages/admin/AdminReviewsList";
 import AdminReviewForm from "./pages/admin/AdminReviewForm";
 import AdminRegister from "./pages/admin/Register";
+import SitemapPage from "./pages/user/Sitemap";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("./pages/user/Home"));
@@ -68,21 +69,45 @@ const App = () => {
         }>
         <Routes>
           {/* ---------- User Routes ---------- */}
+          {/* <Route path="/sitemap" element={<SitemapPage />} /> */}
+
           <Route path="/" element={<UserLayout />}>
             <Route index element={<Home />} />
+            {/* Property Listings by Location */}
             <Route path="properties" element={<PropertiesPage />} />
-            <Route path="properties/:location" element={<PropertiesPage />} />
+            <Route
+              path="properties-for-sale-in-:location"
+              element={<PropertiesPage />}
+            />
             <Route
               path="property/:location/:name/:id"
               element={<PropertyDetails />}
             />
+            <Route
+              path="houses-for-sale-in-:location"
+              element={<PropertiesPage type="house" />}
+            />
+            <Route
+              path="plots-for-sale-in-:location"
+              element={<PropertiesPage type="plot" />}
+            />
+            {/* Pages / Components */}
             <Route path="testimonials" element={<ClientReviews />} />
+            <Route path="reviews" element={<ClientReviews />} />{" "}
+            {/* optional */}
+            <Route
+              path="real-estate-services"
+              element={<RealEstateServices />}
+            />
+            <Route path="contact-agent" element={<ContactUs />} />
             <Route path="contact" element={<ContactUs />} />
             <Route path="profile" element={<Profile />} />
             <Route path="services" element={<RealEstateServices />} />
           </Route>
+
           {/* ---------- Admin Auth Routes ---------- */}
           <Route path="/admin/login" element={<AdminLogin />} />
+
           {/* <Route path="/admin/register" element={<AdminRegister />} /> */}
           {/* same component handles signup */}
           {/* ---------- Admin Protected Routes ---------- */}

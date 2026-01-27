@@ -36,10 +36,10 @@ const UserPropertyCard = ({ property }) => {
         {/* Price */}
         {property.price && (
           <div className="text-black/80 font-semibold text-sm sm:text-base mt-1">
-            ₹ {Number(property.price).toLocaleString()}
+            ₹ {property.price.toLocaleString()}
             {property.pricePerSqft && (
               <span className="text-gray-500 text-xs block">
-                ₹ {Number(property.pricePerSqft).toLocaleString()} / sqft
+                ₹ {property.pricePerSqft.toLocaleString()} / sqft
               </span>
             )}
           </div>

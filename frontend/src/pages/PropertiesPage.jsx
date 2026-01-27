@@ -11,26 +11,20 @@ const PropertiesPage = () => {
   const [properties, setProperties] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
-  const [selectedSector, setSelectedSector] = useState("All");
-
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const { city } = useParams(); // Get city from URL if exists
 
   const typeText = selectedType !== "All" ? selectedType : "Properties";
-
   const locationText = `in ${selectedLocation === "All" ? "Rohtak" : selectedLocation}`;
-
   const saleText = "for Sale";
+
+  // Handle responsive layout
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Fetch properties from Firestore
   useEffect(() => {
@@ -49,7 +43,7 @@ const PropertiesPage = () => {
     fetchProperties();
   }, []);
 
-  // Auto-select location from URL (if /property/rohtak or similar)
+  // Auto-select location from URL
   useEffect(() => {
     if (city && properties.length > 0) {
       const formattedCity = city
@@ -58,53 +52,30 @@ const PropertiesPage = () => {
           (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
         )
         .join(" ");
-
       const matchedLocation = properties.find(
         (property) =>
           property.location.toLowerCase() === formattedCity.toLowerCase(),
       );
-
-      if (matchedLocation) setSelectedLocation(matchedLocation.location);
-      else setSelectedLocation("All");
+      setSelectedLocation(matchedLocation ? matchedLocation.location : "All");
     }
   }, [city, properties]);
 
   // Extract unique locations dynamically
   const locations = ["All", ...new Set(properties.map((p) => p.location))];
 
-  // ✅ Rohtak Sectors (Static List)
-  const rohtakSectors = [
-    "HSVP Sector-1",
-    "HSVP Sector-2",
-    "HSVP Sector-3",
-    "HSVP Sector-25",
-    "HSVP Sector-27",
-    "Suncity Sector-34",
-    "Suncity Sector-35",
-    "Suncity Sector-36",
-    "Suncity Sector-36A",
-  ];
-
-  // ✅ Filter Logic
+  // Filtered properties
   const filteredProperties = properties.filter((property) => {
     const locationMatch =
       selectedLocation === "All" || property.location === selectedLocation;
-
     const typeMatch = selectedType === "All" || property.type === selectedType;
-
-    const sectorMatch =
-      selectedSector === "All" ||
-      (property.sector &&
-        property.sector.toLowerCase() === selectedSector.toLowerCase());
-
-    return locationMatch && typeMatch && sectorMatch;
+    return locationMatch && typeMatch;
   });
 
   const BannerLocation =
     selectedLocation === "All" ? "Rohtak" : selectedLocation;
 
   return (
-    <div className="min-h-screen md:px-20  mt-5 md:mt-20 bg-gray-50">
+    <div className="min-h-screen md:px-20 mt-5 md:mt-20 bg-gray-50">
       <CommonBanner
         image="https://content.r9cdn.net/rimg/dimg/1b/18/f2f80dcf-city-35183-1754ec6ebf4.jpg?width=2160&height=1215&xhint=1287&yhint=1101&crop=true"
         title={`Find Your Dream Property in ${BannerLocation}`}
@@ -112,10 +83,10 @@ const PropertiesPage = () => {
       />
 
       {/* Filters Section */}
-      <section className="bg-white  ">
+      <section className="bg-white">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <div className="flex  sm:flex-row gap-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               {/* Location Filter */}
               <div className="w-full sm:w-64">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -123,10 +94,7 @@ const PropertiesPage = () => {
                 </label>
                 <select
                   value={selectedLocation}
-                  onChange={(e) => {
-                    setSelectedLocation(e.target.value);
-                    setSelectedSector("All"); // reset sector
-                  }}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
                   {locations.map((location) => (
                     <option key={location} value={location}>
@@ -136,7 +104,7 @@ const PropertiesPage = () => {
                 </select>
               </div>
 
-              {/* Type Filter */}
+              {/* Property Type Filter */}
               <div className="w-full sm:w-48">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Property Type
@@ -150,46 +118,12 @@ const PropertiesPage = () => {
                   <option value="plot">Plot</option>
                 </select>
               </div>
-
-              {/* Sector Filter (only for Rohtak) */}
-              {selectedLocation.toLowerCase() === "rohtak" && (
-                <div className="w-full sm:w-64">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Sector
-                  </label>
-                  <select
-                    value={selectedSector}
-                    onChange={(e) => setSelectedSector(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                    <option value="All">All Sectors</option>
-                    <optgroup label="HSVP">
-                      {rohtakSectors
-                        .filter((s) => s.includes("HSVP"))
-                        .map((sector) => (
-                          <option key={sector} value={sector}>
-                            {sector.replace("HSVP ", "")}
-                          </option>
-                        ))}
-                    </optgroup>
-                    <optgroup label="Suncity">
-                      {rohtakSectors
-                        .filter((s) => s.includes("Suncity"))
-                        .map((sector) => (
-                          <option key={sector} value={sector}>
-                            {sector.replace("Suncity ", "")}
-                          </option>
-                        ))}
-                    </optgroup>
-                  </select>
-                </div>
-              )}
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 mt-2 sm:mt-0">
               Showing{" "}
               <span className="font-semibold">{filteredProperties.length}</span>{" "}
-              <span className="font-semibold">{typeText}</span>{" "}
-              <span className="font-semibold">{saleText}</span>{" "}
+              <span className="font-semibold">{typeText}</span> {saleText}{" "}
               {locationText && (
                 <span className="font-semibold">{locationText}</span>
               )}
@@ -210,7 +144,6 @@ const PropertiesPage = () => {
             </p>
           </div>
         ) : isMobile ? (
-          /* 📱 Mobile Layout */
           <div className="grid grid-cols-1 gap-2">
             {filteredProperties.map((property) => (
               <Link
@@ -226,7 +159,6 @@ const PropertiesPage = () => {
             ))}
           </div>
         ) : (
-          /* 💻 Desktop Layout */
           <div className="grid grid-cols-4 gap-3">
             {filteredProperties.map((property) => (
               <Link
@@ -245,7 +177,7 @@ const PropertiesPage = () => {
       </main>
 
       {/* Contact Section */}
-      <section className="bg-white ">
+      <section className="bg-white">
         <div className="container mx-auto px-4 py-12 text-center">
           <h2 className="text-2xl font-[Poppins] text-gray-900 mb-4">
             Looking for more properties in {BannerLocation}?
