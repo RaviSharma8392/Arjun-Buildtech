@@ -16,7 +16,7 @@ const parseCommaList = (value) => {
 
 const formatPrice = (price) => {
   if (!price) return "-";
-  return `₹${Number(price).toLocaleString("en-IN")}`;
+  return `₹${price.toLocaleString("en-IN")}`;
 };
 
 /* ---------- Reusable Section ---------- */

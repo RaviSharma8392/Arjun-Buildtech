@@ -20,7 +20,12 @@ const ChatBot = () => {
 
     const timer = setTimeout(() => {
       setIsOpen(true);
-      setMessages([{ from: "bot", text: "Hi 👋 How can I help you today?" }]);
+      setMessages([
+        {
+          from: "bot",
+          text: "Contact for Sale purchase of property in HSVP and Suncity Sector Rohtak.",
+        },
+      ]);
       if (audioRef.current) {
         audioRef.current.play().catch(() => {
           console.log("User interaction needed to play sound");
@@ -37,7 +42,7 @@ const ChatBot = () => {
 
     const whatsappNumber = "919350447531"; // your WhatsApp number
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      userMessage
+      userMessage,
     )}`;
     window.open(url, "_blank");
     setUserMessage("");
