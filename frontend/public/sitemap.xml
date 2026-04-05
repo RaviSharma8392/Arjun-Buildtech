@@ -1,4 +1,3 @@
-```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <urlset
@@ -8,7 +7,6 @@ xsi:schemaLocation="
 http://www.sitemaps.org/schemas/sitemap/0.9
 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-<!-- HOMEPAGE -->
 <url>
 <loc>https://arjunbuildtech.com/</loc>
 <lastmod>2026-04-05</lastmod>
@@ -16,7 +14,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>1.0</priority>
 </url>
 
-<!-- MAIN PROPERTY PAGE -->
 <url>
 <loc>https://arjunbuildtech.com/properties</loc>
 <lastmod>2026-04-05</lastmod>
@@ -24,7 +21,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.9</priority>
 </url>
 
-<!-- LOCATION SEO PAGES -->
 <url>
 <loc>https://arjunbuildtech.com/properties-for-sale-in-rohtak</loc>
 <lastmod>2026-04-05</lastmod>
@@ -46,7 +42,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.9</priority>
 </url>
 
-<!-- PROPERTY TYPE PAGES -->
 <url>
 <loc>https://arjunbuildtech.com/residential-plots-rohtak</loc>
 <lastmod>2026-04-05</lastmod>
@@ -75,7 +70,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.8</priority>
 </url>
 
-<!-- SECTOR LOCATION PAGES -->
 <url>
 <loc>https://arjunbuildtech.com/plots-in-rohtak-sector-1</loc>
 <lastmod>2026-04-05</lastmod>
@@ -104,7 +98,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.8</priority>
 </url>
 
-<!-- PROPERTY LISTING -->
 <url>
 <loc>https://arjunbuildtech.com/property/rohtak/plot-huda-sector-27-emprf9pobuAzXhuPsGWD</loc>
 <lastmod>2026-04-05</lastmod>
@@ -112,7 +105,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.8</priority>
 </url>
 
-<!-- SERVICES -->
 <url>
 <loc>https://arjunbuildtech.com/real-estate-services</loc>
 <lastmod>2026-04-05</lastmod>
@@ -120,7 +112,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.8</priority>
 </url>
 
-<!-- TRUST PAGES -->
 <url>
 <loc>https://arjunbuildtech.com/testimonials</loc>
 <lastmod>2026-04-05</lastmod>
@@ -135,7 +126,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.7</priority>
 </url>
 
-<!-- CONTACT -->
 <url>
 <loc>https://arjunbuildtech.com/contact-agent</loc>
 <lastmod>2026-04-05</lastmod>
@@ -143,7 +133,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.7</priority>
 </url>
 
-<!-- ABOUT -->
 <url>
 <loc>https://arjunbuildtech.com/about</loc>
 <lastmod>2026-04-05</lastmod>
@@ -151,7 +140,6 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <priority>0.7</priority>
 </url>
 
-<!-- USER PROFILE -->
 <url>
 <loc>https://arjunbuildtech.com/profile</loc>
 <lastmod>2026-04-05</lastmod>
@@ -160,4 +148,3 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 </url>
 
 </urlset>
-```
