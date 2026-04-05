@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState, useEffect } from "react";
 
 // --- Always-loaded (above the fold) sections ---
 import HomeHeader from "../../components/common/banner/HomeHeader";
@@ -8,6 +8,9 @@ import WhyChooseArjunBuiltech from "../../components/common/WhyChooseArjunBuilte
 import FAQSection from "../../components/FAQSection";
 import FeaturedProperties from "../../components/FeaturedProperties";
 import MapSection from "../../components/MapSection";
+
+// --- Popup Inquiry Form ---
+import InquiryPopup from "../../components/common/form/InquiryPopup";
 
 // --- Lazy-loaded (below the fold) sections ---
 const Testimonials = lazy(() => import("../Testimonials"));
@@ -21,12 +24,15 @@ const LoadingFallback = () => (
       alt="Arjun BuildTech"
       className="w-28 h-28 object-contain animate-pulse mb-6 drop-shadow-md"
     />
+
     <div className="relative mb-5">
       <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
     </div>
+
     <h2 className="text-2xl font-semibold text-gray-800 mb-2">
       Loading Your Dream Property...
     </h2>
+
     <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto">
       Please wait a moment while we prepare your personalized real estate
       experience.
@@ -35,37 +41,51 @@ const LoadingFallback = () => (
 );
 
 const Home = () => {
+  // --- Popup State ---
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  // --- Auto show popup after 5 seconds ---
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPopupOpen(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="bg-gray-50">
       {/* 1️⃣ Header Section — Navigation & Branding */}
       <HomeHeader />
 
-      {/* 2️⃣ Hero Banner — Eye-catching intro or featured promotion */}
+      {/* 2️⃣ Hero Banner — Eye-catching intro */}
       <HomeBanner />
 
-      {/* 3️⃣ Featured Properties — Showcase top listings */}
+      {/* 3️⃣ Featured Properties */}
       <FeaturedProperties />
 
-      {/* 4️⃣ Real Estate Services — Explain your core offerings */}
+      {/* 4️⃣ Real Estate Services */}
       <RealEstateServices />
 
-      {/* 5️⃣ Why Choose Arjun BuildTech — Trust and credibility */}
+      {/* 5️⃣ Why Choose Section */}
       <WhyChooseArjunBuiltech />
 
-      {/* 6️⃣ Testimonials — Lazy load (user trust section) */}
+      {/* 6️⃣ Testimonials — Lazy load */}
       <Suspense fallback={<LoadingFallback />}>
         <Testimonials />
       </Suspense>
 
-      {/* 7️⃣ Blog / Insights — Lazy load for SEO content */}
-      <Suspense fallback={<LoadingFallback />}></Suspense>
+      {/* 7️⃣ Map Section */}
+      <MapSection />
 
-      {/* 8️⃣ Contact Section — Lazy load inquiry form */}
+      {/* 8️⃣ FAQ + Contact */}
       <Suspense fallback={<LoadingFallback />}>
         <FAQSection />
-
         <ContactUs />
       </Suspense>
+
+      {/* 9️⃣ Inquiry Popup */}
+      <InquiryPopup isOpen={popupOpen} onClose={() => setPopupOpen(false)} />
     </div>
   );
 };
