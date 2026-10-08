@@ -113,7 +113,7 @@ const AdminReviewForm = () => {
             className="w-full border  border-gray-300 rounded-lg px-4 py-2"
           />
 
-          <button className="w-full bg-indigo-600 text-white py-3 rounded-lg flex justify-center gap-2">
+          <button className="w-full bg-red-600 text-white py-3 rounded-lg flex justify-center gap-2">
             <Save size={18} />
             {isEdit ? "Update Review" : "Save Review"}
           </button>

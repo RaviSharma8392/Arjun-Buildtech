@@ -1,47 +1,31 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaQuoteLeft,
-  FaChevronLeft,
-  FaChevronRight,
-  FaStar,
-} from "react-icons/fa";
-import ReviewCard from "./common/card/ReviewCard";
+import { Helmet } from "react-helmet-async";
+import { FaStar } from "react-icons/fa";
 import { db } from "../services/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, limit } from "firebase/firestore";
 
-const ClientReviews = () => {
+const ClientReviews = ({ hideSeo = false }) => {
   const [reviews, setReviews] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1 >= reviews.length ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 < 0 ? reviews.length - 1 : prev - 1));
-  };
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
+  const visibleGridReviews = reviews.slice(0, visibleCount);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <FaStar
         key={index}
-        className={`w-4 h-4 ${
-          index < rating ? "text-amber-500 fill-current" : "text-gray-300"
+        className={`w-3.5 h-3.5 ${
+          index < rating ? "text-[#F5A623]" : "text-gray-300"
         }`}
       />
     ));
   };
 
-  // Fetch reviews from Firebase
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const reviewsRef = collection(db, "reviews");
-        const snapshot = await getDocs(reviewsRef);
+        const q = query(collection(db, "reviews"), limit(12));
+        const snapshot = await getDocs(q);
         const data = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -57,143 +41,132 @@ const ClientReviews = () => {
 
   if (reviews.length === 0) {
     return (
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <section className="py-10 bg-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Client Reviews
-          </h2>
-          <p className="text-gray-600 text-lg">No reviews available yet.</p>
+          <p className="text-gray-600">Loading reviews...</p>
         </div>
       </section>
     );
   }
 
+  // Generate JSON-LD Schema
+  const averageRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, rev) => acc + (rev.rating || 5), 0) /
+          reviews.length
+        ).toFixed(1)
+      : 5.0;
+
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    name: "Arjun Buildtech",
+    image: "https://arjunbuildtech.com/arjunBuildTechLogo.png",
+    "@id": "https://arjunbuildtech.com",
+    url: "https://arjunbuildtech.com",
+    telephone: "+91-9350447531",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "G74P, Sector-27",
+      addressLocality: "Rohtak",
+      addressRegion: "Haryana",
+      postalCode: "124001",
+      addressCountry: "IN",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: averageRating,
+      reviewCount: reviews.length > 0 ? reviews.length : 1,
+    },
+    review: reviews.slice(0, 5).map((rev) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: rev.name,
+      },
+      datePublished: rev.date || new Date().toISOString().split("T")[0],
+      reviewBody: rev.feedback,
+      reviewRating: {
+        "@type": "Rating",
+        bestRating: "5",
+        ratingValue: rev.rating || "5",
+        worstRating: "1",
+      },
+    })),
+  };
+
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm text-blue-600 px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-sm">
-            <span>⭐</span>
-            TRUSTED BY HUNDREDS OF CLIENTS
-          </div>
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            What Our Clients Say
+    <section className="py-12 bg-[#F9F9F9]">
+      {!hideSeo && (
+        <Helmet>
+          <title>Client Reviews | Arjun Buildtech</title>
+          <meta
+            name="description"
+            content={`Read ${reviews.length}+ reviews from satisfied clients who bought, sold, or invested in properties with Arjun Buildtech in Rohtak.`}
+          />
+          <script type="application/ld+json">
+            {JSON.stringify(schemaData)}
+          </script>
+        </Helmet>
+      )}
+
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+        {/* Updated Heading Design (Matching image_dfe724.png) */}
+        <div className="mb-8 md:mb-10">
+          <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
+            What Our Customers Say
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Discover why hundreds of clients trust us with their real estate
-            journey. Their success stories speak volumes about our commitment.
+          <div className="w-16 h-1 bg-red-600 mb-4"></div>
+          <p className="text-sm md:text-base text-gray-600">
+            Real feedback from property buyers and sellers in Rohtak.
           </p>
         </div>
 
-        {/* Main Review Card */}
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
-            {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full -translate-y-16 translate-x-16"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-100 rounded-full translate-y-12 -translate-x-12"></div>
-
-            <div className="relative z-10">
-              {/* Quote Icon */}
-              <div className="flex justify-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <FaQuoteLeft className="text-white w-6 h-6" />
-                </div>
-              </div>
-
-              {/* Review Content */}
-              <div className="text-center mb-8">
-                <p className="text-2xl text-gray-700 leading-relaxed mb-6 italic">
-                  "{reviews[currentIndex].feedback}"
-                </p>
-
-                {/* Star Rating */}
-                <div className="flex justify-center items-center gap-1 mb-6">
-                  {renderStars(reviews[currentIndex].rating || 5)}
-                </div>
-
-                {/* Client Info */}
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {reviews[currentIndex].name}
-                  </h3>
-                  {reviews[currentIndex].location && (
-                    <p className="text-gray-600 mb-2">
-                      {reviews[currentIndex].location}
-                    </p>
-                  )}
-                  {reviews[currentIndex].date && (
-                    <p className="text-gray-500 text-sm">
-                      {reviews[currentIndex].date}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Navigation */}
-              <div className="flex items-center justify-between">
-                <button
-                  onClick={prevSlide}
-                  className="flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200 hover:border-gray-300">
-                  <FaChevronLeft className="w-4 h-4" />
-                  Previous
-                </button>
-
-                {/* Dots Indicator */}
-                <div className="flex gap-2">
-                  {reviews.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => goToSlide(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === currentIndex
-                          ? "bg-blue-600 scale-125"
-                          : "bg-gray-300 hover:bg-gray-400"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  onClick={nextSlide}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 shadow-lg hover:shadow-xl">
-                  Next
-                  <FaChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Additional Mini Reviews */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          {reviews.map((review, index) => (
-            <ReviewCard
+        {/* Utilitarian Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {visibleGridReviews.map((review, index) => (
+            <div
               key={review.id || index}
-              testimonial={review}
-              isActive={index === currentIndex}
-            />
-          ))}
-        </div>
+              className="bg-white border border-gray-200 rounded-lg p-5 flex flex-col hover:shadow-md transition-shadow duration-200">
+              {/* User Info */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-500 text-lg border border-gray-200 shrink-0">
+                  {review.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900 text-[15px] leading-tight">
+                    {review.name}
+                  </div>
+                  <div className="text-[12px] text-gray-500 mt-0.5">
+                    {review.location || "Verified Client"}
+                  </div>
+                </div>
+              </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-12 border-t border-gray-200">
-          {[
-            { number: "4.9/5", label: "Average Rating" },
-            { number: "500+", label: "Happy Clients" },
-            { number: "98%", label: "Satisfaction Rate" },
-            { number: "24h", label: "Response Time" },
-          ].map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-3xl font-bold text-gray-900 mb-2">
-                {stat.number}
+              {/* Star Rating */}
+              <div className="flex items-center gap-1 mb-3">
+                {renderStars(review.rating || 5)}
               </div>
-              <div className="text-gray-600 font-medium text-sm">
-                {stat.label}
-              </div>
+
+              {/* Review Text */}
+              <p className="text-gray-700 text-[14px] leading-relaxed flex-grow">
+                {review.feedback}
+              </p>
             </div>
           ))}
         </div>
+
+        {/* Standard Load More Button */}
+        {visibleCount < reviews.length && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 6)}
+              className="bg-white border border-red-600 text-red-600 hover:bg-red-50 px-6 py-2 rounded-md font-semibold text-sm transition-colors">
+              View More Reviews
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

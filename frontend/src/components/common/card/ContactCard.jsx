@@ -29,7 +29,7 @@ const ContactCard = ({ property }) => {
       </div>
 
       <div className="mt-4 flex gap-3">
-        <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        <button className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">
           Enquiry Now
         </button>
         <button className="flex-1 bg-gray-100 text-gray-800 py-2 rounded-lg hover:bg-gray-200 transition">

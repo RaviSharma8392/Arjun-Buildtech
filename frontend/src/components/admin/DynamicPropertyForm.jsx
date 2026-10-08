@@ -272,7 +272,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
                     value={type}
                     checked={propertyType === type}
                     onChange={(e) => handlePropertyTypeChange(e.target.value)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
                   />
                   <span className="ml-2 text-sm text-gray-700 capitalize">
                     {type === "house" ? "House/Villa" : "Plot/Land"}
@@ -468,7 +468,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-red-600 h-2 rounded-full transition-all duration-300"
                 style={{
                   width: `${((currentStep + 1) / steps.length) * 100}%`,
                 }}
@@ -494,7 +494,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               <button
                 type="button"
                 onClick={nextStep}
-                className={`flex-1 ${currentStep > 0 ? "ml-2" : ""} bg-blue-600 text-white font-semibold py-1 px-1 rounded-lg hover:bg-blue-700 transition`}>
+                className={`flex-1 ${currentStep > 0 ? "ml-2" : ""} bg-red-600 text-white font-semibold py-1 px-1 rounded-lg hover:bg-red-700 transition`}>
                 Next
               </button>
             ) : (

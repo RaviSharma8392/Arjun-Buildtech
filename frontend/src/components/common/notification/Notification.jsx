@@ -35,10 +35,10 @@ const Notification = ({
       icon: <XCircle className="w-5 h-5 text-amber-600" />,
     },
     info: {
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
-      textColor: "text-blue-800",
-      icon: <CheckCircle className="w-5 h-5 text-blue-600" />,
+      bgColor: "bg-red-50",
+      borderColor: "border-red-200",
+      textColor: "text-red-800",
+      icon: <CheckCircle className="w-5 h-5 text-red-600" />,
     },
   };
 

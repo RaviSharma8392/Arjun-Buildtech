@@ -72,7 +72,7 @@ const ContactForm = () => {
         <select
           name="service"
           className="w-full px-4 py-2 border  bg-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500">
-          <option value="buy">Buy a Property</option>
+          <option value="invest">Invest in a Property</option>
           <option value="sell">Sell a Property</option>
           <option value="rent">Rent a Property</option>
         </select>

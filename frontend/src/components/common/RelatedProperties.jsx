@@ -44,7 +44,7 @@ export default function RelatedProperties() {
   if (loading)
     return (
       <div className="flex justify-center py-12">
-        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
 
@@ -75,7 +75,7 @@ export default function RelatedProperties() {
         <div className="text-center mt-12">
           <Link
             to={`/properties/${formattedLocation.toLowerCase()}`}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             View All Properties in {formattedLocation}
             <svg
               className="w-5 h-5"

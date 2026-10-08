@@ -71,7 +71,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-white md:rounded-2xl md:shadow-xl p-8 w-full relative">
+    <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 w-full relative">
       {/* Notification */}
       {notification.visible && (
         <Notification
@@ -82,14 +82,19 @@ const ContactForm = () => {
         />
       )}
 
-      <div className="text-center mb-6 lg:text-left">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Contact Us</h2>
-        <p className="text-gray-600 text-sm sm:text-base">
-          Fill out the form and our team will respond promptly.
+      {/* Standard Portal Heading Design */}
+      <div className="mb-6 md:mb-8 text-center md:text-left">
+        <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-4">
+          Get Expert Property Advice
+        </h2>
+        <div className="w-16 h-1 bg-red-600 mb-4 mx-auto md:mx-0"></div>
+        <p className="text-sm md:text-[15px] text-gray-600">
+          Speak with Rohtak's top real estate consultants today. We'll help you
+          secure the best deal on your dream property.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <input
             type="text"
@@ -98,7 +103,7 @@ const ContactForm = () => {
             onChange={handleChange}
             placeholder="Your Name*"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
+            className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
           <input
             type="email"
@@ -107,7 +112,7 @@ const ContactForm = () => {
             onChange={handleChange}
             placeholder="Your Email*"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
+            className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
         </div>
 
@@ -119,7 +124,7 @@ const ContactForm = () => {
             onChange={handleChange}
             placeholder="Phone Number*"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
+            className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
           <input
             type="text"
@@ -128,7 +133,7 @@ const ContactForm = () => {
             onChange={handleChange}
             placeholder="Your Location*"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition"
+            className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
         </div>
 
@@ -138,37 +143,40 @@ const ContactForm = () => {
           onChange={handleChange}
           placeholder="Your Message*"
           required
-          rows="5"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition resize-none"
+          rows="4"
+          className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors resize-none"
         />
 
-        <div className="flex items-start space-x-3">
+        <div className="flex items-start gap-3 pt-2">
           <input
             type="checkbox"
             name="gdprAgreement"
             checked={formData.gdprAgreement}
             onChange={handleChange}
             required
-            className="mt-1 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500"
+            className="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-600 shrink-0 cursor-pointer"
           />
-          <span className="text-sm text-gray-700">
-            I consent to storing my information to respond to my inquiry.
+          <span className="text-[13px] text-gray-600 leading-snug">
+            I consent to storing my information to respond to my inquiry and
+            agree to be contacted by Arjun Buildtech experts.
           </span>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading || !formData.gdprAgreement}
-          className="w-full bg-red-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-red-700 transition flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
-          {loading ? (
-            "Submitting..."
-          ) : (
-            <>
-              <Send size={20} />
-              <span>Submit Inquiry</span>
-            </>
-          )}
-        </button>
+        <div className="pt-4">
+          <button
+            type="submit"
+            disabled={loading || !formData.gdprAgreement}
+            className="w-full bg-red-600 hover:bg-red-700 text-white py-3.5 px-6 rounded font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            {loading ? (
+              "Submitting..."
+            ) : (
+              <>
+                <Send size={18} />
+                <span>Get Free Consultation</span>
+              </>
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

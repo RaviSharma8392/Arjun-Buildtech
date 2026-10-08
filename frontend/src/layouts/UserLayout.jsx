@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "../components/common/bars/Navbar";
 import Footer from "../components/Footer";
 
-import BottomNavbar from "../components/common/bars/BottomNavbar";
 import ChatBot from "../components/ChatBot";
 import { Outlet } from "react-router-dom";
 
@@ -20,8 +19,6 @@ const UserLayout = () => {
 
       {/* Footer can go here later */}
       <Footer />
-
-      <BottomNavbar />
     </div>
   );
 };

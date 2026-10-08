@@ -87,7 +87,7 @@ const AdminInquiries = () => {
                 setFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-fit border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              className="w-fit border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
               <option value="all">All Leads</option>
               <option value="7">Last 7 Days</option>
               <option value="30">Last 30 Days</option>
@@ -134,7 +134,7 @@ const AdminInquiries = () => {
                         {lead.name}
                       </td>
                       <td className="px-6 py-4">{lead.phone}</td>
-                      <td className="px-6 py-4 text-indigo-600">
+                      <td className="px-6 py-4 text-red-600">
                         {lead.email}
                       </td>
                       <td className="px-6 py-4">{lead.location || "-"}</td>

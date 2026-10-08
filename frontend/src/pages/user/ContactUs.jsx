@@ -5,18 +5,29 @@ import MapSection from "../../components/MapSection";
 
 const ContactUs = () => {
   return (
-    <div className="min-h-screen md:mt-10 bg-gradient-to-br from-slate-50 to-blue-50 pt-5 md:py-12 ">
-      <div className="flex justify-center items-start">
-        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Left: Contact Info */}
-          <ContactInfo />
+    <section className="bg-white border-t border-gray-200">
+      <div className="py-12 md:py-16">
+        {/* Main Content Container */}
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl mb-12 md:mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
+            {/* Left: Contact Info */}
+            <div className="w-full">
+              <ContactInfo />
+            </div>
 
-          {/* Right: Form */}
-          <ContactForm />
+            {/* Right: Form */}
+            <div className="w-full">
+              <ContactForm />
+            </div>
+          </div>
+        </div>
+
+        {/* Map Section (Full width or contained based on your MapSection component) */}
+        <div className="w-full bg-gray-50 border-t border-gray-200">
+          <MapSection />
         </div>
       </div>
-      <MapSection />
-    </div>
+    </section>
   );
 };
 

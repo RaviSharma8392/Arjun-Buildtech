@@ -10,7 +10,7 @@ const Checkbox = () => {
         id="consent"
         checked={consent}
         onChange={(e) => setConsent(e.target.checked)}
-        className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        className="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
       />
       <label htmlFor="consent" className="text-sm text-gray-600 leading-5">
         I agree to be contacted through{" "}

@@ -56,7 +56,7 @@ const AdminReviewsList = () => {
           </h1>
           <button
             onClick={() => navigate("/admin/reviews/new")}
-            className="flex items-center gap-2 bg-indigo-600 text-white md:px-5 px-4 py-1.5 md:py-2.5 rounded-lg hover:bg-indigo-700">
+            className="flex items-center gap-2 bg-red-600 text-white md:px-5 px-4 py-1.5 md:py-2.5 rounded-lg hover:bg-red-700">
             <Plus size={18} />
             Add Review
           </button>
@@ -74,7 +74,7 @@ const AdminReviewsList = () => {
                 <div className="absolute top-4 right-4 flex gap-3">
                   <button
                     onClick={() => navigate(`/admin/reviews/${r.id}`)}
-                    className="text-indigo-600">
+                    className="text-red-600">
                     <Edit size={16} />
                   </button>
                   <button onClick={() => remove(r.id)} className="text-red-500">
@@ -89,7 +89,7 @@ const AdminReviewsList = () => {
                 </p>
 
                 <div className="flex items-center gap-3 mt-5 border-t border-gray-100 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold">
+                  <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-semibold">
                     {r.name?.[0]}
                   </div>
                   <div>

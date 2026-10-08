@@ -5,12 +5,12 @@ const ReviewCard = ({ testimonial, isActive }) => {
   return (
     <div
       className={`bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border-2 ${
-        isActive ? "border-blue-500" : "border-transparent"
+        isActive ? "border-red-500" : "border-transparent"
       }`}>
       {/* Header with Google-style layout */}
       <div className="flex items-start gap-4 mb-4">
         {/* Avatar */}
-        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md">
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-md">
           <span className="text-white font-bold text-lg">
             {testimonial.name.charAt(0)}
           </span>
@@ -24,7 +24,7 @@ const ReviewCard = ({ testimonial, isActive }) => {
             </h3>
             {/* Verified Badge */}
             <svg
-              className="w-4 h-4 text-blue-500"
+              className="w-4 h-4 text-red-500"
               fill="currentColor"
               viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />

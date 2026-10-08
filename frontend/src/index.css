@@ -1,1 +1,71 @@
 @import "tailwindcss";
+
+@theme {
+  --color-red-50: #fde8e8;
+  --color-red-100: #fad1d1;
+  --color-red-500: #d8232a;
+  --color-red-600: #d8232a;
+  --color-red-700: #b91d22;
+  --color-red-800: #93171a;
+  --color-gray-50: #f4f5f7;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-gray-50);
+    color: #303030;
+  }
+}
+
+/* ==================================================
+   GOOGLE TRANSLATE PREMIUM CSS OVERRIDES
+   ================================================== */
+
+/* 1. Hide the Google Translate Top Bar completely */
+.skiptranslate iframe,
+body > .skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 2. Prevent body from shifting down when translate is active */
+body {
+  top: 0px !important;
+}
+
+/* 3. Hide the "Powered by Google" text and logo */
+.goog-te-gadget {
+  font-size: 0px !important;
+  color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.goog-te-gadget img {
+  display: none !important;
+}
+
+/* 4. Style the actual select dropdown to look premium */
+.goog-te-combo {
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #374151 !important; /* Tailwind text-gray-700 */
+  padding: 0 4px !important;
+  margin: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+  cursor: pointer !important;
+  width: 100% !important;
+}
+
+/* Clean up hover/focus states for the dropdown */
+.goog-te-combo:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hide the divider pipe Google inserts */
+.goog-te-gadget span {
+  display: none !important;
+}

@@ -20,11 +20,17 @@ const Home = lazy(() => import("./pages/user/Home"));
 const PropertiesPage = lazy(() => import("./pages/PropertiesPage"));
 const PropertyDetails = lazy(() => import("./pages/user/PropertyDetails"));
 const ClientReviews = lazy(() => import("./components/ClientReviews"));
+const ServicePage = lazy(() => import("./pages/user/ServicePage"));
 const Profile = lazy(() => import("./pages/Profile"));
+const PrivacyPolicy = lazy(() => import("./pages/user/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/user/TermsOfService"));
 const RealEstateServices = lazy(
   () => import("./components/RealEstateServices"),
 );
 const ContactUs = lazy(() => import("./pages/user/ContactUs"));
+const SeoListingPage = lazy(() => import("./pages/SeoListingPage"));
+const BlogListingPage = lazy(() => import("./pages/user/BlogListingPage"));
+const BlogDetailsPage = lazy(() => import("./pages/user/BlogDetailsPage"));
 
 // Admin Lazy Pages
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
@@ -49,14 +55,14 @@ const App = () => {
     <HelmetProvider>
       <Suspense
         fallback={
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-slate-100 text-center px-4">
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-red-50 to-slate-100 text-center px-4">
             <img
               src="/arjunBuildTechLogo.png"
               alt="Arjun BuildTech"
               className="w-28 h-28 object-contain animate-pulse mb-6 drop-shadow-md"
             />
             <div className="relative mb-5">
-              <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
             </div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Loading Your Dream Property...
@@ -69,27 +75,16 @@ const App = () => {
         }>
         <Routes>
           {/* ---------- User Routes ---------- */}
-          {/* <Route path="/sitemap" element={<SitemapPage />} /> */}
+          <Route path="/sitemap" element={<SitemapPage />} />
 
           <Route path="/" element={<UserLayout />}>
             <Route index element={<Home />} />
             {/* Property Listings by Location */}
             <Route path="properties" element={<PropertiesPage />} />
-            <Route
-              path="properties-for-sale-in-:location"
-              element={<PropertiesPage />}
-            />
+            <Route path="properties/:city" element={<PropertiesPage />} />
             <Route
               path="property/:location/:name/:id"
               element={<PropertyDetails />}
-            />
-            <Route
-              path="houses-for-sale-in-:location"
-              element={<PropertiesPage type="house" />}
-            />
-            <Route
-              path="plots-for-sale-in-:location"
-              element={<PropertiesPage type="plot" />}
             />
             {/* Pages / Components */}
             <Route path="testimonials" element={<ClientReviews />} />
@@ -103,6 +98,16 @@ const App = () => {
             <Route path="contact" element={<ContactUs />} />
             <Route path="profile" element={<Profile />} />
             <Route path="services" element={<RealEstateServices />} />
+            <Route path="services/:slug" element={<ServicePage />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="terms-of-service" element={<TermsOfService />} />
+            
+            {/* Blog Routes */}
+            <Route path="blog" element={<BlogListingPage />} />
+            <Route path="blog/:slug" element={<BlogDetailsPage />} />
+
+            {/* Programmatic Dynamic Handler for SEO Pages */}
+            <Route path=":slug" element={<SeoListingPage />} />
           </Route>
 
           {/* ---------- Admin Auth Routes ---------- */}

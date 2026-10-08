@@ -61,7 +61,7 @@ const Profile = () => {
               services in Rohtak, Haryana
             </li>
             <li>
-              <strong>Focus:</strong> Helping Clients Buy, Sell and Invest in
+              <strong>Focus:</strong> Helping Clients Sell and Invest in
               Property
             </li>
             <li>
@@ -114,7 +114,7 @@ const Profile = () => {
         {/* Company Contact Info */}
         <div className="border border-gray-200 rounded-lg p-6 grid md:grid-cols-3 gap-6">
           <div className="flex items-center space-x-3">
-            <FaMapMarkerAlt className="w-5 h-5 text-blue-600" />
+            <FaMapMarkerAlt className="w-5 h-5 text-red-600" />
             <div>
               <p className="font-medium text-gray-900">Address</p>
               <p className="text-gray-600 text-sm">G74P, Sector-27, Rohtak</p>
@@ -124,7 +124,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <FaPhone className="w-5 h-5 text-blue-600" />
+            <FaPhone className="w-5 h-5 text-red-600" />
             <div>
               <p className="font-medium text-gray-900">Phone</p>
               <p className="text-gray-600 text-sm">
@@ -133,7 +133,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <FaEnvelope className="w-5 h-5 text-blue-600" />
+            <FaEnvelope className="w-5 h-5 text-red-600" />
             <div>
               <p className="font-medium text-gray-900">Email</p>
               <p className="text-gray-600 text-sm">

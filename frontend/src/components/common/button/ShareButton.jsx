@@ -23,14 +23,14 @@ const ShareButton = ({ property }) => {
     },
     {
       name: "Facebook",
-      icon: <FaFacebookF className="w-6 h-6 text-blue-600" />,
+      icon: <FaFacebookF className="w-6 h-6 text-red-600" />,
       url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
         shareUrl
       )}`,
     },
     {
       name: "Twitter",
-      icon: <FaTwitter className="w-6 h-6 text-blue-400" />,
+      icon: <FaTwitter className="w-6 h-6 text-red-400" />,
       url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
         shareText + " " + shareUrl
       )}`,
@@ -49,7 +49,7 @@ const ShareButton = ({ property }) => {
       {/* Main Share Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-3 rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:text-blue-600 transition-colors duration-200">
+        className="p-3 rounded-full border border-gray-200 bg-gray-50 text-gray-600 hover:text-red-600 transition-colors duration-200">
         <FaShare className="w-5 h-5" />
       </button>
 

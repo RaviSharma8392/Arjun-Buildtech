@@ -1,42 +1,34 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
-// --- Always-loaded (above the fold) sections ---
 import HomeHeader from "../../components/common/banner/HomeHeader";
-import HomeBanner from "../../components/common/banner/HomeBanner";
+import TrustedBrands from "../../components/common/TrustedBrands";
 import RealEstateServices from "../../components/RealEstateServices";
 import WhyChooseArjunBuiltech from "../../components/common/WhyChooseArjunBuiltech";
 import FAQSection from "../../components/FAQSection";
 import FeaturedProperties from "../../components/FeaturedProperties";
 import MapSection from "../../components/MapSection";
+import MarketInsights from "../../components/MarketInsights";
+import SocialEmbeds from "../../components/common/SocialEmbeds";
+import EmiCalculator from "../../components/common/EmiCalculator";
 
 // --- Popup Inquiry Form ---
 import InquiryPopup from "../../components/common/form/InquiryPopup";
 
 // --- Lazy-loaded (below the fold) sections ---
-const Testimonials = lazy(() => import("../Testimonials"));
+const ClientReviews = lazy(() => import("../../components/ClientReviews"));
 const ContactUs = lazy(() => import("./ContactUs"));
 
-// --- Reusable fallback component for lazy loading ---
+// --- Reusable fallback component for lazy loading (Clean Portal Style) ---
 const LoadingFallback = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-slate-100 text-center px-4">
-    <img
-      src="/arjunBuildTechLogo.png"
-      alt="Arjun BuildTech"
-      className="w-28 h-28 object-contain animate-pulse mb-6 drop-shadow-md"
-    />
-
-    <div className="relative mb-5">
-      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+  <div className="flex flex-col items-center justify-center py-24 bg-white text-center px-4 border-t border-gray-100">
+    <div className="relative mb-4">
+      {/* Clean, thin red spinner */}
+      <div className="w-10 h-10 border-[3px] border-gray-100 border-t-red-600 rounded-full animate-spin mx-auto"></div>
     </div>
-
-    <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-      Loading Your Dream Property...
+    <h2 className="text-[15px] font-medium text-gray-600">
+      Loading content...
     </h2>
-
-    <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto">
-      Please wait a moment while we prepare your personalized real estate
-      experience.
-    </p>
   </div>
 );
 
@@ -54,12 +46,25 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50">
-      {/* 1️⃣ Header Section — Navigation & Branding */}
+    <div className="bg-[#F9F9F9] min-h-screen">
+      <Helmet>
+        <title>Arjun Buildtech | Real Estate, Plots & Villas in Rohtak</title>
+        <meta
+          name="description"
+          content="Looking for property in Rohtak? Arjun Buildtech is your trusted real estate partner for residential plots, luxury villas, and commercial properties."
+        />
+        <meta
+          name="keywords"
+          content="real estate Rohtak, plots in Rohtak, buy villa Rohtak, property for sale Rohtak, Arjun Buildtech"
+        />
+        <link rel="canonical" href="https://arjunbuildtech.com" />
+      </Helmet>
+
+      {/* 1️⃣ Hero Header */}
       <HomeHeader />
 
-      {/* 2️⃣ Hero Banner — Eye-catching intro */}
-      <HomeBanner />
+      {/* 2.5 Trusted Brands & Rating */}
+      <TrustedBrands />
 
       {/* 3️⃣ Featured Properties */}
       <FeaturedProperties />
@@ -67,16 +72,22 @@ const Home = () => {
       {/* 4️⃣ Real Estate Services */}
       <RealEstateServices />
 
+      {/* 4.5️⃣ EMI Calculator (Uncomment if needed) */}
+      {/* <EmiCalculator /> */}
+
       {/* 5️⃣ Why Choose Section */}
       <WhyChooseArjunBuiltech />
 
       {/* 6️⃣ Testimonials — Lazy load */}
       <Suspense fallback={<LoadingFallback />}>
-        <Testimonials />
+        <ClientReviews hideSeo={true} />
       </Suspense>
 
-      {/* 7️⃣ Map Section */}
-      <MapSection />
+      {/* 6.5 Market Insights */}
+      <MarketInsights />
+
+      {/* 7️⃣ Social Media Embeds */}
+      <SocialEmbeds />
 
       {/* 8️⃣ FAQ + Contact */}
       <Suspense fallback={<LoadingFallback />}>

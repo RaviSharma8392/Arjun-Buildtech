@@ -104,7 +104,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
             placeholder="Your Name"
             value={formData.name}
             onChange={handleChange}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 w-full"
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 w-full"
           />
           <div className="flex flex-1 border border-gray-300 rounded-lg">
             <span className="px-3 py-3 text-gray-500 border-r">+91</span>
@@ -127,7 +127,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
             placeholder="Email ID"
             value={formData.email}
             onChange={handleChange}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 w-full"
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 w-full"
           />
           <input
             type="text"
@@ -135,7 +135,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
             placeholder="Choose your location"
             value={formData.location}
             onChange={handleChange}
-            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 w-full"
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 w-full"
           />
         </div>
 
@@ -147,7 +147,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
               key={role}
               className={`px-4 py-2 border rounded-full cursor-pointer text-sm ${
                 formData.role === role
-                  ? "bg-blue-600 text-white border-blue-600"
+                  ? "bg-red-600 text-white border-red-600"
                   : "border-gray-300 text-gray-700 hover:bg-gray-100"
               }`}>
               <input
@@ -171,7 +171,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
               key={intent}
               className={`px-4 py-2 border rounded-full cursor-pointer text-sm ${
                 formData.intent === intent
-                  ? "bg-blue-600 text-white border-blue-600"
+                  ? "bg-red-600 text-white border-red-600"
                   : "border-gray-300 text-gray-700 hover:bg-gray-100"
               }`}>
               <input
@@ -194,7 +194,7 @@ const UserPropertyForm = ({ title, subtitle, roles, intents }) => {
           value={formData.description}
           onChange={handleChange}
           rows="4"
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 resize-none"></textarea>
 
         {/* Submit Button */}
         <button

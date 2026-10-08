@@ -64,17 +64,17 @@ const ImageUploader = ({ images = [], onImagesChange }) => {
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.currentTarget.classList.add("border-blue-400", "bg-blue-50");
+    e.currentTarget.classList.add("border-red-400", "bg-red-50");
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    e.currentTarget.classList.remove("border-blue-400", "bg-blue-50");
+    e.currentTarget.classList.remove("border-red-400", "bg-red-50");
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    e.currentTarget.classList.remove("border-blue-400", "bg-blue-50");
+    e.currentTarget.classList.remove("border-red-400", "bg-red-50");
 
     const inputEvent = { target: { files: e.dataTransfer.files } };
     handleFileChange(inputEvent);

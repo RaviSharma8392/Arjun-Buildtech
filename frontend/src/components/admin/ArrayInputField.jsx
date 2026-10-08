@@ -43,7 +43,7 @@ const ArrayInputField = ({
         onBlur={handleBlur} // update parent only on blur
         placeholder={placeholder}
         rows="3"
-        className={`p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+        className={`p-3 border rounded-lg w-full focus:ring-2 focus:ring-red-500 focus:border-transparent ${
           error ? "border-red-500" : "border-gray-300"
         }`}
       />
