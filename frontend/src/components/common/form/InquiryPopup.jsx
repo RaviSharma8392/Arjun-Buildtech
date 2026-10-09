@@ -16,6 +16,7 @@ import {
   serverTimestamp,
   getDocs,
 } from "firebase/firestore";
+import { normalizePropertyData } from "../../../utils/propertySchema";
 
 const InquiryPopup = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -38,7 +39,9 @@ const InquiryPopup = ({ isOpen, onClose }) => {
     const fetchTypes = async () => {
       try {
         const snapshot = await getDocs(collection(db, "properties"));
-        const data = snapshot.docs.map((doc) => doc.data());
+        const data = snapshot.docs.map((doc) =>
+          normalizePropertyData(doc.data()),
+        );
         const dynamicTypes = [
           ...new Set(
             data
@@ -95,6 +98,7 @@ const InquiryPopup = ({ isOpen, onClose }) => {
       });
 
       setSubmitted(true);
+      localStorage.setItem("hasInquired", "true");
     } catch (error) {
       console.error("Error saving inquiry:", error);
     } finally {

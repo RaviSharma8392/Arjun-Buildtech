@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,10 @@ const NotFoundPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-50 to-red-100 px-4">
+      <Helmet>
+        <title>Page Not Found | Arjun Buildtech</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <h1 className="text-6xl font-bold text-red-600 mb-4">404</h1>
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
         Oops! Page Not Found

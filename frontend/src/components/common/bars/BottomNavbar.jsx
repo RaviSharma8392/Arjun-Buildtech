@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaHome, FaBuilding, FaThLarge, FaPlus, FaPhone } from "react-icons/fa";
 
-export default function BottomNavbar({ onHelpClick }) {
+export default function BottomNavbar() {
   const location = useLocation();
   const isPropertyPage = location.pathname.startsWith("/property/");
   if (isPropertyPage) return null;

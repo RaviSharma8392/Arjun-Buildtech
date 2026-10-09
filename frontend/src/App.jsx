@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import { Toaster } from "react-hot-toast";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -13,7 +14,12 @@ import AddEditPropertyPage from "./pages/admin/EditPropertyPage";
 import AdminReviewsList from "./pages/admin/AdminReviewsList";
 import AdminReviewForm from "./pages/admin/AdminReviewForm";
 import AdminRegister from "./pages/admin/Register";
+import AdminSettings from "./pages/admin/AdminSettings";
 import SitemapPage from "./pages/user/Sitemap";
+import AdminLocalitiesList from "./pages/admin/AdminLocalitiesList";
+import AdminLocalityForm from "./pages/admin/AdminLocalityForm";
+import BlogListingPage from "./pages/user/BlogListingPage";
+import BlogDetailsPage from "./pages/user/BlogDetailsPage";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("./pages/user/Home"));
@@ -29,11 +35,13 @@ const RealEstateServices = lazy(
 );
 const ContactUs = lazy(() => import("./pages/user/ContactUs"));
 const SeoListingPage = lazy(() => import("./pages/SeoListingPage"));
-const BlogListingPage = lazy(() => import("./pages/user/BlogListingPage"));
-const BlogDetailsPage = lazy(() => import("./pages/user/BlogDetailsPage"));
+const HelpCenter = lazy(() => import("./pages/user/HelpCenter"));
+const SalesEnquiry = lazy(() => import("./pages/user/SalesEnquiry"));
+const ChatWithUs = lazy(() => import("./pages/user/ChatWithUs"));
 
 // Admin Lazy Pages
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
+const AdminSubscribers = lazy(() => import("./pages/admin/AdminSubscribers"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin")); // login/signup page
 
 // -------- Admin Route Guard --------
@@ -53,6 +61,7 @@ const RequireAdmin = ({ children }) => {
 const App = () => {
   return (
     <HelmetProvider>
+      <Toaster position="top-center" reverseOrder={false} />
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-red-50 to-slate-100 text-center px-4">
@@ -102,6 +111,11 @@ const App = () => {
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="terms-of-service" element={<TermsOfService />} />
             
+            {/* Help & Support Routes */}
+            <Route path="help-center" element={<HelpCenter />} />
+            <Route path="sales-enquiry" element={<SalesEnquiry />} />
+            <Route path="chat-with-us" element={<ChatWithUs />} />
+            
             {/* Blog Routes */}
             <Route path="blog" element={<BlogListingPage />} />
             <Route path="blog/:slug" element={<BlogDetailsPage />} />
@@ -138,7 +152,12 @@ const App = () => {
               element={<AdminPropertyManage />}
             />
             <Route path="inquiries" element={<AdminInquiries />} />
+            <Route path="subscribers" element={<AdminSubscribers />} />
             <Route path="reviews" element={<AdminReviewsList />} />
+            <Route path="localities" element={<AdminLocalitiesList />} />
+            <Route path="localities/new" element={<AdminLocalityForm />} />
+            <Route path="localities/:id" element={<AdminLocalityForm />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
           {/* Admin Review Forms */}
           <Route

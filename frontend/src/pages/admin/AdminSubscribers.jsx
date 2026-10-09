@@ -11,22 +11,22 @@ import {
 
 const PAGE_SIZE = 10;
 
-const AdminInquiries = () => {
-  const [leads, setLeads] = useState([]);
+const AdminSubscribers = () => {
+  const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("all"); // all | 7 | 30
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    fetchLeads();
+    fetchSubscribers();
   }, []);
 
-  const fetchLeads = async () => {
+  const fetchSubscribers = async () => {
     setLoading(true);
     try {
-      const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
+      const q = query(collection(db, "subscribers"), orderBy("subscribedAt", "desc"));
       const snapshot = await getDocs(q);
-      setLeads(
+      setSubscribers(
         snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -39,31 +39,22 @@ const AdminInquiries = () => {
     }
   };
 
-  // ✅ Manual delete only
-  const deleteLead = async (id) => {
-    if (!window.confirm("Delete this lead?")) return;
-    await deleteDoc(doc(db, "contacts", id));
-    setLeads((prev) => prev.filter((l) => l.id !== id));
+  const deleteSubscriber = async (id) => {
+    if (!window.confirm("Delete this subscriber?")) return;
+    await deleteDoc(doc(db, "subscribers", id));
+    setSubscribers((prev) => prev.filter((s) => s.id !== id));
   };
 
-  // ✅ Date filters only
-  const filteredLeads = leads.filter((lead) => {
-    if (!lead.createdAt?.seconds) return true;
-
-    const createdTime = lead.createdAt.seconds * 1000;
-
-    if (filter === "7") {
-      return createdTime > Date.now() - 7 * 24 * 60 * 60 * 1000;
-    }
-    if (filter === "30") {
-      return createdTime > Date.now() - 30 * 24 * 60 * 60 * 1000;
-    }
+  const filteredSubscribers = subscribers.filter((sub) => {
+    if (!sub.subscribedAt?.seconds) return true;
+    const createdTime = sub.subscribedAt.seconds * 1000;
+    if (filter === "7") return createdTime > Date.now() - 7 * 24 * 60 * 60 * 1000;
+    if (filter === "30") return createdTime > Date.now() - 30 * 24 * 60 * 60 * 1000;
     return true;
   });
 
-  // ✅ Pagination
-  const totalPages = Math.ceil(filteredLeads.length / PAGE_SIZE);
-  const paginatedLeads = filteredLeads.slice(
+  const totalPages = Math.ceil(filteredSubscribers.length / PAGE_SIZE) || 1;
+  const paginatedSubscribers = filteredSubscribers.slice(
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE,
   );
@@ -75,12 +66,11 @@ const AdminInquiries = () => {
           {/* HEADER */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 border-b border-slate-200">
             <div>
-              <h1 className="text-2xl font-semibold text-slate-800">Leads</h1>
+              <h1 className="text-2xl font-semibold text-slate-800">Newsletter Subscribers</h1>
               <p className="text-sm text-slate-500">
-                {filteredLeads.length} total records
+                {filteredSubscribers.length} total subscribers
               </p>
             </div>
-
             <select
               value={filter}
               onChange={(e) => {
@@ -88,7 +78,7 @@ const AdminInquiries = () => {
                 setPage(1);
               }}
               className="w-fit border border-gray-200 bg-white/60 backdrop-blur-sm rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition-all">
-              <option value="all">All Leads</option>
+              <option value="all">All Time</option>
               <option value="7">Last 7 Days</option>
               <option value="30">Last 30 Days</option>
             </select>
@@ -99,51 +89,40 @@ const AdminInquiries = () => {
             <table className="w-full text-sm text-slate-700">
               <thead className="bg-gray-100/50 text-slate-600 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200/60">
                 <tr>
-                  <th className="px-6 py-4 text-left">Name</th>
-                  <th className="px-6 py-4 text-left">Phone</th>
                   <th className="px-6 py-4 text-left">Email</th>
-                  <th className="px-6 py-4 text-left">Location</th>
-                  <th className="px-6 py-4 text-left">Message</th>
+                  <th className="px-6 py-4 text-left">Date Subscribed</th>
                   <th className="px-6 py-4 text-right">Action</th>
                 </tr>
               </thead>
-
               <tbody>
                 {loading ? (
                   <tr>
-                    <td
-                      colSpan="6"
-                      className="py-12 text-center text-slate-500">
-                      Loading leads...
+                    <td colSpan="3" className="py-12 text-center text-slate-500">
+                      Loading subscribers...
                     </td>
                   </tr>
-                ) : paginatedLeads.length === 0 ? (
+                ) : paginatedSubscribers.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan="6"
-                      className="py-12 text-center text-slate-500">
-                      No leads found
+                    <td colSpan="3" className="py-12 text-center text-slate-500">
+                      No subscribers found
                     </td>
                   </tr>
                 ) : (
-                  paginatedLeads.map((lead) => (
+                  paginatedSubscribers.map((sub) => (
                     <tr
-                      key={lead.id}
+                      key={sub.id}
                       className="border-b border-slate-200/60 hover:bg-white/40 transition duration-300">
                       <td className="px-6 py-4 font-medium text-slate-800">
-                        {lead.name}
+                        {sub.email}
                       </td>
-                      <td className="px-6 py-4">{lead.phone}</td>
-                      <td className="px-6 py-4 text-red-600">
-                        {lead.email}
-                      </td>
-                      <td className="px-6 py-4">{lead.location || "-"}</td>
-                      <td className="px-6 py-4 max-w-xs truncate">
-                        {lead.message}
+                      <td className="px-6 py-4">
+                        {sub.subscribedAt?.seconds
+                          ? new Date(sub.subscribedAt.seconds * 1000).toLocaleDateString()
+                          : "-"}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
-                          onClick={() => deleteLead(lead.id)}
+                          onClick={() => deleteSubscriber(sub.id)}
                           className="inline-flex items-center gap-1 text-xs font-medium text-red-600 hover:text-red-700">
                           Delete
                         </button>
@@ -160,7 +139,6 @@ const AdminInquiries = () => {
             <p className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </p>
-
             <div className="flex gap-2">
               <button
                 disabled={page === 1}
@@ -182,4 +160,4 @@ const AdminInquiries = () => {
   );
 };
 
-export default AdminInquiries;
+export default AdminSubscribers;

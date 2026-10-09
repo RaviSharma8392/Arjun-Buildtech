@@ -4,7 +4,7 @@ import AdminNavbar from "../components/common/bars/AdminNavbar";
 
 const AdminLayout = () => {
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-[#F8FAFC] via-[#F1F5F9] to-[#E2E8F0] flex flex-col font-sans selection:bg-red-100 selection:text-red-900">
       {/* Top Navbar */}
       <AdminNavbar />
 

@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
 
+const normalizeArrayValue = (value) => {
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
 const ArrayInputField = ({
   label,
   name,
@@ -11,12 +22,13 @@ const ArrayInputField = ({
   className = "",
   helperText = "Separate multiple items with commas",
 }) => {
-  const [inputValue, setInputValue] = useState(value.join(", "));
+  const normalizedValue = normalizeArrayValue(value);
+  const [inputValue, setInputValue] = useState(normalizedValue.join(", "));
 
   // Keep local input in sync if parent value changes
   useEffect(() => {
-    setInputValue(value.join(", "));
-  }, [value]);
+    setInputValue(normalizedValue.join(", "));
+  }, [normalizedValue]);
 
   const handleChange = (e) => {
     setInputValue(e.target.value); // update local state only

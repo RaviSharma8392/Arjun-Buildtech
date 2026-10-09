@@ -74,8 +74,8 @@ const AdminReviewForm = () => {
   };
 
   return (
-    <div className="md:min-h-screen bg-slate-100 md:p-4">
-      <div className="md:max-w-xl md:mx-auto bg-white md:rounded-2xl md:shadow-lg p-6">
+    <div className="md:p-8 p-4 relative text-slate-800">
+      <div className="md:max-w-xl md:mx-auto glass-panel md:rounded-2xl p-8">
         <h1 className="text-xl font-semibold mb-6">
           {isEdit ? "Update Review" : "Add Review"}
         </h1>
@@ -85,7 +85,7 @@ const AdminReviewForm = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Client name"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-200 bg-white/50 backdrop-blur-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition-all"
             required
           />
 
@@ -95,7 +95,7 @@ const AdminReviewForm = () => {
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
             placeholder="Client feedback"
-            className="w-full border  border-gray-300 rounded-lg px-4 py-2 min-h-[120px]"
+            className="w-full border border-gray-200 bg-white/50 backdrop-blur-sm rounded-lg px-4 py-3 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition-all"
             required
           />
 
@@ -103,17 +103,17 @@ const AdminReviewForm = () => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Location"
-            className="w-full border  border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-200 bg-white/50 backdrop-blur-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition-all"
           />
 
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full border  border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-200 bg-white/50 backdrop-blur-sm rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition-all"
           />
 
-          <button className="w-full bg-red-600 text-white py-3 rounded-lg flex justify-center gap-2">
+          <button className="w-full bg-red-600 text-white font-semibold py-3.5 rounded-lg flex justify-center gap-2 mt-4 hover:bg-red-700 hover:-translate-y-0.5 shadow-sm hover:shadow transition-all duration-300">
             <Save size={18} />
             {isEdit ? "Update Review" : "Save Review"}
           </button>

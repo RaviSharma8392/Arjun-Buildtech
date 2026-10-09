@@ -88,7 +88,7 @@ const SocialEmbeds = () => {
                 height="100%"
                 frameBorder="0"
                 scrolling="no"
-                allowTransparency="true"
+                allowtransparency="true"
                 title="Arjun Buildtech Instagram Reel"></iframe>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   Globe,
   FileText,
@@ -7,6 +8,7 @@ import {
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
+import Breadcrumb from "../../components/common/Breadcrumb";
 
 const SitemapPage = () => {
   const mainPages = [
@@ -43,7 +45,12 @@ const SitemapPage = () => {
 
   return (
     <div className="bg-[#F9F9F9] min-h-screen py-12 md:py-16">
+      <Helmet>
+        <title>Sitemap | Arjun Buildtech</title>
+        <meta name="description" content="Sitemap for Arjun Buildtech. Find all pages, properties, and resources for real estate in Rohtak." />
+      </Helmet>
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
+        <Breadcrumb items={[{ name: "Home", path: "/" }, { name: "Sitemap" }]} />
         {/* Standard Portal Header */}
         <div className="mb-10 text-center md:text-left">
           <div className="inline-flex items-center gap-2 text-red-600 bg-red-50 px-3.5 py-1.5 rounded-full text-xs font-semibold mb-4 border border-red-100">

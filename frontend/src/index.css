@@ -11,10 +11,47 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-gray-50);
     color: #303030;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
+  /* Premium Text Selection */
+  ::selection {
+    background-color: var(--color-red-500);
+    color: white;
+  }
+  ::-moz-selection {
+    background-color: var(--color-red-500);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgb(0,0,0,0.06)];
+  }
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
 }
 
 /* ==================================================
@@ -57,15 +94,4 @@ body {
   background-color: transparent !important;
   cursor: pointer !important;
   width: 100% !important;
-}
-
-/* Clean up hover/focus states for the dropdown */
-.goog-te-combo:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Hide the divider pipe Google inserts */
-.goog-te-gadget span {
-  display: none !important;
 }

@@ -7,8 +7,11 @@ import CommonBanner from "../components/common/banner/CommonBanner";
 import Button from "../components/common/button/Button";
 import UserPropertyCard from "../components/common/card/UserPropertyCard";
 import PropertyCard from "../components/common/card/PropertyCard";
+import Breadcrumb from "../components/common/Breadcrumb";
 import { createSlug } from "../utils/slugify";
+import { normalizePropertyData } from "../utils/propertySchema";
 import { Building2, ShieldCheck, MapPin, PhoneCall } from "lucide-react";
+import PopularLocalities from "../components/common/PopularLocalities";
 
 const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
   const { city: paramCity } = useParams();
@@ -46,15 +49,13 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
           getDocs(collection(db, "featuredproperties")),
         ]);
 
-        const propData = propSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const propData = propSnapshot.docs.map((doc) =>
+          normalizePropertyData({ id: doc.id, ...doc.data() }),
+        );
 
-        const featuredData = featuredSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const featuredData = featuredSnapshot.docs.map((doc) =>
+          normalizePropertyData({ id: doc.id, ...doc.data() }),
+        );
 
         // Merge and remove potential duplicates by ID
         const allData = [...propData, ...featuredData];
@@ -145,6 +146,15 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
         title={`Find Your Dream Property in ${BannerLocation}`}
         subtitle={`Explore the best residential and commercial properties in ${BannerLocation}`}
       />
+
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-6">
+        <Breadcrumb
+          items={[
+            { name: "Home", path: "/" },
+            { name: `Property in ${BannerLocation}`, path: `/properties` },
+          ]}
+        />
+      </div>
 
       {/* Filters Section (Structured Search Bar) */}
       <section className="bg-white border-b border-gray-200 sticky top-[72px] z-40 shadow-sm">
@@ -279,23 +289,21 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
         ) : isMobile ? (
           <div className="grid grid-cols-1 gap-4">
             {filteredProperties.map((property) => (
-              <Link
+              <div
                 key={property.id}
-                to={`/property/${createSlug(property.location)}/${createSlug(property.name)}/${property.id}`}
                 className="block bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <UserPropertyCard property={property} />
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProperties.map((property) => (
-              <Link
+              <div
                 key={property.id}
-                to={`/property/${createSlug(property.location)}/${createSlug(property.name)}/${property.id}`}
                 className="transition-all duration-200 hover:shadow-md rounded-lg bg-white border border-gray-200 overflow-hidden block">
                 <PropertyCard property={property} />
-              </Link>
+              </div>
             ))}
           </div>
         )}
@@ -348,6 +356,13 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Popular Localities */}
+      <section className="bg-white border-t border-gray-200">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          <PopularLocalities />
         </div>
       </section>
 

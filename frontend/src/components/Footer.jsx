@@ -157,28 +157,28 @@ const Footer = () => {
                 Government & Useful Links
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px] text-gray-500">
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://jamabandi.nic.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   Jamabandi Nakal (Digital Land Record)
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://haryanarera.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   HRERA Policies
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://ulbhryndc.org/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   Property ID Status
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://hsvp.org.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   HSVP Plots Status
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://hsvpeauction.org.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   HSVP e-Auction News
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://tcpharyana.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   Master Plan Rohtak 2031
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://tcpharyana.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   Haryana Building Code
                 </a>
-                <a href="#" className="hover:text-red-600 transition-colors">
+                <a href="https://egrashry.nic.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
                   Online Stamp (E-GRAS)
                 </a>
               </div>

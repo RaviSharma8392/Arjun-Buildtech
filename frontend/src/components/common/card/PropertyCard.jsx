@@ -3,10 +3,33 @@ import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
 import { Pencil, Trash2 } from "lucide-react";
 import { createSlug } from "../../../utils/slugify";
+import { normalizePropertyData } from "../../../utils/propertySchema";
 
-const PropertyCard = ({ property, isAdmin = false, onEdit, onDelete }) => {
-  const locationSlug = createSlug(property.location) || "location";
-  const nameSlug = createSlug(property.name) || "property";
+const PropertyCard = ({
+  property: propertyData,
+  isAdmin = false,
+  onEdit,
+  onDelete,
+}) => {
+  const property = normalizePropertyData(propertyData);
+  const locationText =
+    typeof property?.location === "string"
+      ? property.location
+      : property?.location?.locality ||
+        property?.location?.address ||
+        property?.location?.city ||
+        "Rohtak";
+  const locationSlug = createSlug(locationText) || "location";
+  const propertyName = property?.title || property?.name || "Property";
+  const nameSlug = createSlug(propertyName) || "property";
+  const normalizedFeatures = Array.isArray(property?.features)
+    ? property.features
+    : typeof property?.features === "string"
+      ? property.features
+          .split(",")
+          .map((feature) => feature.trim())
+          .filter(Boolean)
+      : [];
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow overflow-hidden flex flex-col h-full group">
@@ -15,7 +38,7 @@ const PropertyCard = ({ property, isAdmin = false, onEdit, onDelete }) => {
         {property.images?.[0] ? (
           <img
             src={property.images[0]}
-            alt={property.name}
+            alt={propertyName}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
@@ -28,6 +51,16 @@ const PropertyCard = ({ property, isAdmin = false, onEdit, onDelete }) => {
         {property.type && (
           <span className="absolute top-3 left-3 bg-gray-900 text-white px-2.5 py-0.5 rounded text-[10px] font-bold shadow-sm uppercase tracking-wider">
             {property.type === "house" ? "House/Villa" : property.type}
+          </span>
+        )}
+        {property.cornerProperty && (
+          <span className="absolute top-3 right-3 bg-amber-500 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow-sm uppercase tracking-wider">
+            Corner
+          </span>
+        )}
+        {property.reraNumber && (
+          <span className="absolute bottom-3 left-3 bg-green-600 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow-sm">
+            RERA ✓
           </span>
         )}
       </div>
@@ -47,17 +80,22 @@ const PropertyCard = ({ property, isAdmin = false, onEdit, onDelete }) => {
               </div>
             )}
           </div>
+          {property.pricePerSqft && (
+            <div className="text-xs text-gray-500 font-medium">
+              ₹{property.pricePerSqft.toLocaleString("en-IN")}/{property.areaUnit || "sqft"}
+            </div>
+          )}
 
           {/* Name/Title */}
           <h3 className="text-base font-semibold text-gray-800 line-clamp-1 mb-1 group-hover:text-red-600 transition-colors">
-            {property.name}
+            {propertyName}
           </h3>
 
           {/* Location */}
-          {property.location && (
+          {locationText && (
             <div className="flex items-center gap-1.5 text-gray-500 text-xs sm:text-sm mb-3">
               <FaMapMarkerAlt className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-              <span className="truncate">{property.location}</span>
+              <span className="truncate">{locationText}</span>
             </div>
           )}
 
@@ -84,11 +122,11 @@ const PropertyCard = ({ property, isAdmin = false, onEdit, onDelete }) => {
           </div>
 
           {/* Features */}
-          {property.features?.length > 0 && (
+          {normalizedFeatures.length > 0 && (
             <p className="text-xs text-gray-500 line-clamp-1 mb-2">
-              Features: {property.features.slice(0, 3).join(", ")}
-              {property.features.length > 3
-                ? ` +${property.features.length - 3} more`
+              Features: {normalizedFeatures.slice(0, 3).join(", ")}
+              {normalizedFeatures.length > 3
+                ? ` +${normalizedFeatures.length - 3} more`
                 : ""}
             </p>
           )}

@@ -12,7 +12,7 @@ const MobileContactBar = ({ property }) => {
 
   // Trigger enquiry
   const handleContactSeller = () => {
-    alert("Open Contact Seller form");
+    window.dispatchEvent(new Event("open-inquiry"));
   };
 
   return (

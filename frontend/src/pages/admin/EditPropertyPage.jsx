@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { db } from "../../services/firebase";
-import { doc, getDoc, setDoc, collection } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
 import DynamicPropertyForm from "../../components/admin/DynamicPropertyForm";
 import Notification from "../../components/common/notification/Notification"; // optional, if you have
+import {
+  buildFirestorePropertyPayload,
+  normalizePropertyData,
+} from "../../utils/propertySchema";
 
 const AddEditPropertyPage = () => {
   const { docId } = useParams();
@@ -24,7 +35,9 @@ const AddEditPropertyPage = () => {
           const docRef = doc(db, collectionName, docId);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            setInitialData({ id: docSnap.id, ...docSnap.data() });
+            setInitialData(
+              normalizePropertyData({ id: docSnap.id, ...docSnap.data() }),
+            );
           } else {
             setErrorMessage("Property not found.");
           }
@@ -39,6 +52,7 @@ const AddEditPropertyPage = () => {
       };
       fetchProperty();
     } else {
+      setInitialData(null);
       setLoading(false);
     }
   }, [docId, collectionName]);
@@ -46,13 +60,19 @@ const AddEditPropertyPage = () => {
   const handleSubmit = async (data) => {
     setErrorMessage(""); // clear previous errors
     try {
+      const payload = buildFirestorePropertyPayload(data);
+
       if (docId) {
-        await setDoc(doc(db, collectionName, docId), data, { merge: true });
-        alert("Property updated successfully!");
+        await setDoc(
+          doc(db, collectionName, docId),
+          { ...payload, updatedAt: serverTimestamp() },
+          { merge: true },
+        );
+        toast.success("Property updated successfully!");
       } else {
         const newDocRef = doc(collection(db, collectionName));
-        await setDoc(newDocRef, data);
-        alert("Property added successfully!");
+        await setDoc(newDocRef, { ...payload, createdAt: serverTimestamp() });
+        toast.success("Property added successfully!");
       }
       navigate("/admin");
     } catch (err) {
@@ -65,6 +85,7 @@ const AddEditPropertyPage = () => {
         message = "Service is temporarily unavailable. Try again later.";
       }
       setErrorMessage(message);
+      throw err;
     }
   };
 
@@ -77,7 +98,7 @@ const AddEditPropertyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 md:p-6">
+    <div className="md:p-6 p-4 relative text-slate-800">
       {/* Show error notification if any */}
       {errorMessage && (
         <Notification

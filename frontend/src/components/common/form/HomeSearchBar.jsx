@@ -4,6 +4,7 @@ import { Search, MapPin, Home, ChevronDown, Tag } from "lucide-react";
 import { createSlug } from "../../../utils/slugify";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase";
+import { normalizePropertyData } from "../../../utils/propertySchema";
 
 const HomeSearchBar = () => {
   const navigate = useNavigate();
@@ -29,13 +30,15 @@ const HomeSearchBar = () => {
     "Commercial",
   ]);
 
-  const statuses = ["Any", "For Sale", "For Rent"];
+  const statuses = ["Any", "For Sale", "Investment"];
 
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
         const snapshot = await getDocs(collection(db, "properties"));
-        const data = snapshot.docs.map((doc) => doc.data());
+        const data = snapshot.docs.map((doc) =>
+          normalizePropertyData(doc.data()),
+        );
 
         const dynamicLocations = [
           "All Locations",
@@ -90,15 +93,15 @@ const HomeSearchBar = () => {
       <div
         className="
           bg-white
-          rounded-2xl
-          shadow-xl
-          border border-gray-100
+          rounded-xl
+          shadow-lg
+          border border-gray-200/80
           overflow-hidden
 
-          /* Mobile */
+          /* Mobile Grid */
           grid grid-cols-2
 
-          /* Desktop */
+          /* Desktop Flex */
           md:flex md:flex-row
         ">
         {/* ================= LOCATION ================= */}
@@ -107,22 +110,22 @@ const HomeSearchBar = () => {
             relative
             col-span-2
             flex flex-col justify-center
-            p-3.5 sm:p-4
+            p-4
             md:flex-1
-            md:py-3 md:px-5
+            md:py-3.5 md:px-5
             md:border-b-0 md:border-r
             border-b border-gray-100
-            hover:bg-gray-50
+            hover:bg-gray-50/60
             transition-colors
             group
           ">
-          <div className="flex items-center gap-2.5 md:gap-3">
-            <div className="text-gray-400 group-hover:text-red-500 transition-colors shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="text-gray-400 group-hover:text-red-600 transition-colors shrink-0">
               <MapPin className="w-5 h-5" />
             </div>
 
             <div className="flex-1 min-w-0">
-              <label className="text-[9px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
                 Location
               </label>
 
@@ -132,9 +135,9 @@ const HomeSearchBar = () => {
                 className="
                   w-full
                   bg-transparent
-                  text-gray-900
-                  font-bold
-                  text-sm sm:text-base
+                  text-gray-800
+                  font-medium
+                  text-sm sm:text-[15px]
                   outline-none
                   appearance-none
                   cursor-pointer
@@ -154,7 +157,7 @@ const HomeSearchBar = () => {
                 w-4 h-4
                 text-gray-400
                 absolute
-                right-3.5 md:right-5
+                right-4 md:right-5
                 top-1/2
                 -translate-y-1/2
                 pointer-events-none
@@ -168,22 +171,22 @@ const HomeSearchBar = () => {
           className="
             relative
             flex flex-col justify-center
-            p-3.5 sm:p-4
+            p-4
             md:flex-1
-            md:py-3 md:px-5
+            md:py-3.5 md:px-5
             md:border-b-0 md:border-r
             border-r border-b border-gray-100
-            hover:bg-gray-50
+            hover:bg-gray-50/60
             transition-colors
             group
           ">
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="text-gray-400 group-hover:text-red-500 transition-colors shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="text-gray-400 group-hover:text-red-600 transition-colors shrink-0">
               <Tag className="w-5 h-5" />
             </div>
 
             <div className="flex-1 min-w-0">
-              <label className="text-[9px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
                 Status
               </label>
 
@@ -193,9 +196,9 @@ const HomeSearchBar = () => {
                 className="
                   w-full
                   bg-transparent
-                  text-gray-900
-                  font-bold
-                  text-sm sm:text-base
+                  text-gray-800
+                  font-medium
+                  text-sm sm:text-[15px]
                   outline-none
                   appearance-none
                   cursor-pointer
@@ -215,7 +218,7 @@ const HomeSearchBar = () => {
                 w-3.5 h-3.5
                 text-gray-400
                 absolute
-                right-2.5 md:right-5
+                right-3 md:right-5
                 top-1/2
                 -translate-y-1/2
                 pointer-events-none
@@ -229,22 +232,22 @@ const HomeSearchBar = () => {
           className="
             relative
             flex flex-col justify-center
-            p-3.5 sm:p-4
+            p-4
             md:flex-1
-            md:py-3 md:px-5
+            md:py-3.5 md:px-5
             md:border-b-0
             border-b border-gray-100
-            hover:bg-gray-50
+            hover:bg-gray-50/60
             transition-colors
             group
           ">
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="text-gray-400 group-hover:text-red-500 transition-colors shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="text-gray-400 group-hover:text-red-600 transition-colors shrink-0">
               <Home className="w-5 h-5" />
             </div>
 
             <div className="flex-1 min-w-0">
-              <label className="text-[9px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-0.5">
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
                 Type
               </label>
 
@@ -254,9 +257,9 @@ const HomeSearchBar = () => {
                 className="
                   w-full
                   bg-transparent
-                  text-gray-900
-                  font-bold
-                  text-sm sm:text-base
+                  text-gray-800
+                  font-medium
+                  text-sm sm:text-[15px]
                   outline-none
                   appearance-none
                   cursor-pointer
@@ -276,7 +279,7 @@ const HomeSearchBar = () => {
                 w-3.5 h-3.5
                 text-gray-400
                 absolute
-                right-2.5 md:right-5
+                right-3 md:right-5
                 top-1/2
                 -translate-y-1/2
                 pointer-events-none
@@ -289,10 +292,10 @@ const HomeSearchBar = () => {
         <div
           className="
             col-span-2
-            p-2.5
-            bg-gray-50
+            p-3
+            bg-gray-50/50
             md:bg-transparent
-            md:p-2
+            md:p-2.5
             flex items-center justify-center
             shrink-0
           ">
@@ -304,21 +307,21 @@ const HomeSearchBar = () => {
               bg-red-600
               hover:bg-red-700
               text-white
-              rounded-xl
-              px-8
+              rounded-lg
+              px-7
               py-3
-              md:py-4
-              font-bold
-              text-base
-              md:text-base
+              md:py-3.5
+              font-semibold
+              text-sm
+              sm:text-base
               flex items-center justify-center gap-2
               transition-all
-              shadow-md
-              hover:shadow-lg
+              shadow-sm
+              hover:shadow
               active:scale-[0.98]
             ">
-            <Search className="w-5 h-5" />
-            <span>Search Properties</span>
+            <Search className="w-4 h-4" />
+            <span>Search</span>
           </button>
         </div>
       </div>

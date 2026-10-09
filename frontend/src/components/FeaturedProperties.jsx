@@ -3,18 +3,14 @@ import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building } from "lucide-react";
-import { createSlug } from "../utils/slugify";
+
+import { normalizePropertyData } from "../utils/propertySchema";
 
 // Components
 import PropertyCard from "../components/common/card/PropertyCard";
 import UserPropertyCard from "./common/card/UserPropertyCard";
 
-const createPropertySlug = (property) => {
-  if (!property) return "#";
-  const locationSlug = createSlug(property.location) || "location";
-  const nameSlug = createSlug(property.name) || "property";
-  return `/property/${locationSlug}/${nameSlug}/${property.id}`;
-};
+
 
 // --- Sub-Component: Clean Skeleton Loader ---
 const PropertySkeleton = () => (
@@ -50,17 +46,15 @@ const FeaturedProperties = () => {
         setLoading(true);
         const q = query(collection(db, "featuredproperties"));
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const data = snapshot.docs.map((doc) =>
+          normalizePropertyData({ id: doc.id, ...doc.data() }),
+        );
         setProperties(data);
 
         const recentSnapshot = await getDocs(collection(db, "properties"));
-        const recentData = recentSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const recentData = recentSnapshot.docs.map((doc) =>
+          normalizePropertyData({ id: doc.id, ...doc.data() }),
+        );
 
         const sortedRecent = [...recentData].sort((a, b) => {
           const aTime = a.createdAt?.seconds
@@ -143,10 +137,7 @@ const FeaturedProperties = () => {
                   : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
               }>
               {properties.map((property) => (
-                <Link
-                  key={property.id}
-                  to={createPropertySlug(property)}
-                  className="group block">
+                <div key={property.id} className="group block">
                   {isMobile ? (
                     <UserPropertyCard property={property} />
                   ) : (
@@ -155,7 +146,7 @@ const FeaturedProperties = () => {
                       <PropertyCard property={property} />
                     </div>
                   )}
-                </Link>
+                </div>
               ))}
             </div>
           )}
@@ -199,10 +190,7 @@ const FeaturedProperties = () => {
                   : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
               }>
               {recentProperties.map((property) => (
-                <Link
-                  key={property.id}
-                  to={createPropertySlug(property)}
-                  className="group block">
+                <div key={property.id} className="group block">
                   {isMobile ? (
                     <UserPropertyCard property={property} />
                   ) : (
@@ -210,7 +198,7 @@ const FeaturedProperties = () => {
                       <PropertyCard property={property} />
                     </div>
                   )}
-                </Link>
+                </div>
               ))}
             </div>
 

@@ -41,37 +41,195 @@ const FormErrorNotification = ({
   );
 };
 
+const normalizeStringList = (value) => {
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") {
+    return value
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
+const normalizeLocationValue = (value) => {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    return value.address || value.locality || value.city || "";
+  }
+  return "";
+};
+
+const normalizeImageList = (value) => {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === "string" ? item : item?.url || ""))
+      .filter(Boolean);
+  }
+
+  if (typeof value === "string") {
+    return [value];
+  }
+
+  return [];
+};
+
 // Initial form state generator
-const getInitialFormData = (propertyType = "house", initialData = null) => ({
-  id: initialData?.id || Date.now(),
-  name: initialData?.name || "",
-  shortTitle: initialData?.shortTitle || "",
-  reference: initialData?.reference || "",
-  location: initialData?.location || "",
-  area: initialData?.area || "",
-  price: initialData?.price || "",
-  bedrooms: propertyType === "house" ? initialData?.bedrooms || "" : undefined,
-  bathrooms:
-    propertyType === "house" ? initialData?.bathrooms || "" : undefined,
-  facing: initialData?.facing || "",
-  furnishing:
-    propertyType === "house" ? initialData?.furnishing || "" : undefined,
-  transactionType: initialData?.transactionType || "New Property",
-  totalFloor:
-    propertyType === "house" ? initialData?.totalFloor || 1 : undefined,
-  builtUpArea:
-    propertyType === "house" ? initialData?.builtUpArea || "" : undefined,
-  landArea: propertyType === "plot" ? initialData?.landArea || "" : undefined,
-  propertyType: initialData?.propertyType || "",
-  description: initialData?.description || "",
-  features: initialData?.features || [],
-  amenities: initialData?.amenities || [],
-  type: propertyType,
-  images: initialData?.images || [],
-  errors: {},
-  uploading: false,
-  imageError: "",
-});
+const getInitialFormData = (propertyType = "house", initialData = null) => {
+  const normalizedType =
+    initialData?.type || initialData?.propertyType || propertyType || "";
+
+  const priceValue =
+    initialData?.price ??
+    initialData?.priceValue ??
+    initialData?.askingPrice ??
+    "";
+  const areaValue =
+    initialData?.area ??
+    initialData?.plotArea ??
+    initialData?.builtUpArea ??
+    initialData?.landArea ??
+    initialData?.propertyDetails?.area ??
+    "";
+  const locationValue = normalizeLocationValue(
+    initialData?.location ??
+      initialData?.locationObj ??
+      initialData?.locationInfo,
+  );
+  const featureValue =
+    initialData?.features ?? initialData?.propertyDetails?.features ?? [];
+  const amenityValue =
+    initialData?.amenities ?? initialData?.propertyDetails?.amenities ?? [];
+  const imageValue = normalizeImageList(
+    initialData?.images ?? initialData?.imageUrls ?? initialData?.gallery,
+  );
+
+  return {
+    id: initialData?.id || Date.now(),
+    name: initialData?.name || "",
+    shortTitle: initialData?.shortTitle || "",
+    reference: initialData?.reference || "",
+    location: locationValue || initialData?.address || "",
+    city: initialData?.city ?? initialData?.locationObj?.city ?? initialData?.locationInfo?.city ?? "",
+    locality: initialData?.locality ?? initialData?.locationObj?.locality ?? initialData?.locationInfo?.locality ?? "",
+    state: initialData?.state ?? initialData?.locationObj?.state ?? initialData?.locationInfo?.state ?? "",
+    pincode: initialData?.pincode ?? initialData?.locationObj?.pincode ?? initialData?.locationInfo?.pincode ?? "",
+    area: areaValue,
+    areaUnit: initialData?.areaUnit || "",
+    carpetArea: initialData?.carpetArea ?? "",
+    price: priceValue,
+    priceNegotiable: initialData?.priceNegotiable ?? false,
+    priceOnRequest: initialData?.priceOnRequest ?? false,
+    bedrooms:
+      normalizedType === "house"
+        ? (initialData?.bedrooms ??
+          initialData?.propertyDetails?.bedrooms ??
+          "")
+        : undefined,
+    bathrooms:
+      normalizedType === "house"
+        ? (initialData?.bathrooms ??
+          initialData?.propertyDetails?.bathrooms ??
+          "")
+        : undefined,
+    facing: initialData?.facing || "",
+    furnishing:
+      normalizedType === "house"
+        ? (initialData?.furnishing ??
+          initialData?.propertyDetails?.furnishing ??
+          "")
+        : undefined,
+    transactionType: initialData?.transactionType || "",
+    status: initialData?.status || "",
+    floor:
+      normalizedType === "house"
+        ? (initialData?.floor ??
+          initialData?.propertyDetails?.floorNumber ??
+          "")
+        : undefined,
+    parking:
+      normalizedType === "house"
+        ? (initialData?.parking ??
+          initialData?.propertyDetails?.parkingCovered ??
+          "")
+        : undefined,
+    parkingOpen: initialData?.propertyDetails?.parkingOpen ?? "",
+    balconies:
+      normalizedType === "house"
+        ? (initialData?.balconies ??
+          initialData?.propertyDetails?.balconies ??
+          "")
+        : undefined,
+    additionalRooms:
+      normalizedType === "house"
+        ? initialData?.additionalRooms || ""
+        : undefined,
+    propertyAge:
+      initialData?.propertyAge ??
+      initialData?.propertyDetails?.propertyAge ??
+      "",
+    constructionStatus:
+      initialData?.constructionStatus ||
+      initialData?.propertyDetails?.constructionStatus ||
+      "",
+    lift: normalizedType === "house" ? initialData?.lift || "" : undefined,
+    landmarks: initialData?.landmarks || "",
+    bookingAmount: initialData?.bookingAmount || "",
+    flooring:
+      normalizedType === "house" ? initialData?.flooring || "" : undefined,
+    ownershipType: initialData?.ownershipType || "",
+    totalFloor:
+      normalizedType === "house"
+        ? (initialData?.totalFloor ??
+          initialData?.propertyDetails?.totalFloors ??
+          "")
+        : undefined,
+    builtUpArea:
+      normalizedType === "house"
+        ? (initialData?.builtUpArea ??
+          initialData?.propertyDetails?.builtUpArea ??
+          "")
+        : undefined,
+    landArea:
+      normalizedType === "plot"
+        ? (initialData?.landArea ??
+          initialData?.plotArea ??
+          initialData?.area ??
+          "")
+        : undefined,
+    propertyType: initialData?.propertyType || normalizedType,
+    description: initialData?.description || "",
+    features: normalizeStringList(featureValue),
+    amenities: normalizeStringList(amenityValue),
+    type: normalizedType,
+    images: imageValue,
+    societyName: initialData?.societyName || "",
+    possessionDate: initialData?.possessionDate || "",
+    reraNumber: initialData?.reraNumber || "",
+    waterSupply: initialData?.waterSupply || "",
+    powerBackup: initialData?.powerBackup || "",
+    gasConnection: initialData?.gasConnection || "",
+    gatedCommunity: initialData?.gatedCommunity || "",
+    approvalAuthority: initialData?.approvalAuthority || "",
+    cornerProperty:
+      initialData?.cornerProperty ??
+      initialData?.propertyDetails?.cornerProperty ??
+      "",
+    roadWidth: initialData?.roadWidth || "",
+    roadWidthUnit:
+      initialData?.roadWidthUnit ||
+      initialData?.propertyDetails?.roadWidthUnit ||
+      "",
+    plotDimensions:
+      propertyType === "plot" ? initialData?.plotDimensions || "" : undefined,
+    boundaryWall:
+      propertyType === "plot" ? initialData?.boundaryWall || "" : undefined,
+    maintenanceCharges: initialData?.maintenanceCharges || "",
+    errors: {},
+    uploading: false,
+    imageError: "",
+  };
+};
 
 // Reducer for form state
 const formReducer = (state, action) => {
@@ -113,7 +271,7 @@ const formReducer = (state, action) => {
 
 const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   const [propertyType, setPropertyType] = useState(
-    initialData?.type || "house",
+    initialData?.type || initialData?.propertyType || "",
   );
   const [formData, dispatch] = useReducer(
     formReducer,
@@ -136,7 +294,11 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   const steps = [
     "Property Type",
     "Basic Info",
-    propertyType === "house" ? "House Details" : "Plot Details",
+    propertyType === "house"
+      ? "House Details"
+      : propertyType === "plot"
+        ? "Plot Details"
+        : "Property Details",
     "Description",
     "Features & Amenities",
     "Images",
@@ -185,9 +347,29 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   // Validation
   const validateForm = () => {
     const errors = {};
+    if (!propertyType) errors.propertyType = "Select a property type";
     if (!formData.name?.trim()) errors.name = "Property name is required";
     if (!formData.location?.trim()) errors.location = "Location is required";
-    if (!formData.price?.trim()) errors.price = "Price is required";
+    if (!formData.transactionType)
+      errors.transactionType = "Select a transaction type";
+    if (!formData.status) errors.status = "Select listing availability";
+    if (!formData.priceOnRequest && !String(formData.price || "").trim()) {
+      errors.price = "Price is required unless price is on request";
+    }
+    if (
+      formData.price &&
+      (!Number.isFinite(Number(formData.price)) || Number(formData.price) <= 0)
+    ) {
+      errors.price = "Enter a valid positive price";
+    }
+    if (
+      formData.area &&
+      (!Number.isFinite(Number(formData.area)) || Number(formData.area) <= 0)
+    ) {
+      errors.area = "Enter a valid positive area";
+    }
+    if (formData.area && !formData.areaUnit)
+      errors.areaUnit = "Select an area unit";
     if (!formData.images || formData.images.length === 0)
       errors.images = "At least one image is required";
 
@@ -199,36 +381,70 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     }
 
     dispatch({ type: "SET_ERRORS", errors });
+    setFormErrors(Object.values(errors));
+    setErrorVisible(Object.keys(errors).length > 0);
     return Object.keys(errors).length === 0;
   };
 
   // Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      const messages = Object.values(formData.errors).filter(Boolean);
-      setFormErrors(messages);
-      setErrorVisible(true);
-      return;
-    }
+    if (!validateForm()) return;
 
     const userFields = [
       "name",
       "shortTitle",
       "reference",
       "location",
+      "city",
+      "locality",
+      "state",
+      "pincode",
+      "area",
+      "areaUnit",
+      "carpetArea",
       "price",
+      "priceNegotiable",
+      "priceOnRequest",
       "bedrooms",
       "bathrooms",
+      "facing",
       "furnishing",
+      "transactionType",
+      "status",
+      "floor",
+      "parking",
+      "parkingOpen",
+      "balconies",
+      "additionalRooms",
+      "propertyAge",
+      "constructionStatus",
+      "lift",
+      "landmarks",
+      "bookingAmount",
+      "flooring",
+      "ownershipType",
       "totalFloor",
       "builtUpArea",
       "landArea",
-      "transactionType",
       "propertyType",
       "description",
       "features",
       "amenities",
+      "societyName",
+      "possessionDate",
+      "reraNumber",
+      "waterSupply",
+      "powerBackup",
+      "gasConnection",
+      "gatedCommunity",
+      "approvalAuthority",
+      "cornerProperty",
+      "roadWidth",
+      "roadWidthUnit",
+      "plotDimensions",
+      "boundaryWall",
+      "maintenanceCharges",
       "type",
       "images",
     ];
@@ -239,7 +455,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
     }, {});
 
     try {
-      onSubmit(dataToSubmit);
+      await onSubmit(dataToSubmit);
       setNotification({
         message: initialData
           ? "Property updated successfully!"
@@ -247,8 +463,8 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
         type: "success",
         visible: true,
       });
-      setErrorVisible(false); // hide form errors on success
-    } catch (error) {
+      setErrorVisible(false);
+    } catch {
       setNotification({
         message: "Failed to save property. Please try again.",
         type: "error",
@@ -280,6 +496,11 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
                 </label>
               ))}
             </div>
+            {formData.errors.propertyType && (
+              <p className="mt-2 text-sm text-red-600">
+                {formData.errors.propertyType}
+              </p>
+            )}
           </FormSection>
         );
       case 1:
@@ -310,7 +531,70 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               value={formData.location}
               onChange={handleChange}
               error={formData.errors.location}
+              placeholder="Street address or project location"
             />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <InputField
+                label="Locality / Sector"
+                name="locality"
+                value={formData.locality}
+                onChange={handleChange}
+              />
+              <InputField
+                label="City"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+              />
+              <InputField
+                label="State"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+              />
+              <InputField
+                label="PIN Code"
+                name="pincode"
+                type="number"
+                value={formData.pincode}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <InputField
+                  label="Area"
+                  name="area"
+                  value={formData.area}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="w-1/3">
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Area Unit
+                </label>
+                <select
+                  name="areaUnit"
+                  value={formData.areaUnit}
+                  onChange={handleChange}
+                  className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                  <option value="">Select unit</option>
+                  <option value="sq_ft">Square feet</option>
+                  <option value="sq_yd">Square yards (Gaj)</option>
+                  <option value="sq_m">Square metres</option>
+                  <option value="acre">Acres</option>
+                  <option value="kanal">Kanals</option>
+                  {formData.areaUnit &&
+                    !["sq_ft", "sq_yd", "sq_m", "acre", "kanal"].includes(
+                      formData.areaUnit,
+                    ) && (
+                      <option value={formData.areaUnit}>
+                        {formData.areaUnit} (existing value)
+                      </option>
+                    )}
+                </select>
+              </div>
+            </div>
             <InputField
               label="Price"
               name="price"
@@ -318,38 +602,174 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               onChange={handleChange}
               error={formData.errors.price}
             />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  name="priceNegotiable"
+                  checked={Boolean(formData.priceNegotiable)}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "UPDATE_FIELD",
+                      field: "priceNegotiable",
+                      value: event.target.checked,
+                    })
+                  }
+                  className="h-4 w-4 accent-red-600"
+                />
+                Price is negotiable
+              </label>
+              <label className="flex items-center gap-2 text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  name="priceOnRequest"
+                  checked={Boolean(formData.priceOnRequest)}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "UPDATE_FIELD",
+                      field: "priceOnRequest",
+                      value: event.target.checked,
+                    })
+                  }
+                  className="h-4 w-4 accent-red-600"
+                />
+                Show price on request
+              </label>
+            </div>
+            <InputField
+              label="Carpet Area"
+              name="carpetArea"
+              value={formData.carpetArea}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Booking Amount"
+              name="bookingAmount"
+              value={formData.bookingAmount}
+              onChange={handleChange}
+            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Listing Availability
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select availability</option>
+                <option value="Available">Available</option>
+                <option value="Under Offer">Under Offer</option>
+                <option value="Sold">Sold</option>
+                <option value="Rented">Rented</option>
+                <option value="Off Market">Off Market</option>
+                {formData.status && !["Available", "Under Offer", "Sold", "Rented", "Off Market"].includes(formData.status) && (
+                  <option value={formData.status}>{formData.status} (existing value)</option>
+                )}
+              </select>
+              {formData.errors.status && <p className="mt-1 text-xs text-red-600">{formData.errors.status}</p>}
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Possession / Construction Status
+              </label>
+              <select
+                name="constructionStatus"
+                value={formData.constructionStatus}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select status</option>
+                <option value="Ready to Move">Ready to Move</option>
+                <option value="Under Construction">Under Construction</option>
+                <option value="New Launch">New Launch</option>
+                <option value="Proposed">Proposed</option>
+                <option value="Not Applicable">Not Applicable</option>
+                {formData.constructionStatus && !["Ready to Move", "Under Construction", "New Launch", "Proposed", "Not Applicable"].includes(formData.constructionStatus) && (
+                  <option value={formData.constructionStatus}>{formData.constructionStatus} (existing value)</option>
+                )}
+              </select>
+            </div>
+            <InputField
+              label="Society / Project Name"
+              name="societyName"
+              value={formData.societyName}
+              onChange={handleChange}
+              placeholder="e.g. Suncity Township"
+            />
+            <InputField
+              label="Possession Date"
+              name="possessionDate"
+              type="date"
+              value={formData.possessionDate}
+              onChange={handleChange}
+            />
           </FormSection>
         );
       case 2:
+        if (!propertyType) {
+          return (
+            <FormSection title="Property Details">
+              <p className="text-sm text-gray-600">
+                Select House/Villa or Plot/Land in the Property Type section to
+                see the relevant fields.
+              </p>
+            </FormSection>
+          );
+        }
         return propertyType === "house" ? (
           <FormSection title="House Details">
-            <InputField
-              label="Bedrooms"
-              name="bedrooms"
-              value={formData.bedrooms}
-              onChange={handleChange}
-              error={formData.errors.bedrooms}
-            />
-            <InputField
-              label="Bathrooms"
-              name="bathrooms"
-              value={formData.bathrooms}
-              onChange={handleChange}
-              error={formData.errors.bathrooms}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Bedrooms"
+                name="bedrooms"
+                value={formData.bedrooms}
+                onChange={handleChange}
+                error={formData.errors.bedrooms}
+              />
+              <InputField
+                label="Bathrooms"
+                name="bathrooms"
+                value={formData.bathrooms}
+                onChange={handleChange}
+                error={formData.errors.bathrooms}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Balconies"
+                name="balconies"
+                type="number"
+                value={formData.balconies}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Parking (e.g. 1 Covered)"
+                name="parking"
+                value={formData.parking}
+                onChange={handleChange}
+              />
+            </div>
             <InputField
               label="Furnishing"
               name="furnishing"
               value={formData.furnishing}
               onChange={handleChange}
             />
-            <InputField
-              label="Total Floors"
-              name="totalFloor"
-              type="number"
-              value={formData.totalFloor}
-              onChange={handleChange}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Floor (e.g. 3(Out of 5))"
+                name="floor"
+                value={formData.floor}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Total Floors"
+                name="totalFloor"
+                type="number"
+                value={formData.totalFloor}
+                onChange={handleChange}
+              />
+            </div>
             <InputField
               label="Built-up Area (sq.ft)"
               name="builtUpArea"
@@ -357,17 +777,205 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               onChange={handleChange}
             />
             <InputField
-              label="Facing"
+              label="Carpet Area"
+              name="carpetArea"
+              value={formData.carpetArea}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Property Age"
+              name="propertyAge"
+              value={formData.propertyAge}
+              onChange={handleChange}
+              placeholder="e.g. 5 years"
+            />
+            <InputField
+              label="Open Parking Spaces"
+              name="parkingOpen"
+              type="number"
+              value={formData.parkingOpen}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Facing (e.g. North-East)"
               name="facing"
               value={formData.facing}
               onChange={handleChange}
             />
             <InputField
-              label="Transaction Type"
-              name="transactionType"
-              value={formData.transactionType}
+              label="Additional Rooms (e.g. 1 Store Room)"
+              name="additionalRooms"
+              value={formData.additionalRooms}
               onChange={handleChange}
             />
+            <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Lift"
+                name="lift"
+                type="number"
+                value={formData.lift}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Flooring (e.g. Marble)"
+                name="flooring"
+                value={formData.flooring}
+                onChange={handleChange}
+              />
+            </div>
+            <label className="block text-sm font-medium text-gray-700">
+              Ownership Type
+              <select
+                name="ownershipType"
+                value={formData.ownershipType}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select ownership type</option>
+                <option value="Freehold">Freehold</option>
+                <option value="Leasehold">Leasehold</option>
+                <option value="Power of Attorney">Power of Attorney</option>
+                <option value="Co-operative Society">
+                  Co-operative Society
+                </option>
+                <option value="Other">Other</option>
+                {formData.ownershipType &&
+                  ![
+                    "Freehold",
+                    "Leasehold",
+                    "Power of Attorney",
+                    "Co-operative Society",
+                    "Other",
+                  ].includes(formData.ownershipType) && (
+                    <option value={formData.ownershipType}>
+                      {formData.ownershipType} (existing value)
+                    </option>
+                  )}
+              </select>
+            </label>
+            <InputField
+              label="Landmarks"
+              name="landmarks"
+              value={formData.landmarks}
+              onChange={handleChange}
+            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Transaction Type
+              </label>
+              <select
+                name="transactionType"
+                value={formData.transactionType}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select transaction type</option>
+                <option value="Sale">Sale</option>
+                <option value="Resale">Resale</option>
+                <option value="Rent">Rent</option>
+                <option value="Lease">Lease</option>
+                {formData.transactionType && !["Sale", "Resale", "Rent", "Lease"].includes(formData.transactionType) && (
+                  <option value={formData.transactionType}>{formData.transactionType} (existing value)</option>
+                )}
+                {formData.transactionType &&
+                  !["Sale", "Resale", "Rent", "Lease"].includes(
+                    formData.transactionType,
+                  ) && (
+                    <option value={formData.transactionType}>
+                      {formData.transactionType} (existing value)
+                    </option>
+                  )}
+              </select>
+              {formData.errors.transactionType && (
+                <p className="mt-1 text-xs text-red-600">
+                  {formData.errors.transactionType}
+                </p>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <InputField
+                label="Water Supply"
+                name="waterSupply"
+                value={formData.waterSupply}
+                onChange={handleChange}
+                placeholder="Municipal / Borewell / Both"
+              />
+              <InputField
+                label="Power Backup"
+                name="powerBackup"
+                value={formData.powerBackup}
+                onChange={handleChange}
+                placeholder="Full / Partial / None"
+              />
+            </div>
+            <InputField
+              label="Gas Connection"
+              name="gasConnection"
+              value={formData.gasConnection}
+              onChange={handleChange}
+              placeholder="Piped Gas / LPG / None"
+            />
+            <InputField
+              label="RERA Number"
+              name="reraNumber"
+              value={formData.reraNumber}
+              onChange={handleChange}
+              placeholder="e.g. HRERA-GRG-2024-1234"
+            />
+            <InputField
+              label="Approval Authority"
+              name="approvalAuthority"
+              value={formData.approvalAuthority}
+              onChange={handleChange}
+              placeholder="e.g. HSVP, DTCP, MCR"
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <InputField
+                    label="Road Width"
+                    name="roadWidth"
+                    value={formData.roadWidth}
+                    onChange={handleChange}
+                    placeholder="e.g. 30"
+                  />
+                </div>
+                <div className="w-20">
+                  <InputField
+                    label="Unit"
+                    name="roadWidthUnit"
+                    value={formData.roadWidthUnit}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <InputField
+                label="Gated Community"
+                name="gatedCommunity"
+                value={formData.gatedCommunity}
+                onChange={handleChange}
+                placeholder="Yes / No"
+              />
+            </div>
+            <label className="block text-sm font-medium text-gray-700">
+              Corner Property
+              <select
+                name="cornerProperty"
+                value={formData.cornerProperty}
+                onChange={(event) =>
+                  dispatch({
+                    type: "UPDATE_FIELD",
+                    field: "cornerProperty",
+                    value:
+                      event.target.value === ""
+                        ? ""
+                        : event.target.value === "true",
+                  })
+                }
+                className="mt-1 w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Not confirmed</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </label>
           </FormSection>
         ) : (
           <FormSection title="Plot Details">
@@ -379,11 +987,166 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               error={formData.errors.landArea}
             />
             <InputField
-              label="Transaction Type"
-              name="transactionType"
-              value={formData.transactionType}
+              label="Property Age"
+              name="propertyAge"
+              value={formData.propertyAge}
+              onChange={handleChange}
+              placeholder="e.g. 5 years"
+            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Possession / Construction Status
+              </label>
+              <select
+                name="constructionStatus"
+                value={formData.constructionStatus}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select status</option>
+                <option value="Ready to Move">Ready to Move</option>
+                <option value="Under Construction">Under Construction</option>
+                <option value="New Launch">New Launch</option>
+                <option value="Proposed">Proposed</option>
+                <option value="Not Applicable">Not Applicable</option>
+              </select>
+            </div>
+            <InputField
+              label="Facing (e.g. North-East)"
+              name="facing"
+              value={formData.facing}
               onChange={handleChange}
             />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Ownership Type
+              </label>
+              <select
+                name="ownershipType"
+                value={formData.ownershipType}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select ownership type</option>
+                <option value="Freehold">Freehold</option>
+                <option value="Leasehold">Leasehold</option>
+                <option value="Power of Attorney">Power of Attorney</option>
+                <option value="Co-operative Society">
+                  Co-operative Society
+                </option>
+                <option value="Other">Other</option>
+                {formData.ownershipType && !["Freehold", "Leasehold", "Power of Attorney", "Co-operative Society", "Other"].includes(formData.ownershipType) && (
+                  <option value={formData.ownershipType}>{formData.ownershipType} (existing value)</option>
+                )}
+              </select>
+            </div>
+            <InputField
+              label="Landmarks"
+              name="landmarks"
+              value={formData.landmarks}
+              onChange={handleChange}
+            />
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Transaction Type
+              </label>
+              <select
+                name="transactionType"
+                value={formData.transactionType}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Select transaction type</option>
+                <option value="Sale">Sale</option>
+                <option value="Resale">Resale</option>
+                <option value="Rent">Rent</option>
+                <option value="Lease">Lease</option>
+                {formData.transactionType && !["Sale", "Resale", "Rent", "Lease"].includes(formData.transactionType) && (
+                  <option value={formData.transactionType}>{formData.transactionType} (existing value)</option>
+                )}
+              </select>
+            </div>
+            <InputField
+              label="Plot Dimensions (e.g. 30x50 ft)"
+              name="plotDimensions"
+              value={formData.plotDimensions}
+              onChange={handleChange}
+              placeholder="e.g. 30x50 ft"
+            />
+            <InputField
+              label="Boundary Wall"
+              name="boundaryWall"
+              value={formData.boundaryWall}
+              onChange={handleChange}
+              placeholder="Yes / No / Partial"
+            />
+            <InputField
+              label="RERA Number"
+              name="reraNumber"
+              value={formData.reraNumber}
+              onChange={handleChange}
+              placeholder="e.g. HRERA-GRG-2024-1234"
+            />
+            <InputField
+              label="Approval Authority"
+              name="approvalAuthority"
+              value={formData.approvalAuthority}
+              onChange={handleChange}
+              placeholder="e.g. HSVP, DTCP, MCR"
+            />
+            <InputField
+              label="Water Supply"
+              name="waterSupply"
+              value={formData.waterSupply}
+              onChange={handleChange}
+              placeholder="Municipal / Borewell / Both"
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <InputField
+                    label="Road Width"
+                    name="roadWidth"
+                    value={formData.roadWidth}
+                    onChange={handleChange}
+                    placeholder="e.g. 30"
+                  />
+                </div>
+                <div className="w-20">
+                  <InputField
+                    label="Unit"
+                    name="roadWidthUnit"
+                    value={formData.roadWidthUnit}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <InputField
+                label="Gated Community"
+                name="gatedCommunity"
+                value={formData.gatedCommunity}
+                onChange={handleChange}
+                placeholder="Yes / No"
+              />
+            </div>
+            <label className="block text-sm font-medium text-gray-700">
+              Corner Property
+              <select
+                name="cornerProperty"
+                value={formData.cornerProperty}
+                onChange={(event) =>
+                  dispatch({
+                    type: "UPDATE_FIELD",
+                    field: "cornerProperty",
+                    value:
+                      event.target.value === ""
+                        ? ""
+                        : event.target.value === "true",
+                  })
+                }
+                className="mt-1 w-full rounded-lg border border-gray-300 p-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200">
+                <option value="">Not confirmed</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </label>
           </FormSection>
         );
       case 3:
@@ -415,6 +1178,13 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               onChange={handleArrayChange}
               helperText="Separate amenities with commas"
             />
+            <InputField
+              label="Monthly Maintenance Charges (₹)"
+              name="maintenanceCharges"
+              value={formData.maintenanceCharges}
+              onChange={handleChange}
+              placeholder="e.g. 3000"
+            />
           </FormSection>
         );
       case 5:
@@ -435,7 +1205,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
   };
 
   return (
-    <div className="md:p-6 bg-white rounded-lg shadow-lg relative">
+    <div className="md:p-8 glass-panel md:rounded-2xl rounded-xl relative">
       {/* Centralized Form Errors */}
       <FormErrorNotification
         messages={formErrors}
@@ -457,7 +1227,7 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
       {isMobile ? (
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 p-4 bg-white rounded-lg shadow-lg">
+          className="space-y-6 p-4 glass-panel rounded-xl">
           {/* Stepper Progress */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-1 text-sm font-medium text-gray-700">
@@ -501,8 +1271,8 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
               <button
                 type="submit"
                 disabled={formData.uploading}
-                className="flex-1 ml-2 bg-green-600 text-white font-semibold py-1 px-1 rounded-lg hover:bg-green-700 transition">
-                {initialData ? "Update Property" : "Save Property Listing"}
+                className="flex-1 ml-2 bg-red-600 text-white font-semibold py-2 px-1 rounded-lg shadow-sm hover:bg-red-700 hover:shadow hover:-translate-y-0.5 transition-all duration-300">
+                {initialData ? "Update Property" : "Save Property"}
               </button>
             )}
           </div>
@@ -518,9 +1288,9 @@ const DynamicPropertyForm = ({ onSubmit, initialData = null }) => {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-green-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-700 transition"
+              className="bg-red-600 text-white px-8 py-3.5 rounded-lg text-lg font-semibold hover:bg-red-700 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-300"
               disabled={formData.uploading}>
-              {initialData ? "Update Property" : "Save Property Listing"}
+              {initialData ? "Update Property" : "Save Property"}
             </button>
           </div>
         </form>

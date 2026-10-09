@@ -4,7 +4,7 @@ import { Search, MapPin, Home, Building2, Landmark } from "lucide-react";
 
 const HomeBanner = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("Buy");
+  const [activeTab] = useState("Buy");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
@@ -16,11 +16,6 @@ const HomeBanner = () => {
     }
   };
 
-  const tabs = [
-    { name: "Buy", icon: <Home size={16} /> },
-    { name: "Rent", icon: <Building2 size={16} /> },
-    { name: "Commercial", icon: <Landmark size={16} /> },
-  ];
 
   return (
     <div className="relative w-full h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden font-sans mt-0 lg:mt-0">
@@ -62,7 +57,7 @@ const HomeBanner = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-3.5 rounded-lg font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_0_rgba(220,38,38,0.39)] hover:shadow-[0_6px_20px_rgba(220,38,38,0.23)]"
+                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-3.5 rounded-lg font-bold text-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-1 shadow-[0_4px_14px_0_rgba(220,38,38,0.39)] hover:shadow-[0_6px_20px_rgba(220,38,38,0.23)]"
                 >
                   <Search size={20} />
                   Search

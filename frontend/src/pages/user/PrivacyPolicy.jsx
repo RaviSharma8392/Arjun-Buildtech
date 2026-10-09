@@ -1,9 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+      <Helmet>
+        <title>Privacy Policy | Arjun Buildtech</title>
+        <meta name="description" content="Read the privacy policy of Arjun Buildtech. We value your privacy and are committed to protecting your personal data." />
+      </Helmet>
       <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
         <h1 className="text-3xl font-bold text-gray-900 mb-6 border-b pb-4">Privacy Policy</h1>
         

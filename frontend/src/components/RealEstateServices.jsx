@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   FaHome,
   FaHandshake,
@@ -47,8 +48,17 @@ const services = [
 ];
 
 const RealEstateServices = () => {
+  const location = useLocation();
+  const isServicesRoute = location.pathname === "/services" || location.pathname === "/real-estate-services";
+
   return (
-    <section className="py-12 md:py-16 bg-[#F9F9F9] border-t border-gray-200">
+    <section className={`py-12 md:py-16 bg-[#F9F9F9] border-t border-gray-200 ${isServicesRoute ? "mt-[70px] min-h-screen" : ""}`}>
+      {isServicesRoute && (
+        <Helmet>
+          <title>Real Estate Services | Arjun Buildtech Rohtak</title>
+          <meta name="description" content="Explore top-tier real estate services in Rohtak with Arjun Buildtech. We offer property consultation, investment advice, and dedicated support for buying and selling plots and villas." />
+        </Helmet>
+      )}
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         {/* Standard Portal Heading Design */}
         <div className="mb-8 md:mb-10">

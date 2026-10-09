@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../../services/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  limit,
+  getDocs,
+} from "firebase/firestore";
 import { Helmet } from "react-helmet-async";
 
-import PlotDetails from "../../components/common/info/PlotDetails";
-import HouseDetails from "../../components/common/info/HouseDetails";
+import PremiumPropertyDetails from "../../components/common/info/PremiumPropertyDetails";
+import { normalizePropertyData } from "../../utils/propertySchema";
 
 const PropertyDetailsPage = () => {
   const { id } = useParams(); // Firestore document ID
   const [property, setProperty] = useState(null);
+  const [similarProperties, setSimilarProperties] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,26 +26,52 @@ const PropertyDetailsPage = () => {
       try {
         setLoading(true);
 
-        /* 1️⃣ Try main properties collection */
-        const mainRef = doc(db, "properties", id);
-        const mainSnap = await getDoc(mainRef);
+        // Fetch from both properties and featuredproperties in parallel for speed
+        const [mainSnap, featuredSnap] = await Promise.allSettled([
+          getDoc(doc(db, "properties", id)),
+          getDoc(doc(db, "featuredproperties", id))
+        ]);
 
-        if (mainSnap.exists()) {
-          setProperty({ id: mainSnap.id, ...mainSnap.data() });
-          return;
+        let foundProperty = null;
+
+        if (mainSnap.status === 'fulfilled' && mainSnap.value.exists()) {
+          foundProperty = normalizePropertyData({
+            id: mainSnap.value.id,
+            ...mainSnap.value.data(),
+          });
+        } else if (featuredSnap.status === 'fulfilled' && featuredSnap.value.exists()) {
+          foundProperty = normalizePropertyData({
+            id: featuredSnap.value.id,
+            ...featuredSnap.value.data(),
+          });
         }
 
-        /* 2️⃣ Fallback to featuredproperties */
-        const featuredRef = doc(db, "featuredproperties", id);
-        const featuredSnap = await getDoc(featuredRef);
+        setProperty(foundProperty);
 
-        if (featuredSnap.exists()) {
-          setProperty({ id: featuredSnap.id, ...featuredSnap.data() });
-          return;
+        // Fast Similar Properties Fetch
+        if (foundProperty && foundProperty.location) {
+          const propertiesRef = collection(db, "properties");
+          // Use direct equality query to limit returned docs instantly instead of fetching 15
+          const q = query(
+            propertiesRef,
+            where("location", "==", foundProperty.location),
+            limit(5)
+          );
+          const querySnapshot = await getDocs(q);
+
+          const simProps = [];
+          querySnapshot.forEach((docSnap) => {
+            if (docSnap.id !== foundProperty.id && simProps.length < 4) {
+              simProps.push(normalizePropertyData({
+                id: docSnap.id,
+                ...docSnap.data(),
+              }));
+            }
+          });
+
+          // If exact match yields nothing, we could fetch fallback, but keeping it simple/fast
+          setSimilarProperties(simProps);
         }
-
-        /* 3️⃣ Not found anywhere */
-        setProperty(null);
       } catch (error) {
         console.error("Error fetching property:", error);
         setProperty(null);
@@ -52,6 +87,9 @@ const PropertyDetailsPage = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] bg-white text-center px-4">
+        <Helmet>
+          <title>Loading Property... | Arjun Buildtech</title>
+        </Helmet>
         <div className="w-10 h-10 border-[3px] border-gray-100 border-t-red-600 rounded-full animate-spin mb-3"></div>
         <p className="text-gray-600 text-sm font-medium">
           Loading property details...
@@ -64,6 +102,10 @@ const PropertyDetailsPage = () => {
   if (!property) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] bg-white text-center px-4">
+        <Helmet>
+          <title>Property Not Found | Arjun Buildtech</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
         <h2 className="text-xl font-semibold text-gray-800 mb-1">
           Property not found
         </h2>
@@ -98,11 +140,10 @@ const PropertyDetailsPage = () => {
       </Helmet>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-        {property.type === "plot" ? (
-          <PlotDetails property={property} />
-        ) : (
-          <HouseDetails property={property} />
-        )}
+        <PremiumPropertyDetails
+          property={property}
+          similarProperties={similarProperties}
+        />
 
         {/* Optional Compass Illustration / Footer Note */}
         <div className="flex justify-center md:justify-start mt-12 opacity-75">

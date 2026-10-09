@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { FaPhone, FaWhatsapp, FaEnvelope, FaUser } from "react-icons/fa";
+import { db } from "../../../services/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 const PropertySidebar = ({ property }) => {
   const [formData, setFormData] = useState({
@@ -9,10 +12,23 @@ const PropertySidebar = ({ property }) => {
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Enquiry submitted:", formData);
+    try {
+      await addDoc(collection(db, "inquiries"), {
+        ...formData,
+        propertyId: property?.id || "unknown",
+        propertyTitle: property?.title || "unknown",
+        createdAt: serverTimestamp(),
+        source: "Property Sidebar",
+        status: "new",
+      });
+      toast.success("Enquiry submitted successfully! We will contact you soon.");
+      setFormData({ name: "", phone: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error submitting enquiry:", error);
+      toast.error("Failed to submit enquiry. Please try again.");
+    }
   };
 
   const handleChange = (e) => {
@@ -44,13 +60,13 @@ const PropertySidebar = ({ property }) => {
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3 mb-6">
           <a
-            href="tel:+917617711003"
+            href="tel:+919350447531"
             className="flex items-center justify-center gap-2 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors">
             <FaPhone className="w-4 h-4" />
             Call
           </a>
           <a
-            href="https://wa.me/917617711003"
+            href="https://wa.me/919350447531"
             className="flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
             <FaWhatsapp className="w-4 h-4" />
             WhatsApp

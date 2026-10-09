@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import PropertyCard from "../common/card/PropertyCard";
+import { normalizePropertyData } from "../../utils/propertySchema";
 
 export default function RelatedProperties() {
   const { location } = useParams(); //
@@ -19,16 +20,18 @@ export default function RelatedProperties() {
       if (!formattedLocation) return;
 
       try {
-        const q = query(
-          collection(db, "properties"),
-          where("location", "==", formattedLocation),
-        );
-
-        const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const snapshot = await getDocs(collection(db, "properties"));
+        const searchLocation = formattedLocation.toLowerCase();
+        const data = snapshot.docs
+          .map((propertyDoc) =>
+            normalizePropertyData({
+              id: propertyDoc.id,
+              ...propertyDoc.data(),
+            }),
+          )
+          .filter((property) =>
+            property.location.toLowerCase().includes(searchLocation),
+          );
 
         setRelatedProperties(data);
       } catch (error) {

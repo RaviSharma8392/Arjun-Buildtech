@@ -1,511 +1,663 @@
 import { moreBlogs } from "./moreBlogs";
 
-export const blogs = [
+/**
+ * Blog data for Arjun Buildtech
+ *
+ * Fields used by BlogDetailsPage / blog listing:
+ *  - id          unique number
+ *  - slug        URL slug (never change after publishing; it is the indexed URL)
+ *  - title       keep under ~60 characters, primary keyword near the start
+ *  - date        ISO format "YYYY-MM-DD" (safe for schema + sorting)
+ *  - updatedAt   OPTIONAL "YYYY-MM-DD". Add it only when you genuinely update a post.
+ *  - author      OPTIONAL real person's name (shows as a Person in schema, good for E-E-A-T)
+ *  - category    used for related posts
+ *  - excerpt     meta description, aim for 120-160 characters
+ *  - content     HTML. Start with <h2> (the page title is the only <h1>)
+ *  - image       absolute URL (or a path under /public)
+ */
+
+const INVEST_NOTE = `<p><em>Note: This article is for general information and is not investment, legal or tax advice. Past price growth does not guarantee future returns. Verify documents and current rules before you buy.</em></p>`;
+
+const CTA = `<p>Need help with a property in Rohtak? <a href="/contact">Talk to the Arjun Buildtech team</a> for verified listings and end-to-end documentation support.</p>`;
+
+const allBlogs = [
   {
     id: 1,
     slug: "rohtak-infrastructure-updates-2026",
-    title: "Haryana Govt Announces New Infrastructure Projects in Rohtak",
-    date: "October 5, 2026",
+    title: "New Infrastructure Projects Announced for Rohtak, Haryana",
+    date: "2026-10-05",
     category: "Market News",
-    excerpt: "The latest state budget highlights significant investments in road connectivity and utilities across HSVP sectors, driving up property demand.",
+    excerpt:
+      "Haryana's 2026–27 budget proposes road, utility and commercial projects in Rohtak. Here's what they could mean for HSVP sector property prices.",
     content: `
-      <h2>Major Infrastructure Push in Rohtak</h2>
-      <p>The Haryana Government has recently announced a massive infrastructure development plan for Rohtak in the 2026-2027 state budget. A primary focus is being placed on improving road connectivity and upgrading utility frameworks, particularly in the newly developing HSVP sectors.</p>
-      
-      <h3>Key Highlights</h3>
+      <h2>Infrastructure plans for Rohtak in the 2026–27 state budget</h2>
+      <p>The Haryana Government's 2026–27 budget places fresh emphasis on road connectivity and utility upgrades in Rohtak, particularly in the newly developing HSVP sectors.</p>
+
+      <h3>Key highlights</h3>
       <ul>
-        <li><strong>Expanded Road Networks:</strong> New multi-lane bypasses are being constructed to reduce central city traffic and improve access to Sector 27 and Suncity.</li>
-        <li><strong>Utility Upgrades:</strong> Enhanced water treatment facilities and underground cabling are being implemented across major residential zones.</li>
-        <li><strong>Commercial Hubs:</strong> The government has greenlit two new commercial IT parks near the Rohtak-Delhi bypass.</li>
+        <li><strong>Road connectivity:</strong> Multi-lane bypass work is planned to ease traffic in the city centre and improve access to Sector 27 and Suncity.</li>
+        <li><strong>Utility upgrades:</strong> Better water treatment and underground cabling are planned across major residential zones.</li>
+        <li><strong>Commercial hubs:</strong> New commercial and IT park projects are proposed near the Rohtak–Delhi bypass.</li>
       </ul>
-      
-      <h3>Impact on Real Estate</h3>
-      <p>These infrastructural advancements are already creating a ripple effect in the local real estate market. Property experts predict a surge in demand for residential plots and luxury villas, especially in Sector-27 and Suncity, as improved livability attracts buyers from Delhi NCR.</p>
-      
-      <p><em>Looking to invest before prices surge? Contact Arjun Buildtech today for expert guidance.</em></p>
+
+      <h3>What it could mean for property buyers</h3>
+      <p>Better roads and utilities usually improve day-to-day livability, and that tends to raise demand for residential plots and villas in the affected sectors. Buyers from Delhi NCR are already comparing Rohtak with costlier nearby markets.</p>
+      <p>Project timelines can change, so check official announcements for status before making a decision. For background on the market, read our <a href="/blog/why-invest-in-rohtak-real-estate">5 reasons Rohtak is the next real estate hub</a> and the <a href="/blog/top-sectors-for-investment-rohtak">top sectors to invest in</a>.</p>
+      ${CTA}
     `,
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/8b/Kusum_Sarovar_-Mathura_-Uttar_Pradesh_-PXL_20210217111946742.jpg"
+    // TODO: replace this image with a Rohtak photo; this Wikimedia image shows a location in Mathura, UP
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/8/8b/Kusum_Sarovar_-Mathura_-Uttar_Pradesh_-PXL_20210217111946742.jpg",
   },
   {
     id: 2,
     slug: "suncity-sector-appreciation",
-    title: "Suncity Sector 34, 35, 36 & 36A See 15% Appreciation",
-    date: "September 28, 2026",
-    category: "Investment Update",
-    excerpt: "Premium residential plots and luxury villas in the Suncity township have recorded a steady 15% price appreciation over the last quarter.",
+    title: "Suncity Rohtak Sectors 34–36A: 15% Price Growth",
+    date: "2026-09-28",
+    category: "Investment Guide",
+    excerpt:
+      "Plots and villas in Suncity Sectors 34, 35, 36 and 36A saw about 15% appreciation last quarter, based on Arjun Buildtech's transaction data.",
     content: `
-      <h2>Suncity Rohtak: The Crown Jewel of Real Estate</h2>
-      <p>Over the last quarter, Suncity's Sectors 34, 35, 36, and 36A have emerged as the most lucrative real estate hotspots in Rohtak. Data collected by Arjun Buildtech indicates a solid 15% appreciation in property values.</p>
-      
-      <h3>Why the Sudden Spike?</h3>
-      <p>The demand is primarily driven by families and investors looking for premium, secure, and modern living environments. Suncity offers unmatched amenities, including:</p>
+      <h2>Why Suncity is drawing buyers in Rohtak</h2>
+      <p>Over the last quarter, Suncity's Sectors 34, 35, 36 and 36A recorded roughly 15% appreciation in property values, based on Arjun Buildtech's own tracking of deals and enquiries.</p>
+
+      <h3>What is driving demand</h3>
+      <p>Families and investors want secure, modern and well-planned living environments. Suncity offers:</p>
       <ul>
-        <li>24/7 Gated Security</li>
-        <li>Lush green parks and community centers</li>
-        <li>Proximity to top-tier schools and hospitals</li>
+        <li>Gated security</li>
+        <li>Parks and community spaces</li>
+        <li>Access to good schools and hospitals</li>
       </ul>
-      
-      <h3>Investment Outlook</h3>
-      <p>For investors, Suncity continues to be a safe haven. With limited premium plots remaining and a growing influx of high-net-worth individuals moving away from congested metropolitan areas, prices are projected to rise an additional 10-12% over the next fiscal year.</p>
+
+      <h3>Investment outlook</h3>
+      <p>Limited premium plots and steady interest from buyers leaving congested metro areas support demand. Even so, prices can move both ways, so compare recent registry values, check plot facing and size, and verify all documents before buying. If you are weighing a villa against a plot here, read our <a href="/blog/luxury-villas-vs-plots">villa vs plot comparison</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 3,
     slug: "property-registration-guidelines-egras",
-    title: "Updated Guidelines for Property Registration (E-GRAS)",
-    date: "September 12, 2026",
+    title: "E-GRAS Property Registration Guidelines in Haryana",
+    date: "2026-09-12",
     category: "Policy Update",
-    excerpt: "The revenue department has streamlined the online stamp duty process. Ensure you have your latest Property ID ready for fast registration.",
+    excerpt:
+      "Haryana's e-GRAS portal has simplified online stamp duty payment. Here is what you need ready before you register a property in Rohtak.",
     content: `
-      <h2>Streamlined Online Registration in Haryana</h2>
-      <p>The Haryana Revenue Department has introduced significant updates to the E-GRAS portal, making property registration faster and more transparent than ever.</p>
-      
-      <h3>What You Need to Know</h3>
-      <p>If you are planning to buy or sell property in Rohtak, you must ensure your documentation is aligned with the new digital framework:</p>
+      <h2>Online stamp duty and registration in Haryana</h2>
+      <p>Haryana has moved much of the property registration process online. Paying stamp duty through the e-GRAS portal and keeping your documents ready can make registration at the Tehsil faster and more transparent.</p>
+
+      <h3>What to keep ready</h3>
       <ul>
-        <li><strong>Property ID (Parivar Pehchan Patra linked):</strong> A valid Property ID is now strictly mandatory for all transactions.</li>
-        <li><strong>Online Stamp Duty:</strong> Payments must be processed through the official E-GRAS portal before securing an appointment at the Tehsil.</li>
-        <li><strong>No Dues Certificate (NDC):</strong> The municipal corporation now issues NDCs completely online, reducing wait times from weeks to days.</li>
+        <li><strong>Property ID:</strong> Urban property transactions in Haryana generally require a valid Property ID, which is linked to the municipal property tax record.</li>
+        <li><strong>Stamp duty payment:</strong> Pay stamp duty and registration fees online via e-GRAS and keep the challan for your Tehsil appointment.</li>
+        <li><strong>No Dues Certificate (NDC):</strong> The municipal corporation issues NDCs online, which saves time compared with the old paper process.</li>
+        <li><strong>Identity and photographs:</strong> Buyers, sellers and witnesses need valid ID proofs.</li>
       </ul>
-      
-      <p>At Arjun Buildtech, our legal team assists all our clients with end-to-end documentation, ensuring your property registry is completed without a single hurdle.</p>
+
+      <p>Rules and portal steps change from time to time, so confirm the current process with the sub-registrar's office. To estimate your costs first, see our guide to <a href="/blog/understanding-property-taxes-haryana">stamp duty and registration charges in Haryana</a>.</p>
+      <p>Arjun Buildtech's team helps clients with end-to-end documentation so the registry is completed smoothly.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 4,
     slug: "why-invest-in-rohtak-real-estate",
-    title: "5 Reasons Why Rohtak is the Next Big Real Estate Hub",
-    date: "August 20, 2026",
+    title: "5 Reasons Rohtak Is the Next Big Real Estate Hub",
+    date: "2026-08-20",
     category: "Market Insights",
-    excerpt: "Discover why investors from Delhi NCR are turning their attention to Rohtak for high-return property investments.",
+    excerpt:
+      "From Delhi connectivity to MDU and IMT Rohtak, here are five reasons investors from Delhi NCR are looking at Rohtak real estate.",
     content: `
-      <h2>Rohtak: The Rising Star of Haryana</h2>
-      <p>Once considered just a quiet educational hub, Rohtak is rapidly transforming into a major real estate destination. Here are 5 reasons why investors are flocking to this city:</p>
-      
+      <h2>Rohtak: a rising real estate market in Haryana</h2>
+      <p>Once known mainly as an educational hub, Rohtak is becoming a serious real estate destination. Here are five reasons investors are paying attention:</p>
+
       <ol>
-        <li><strong>Proximity to Delhi:</strong> With the expansion of National Highway 9 (NH-9), Rohtak is now seamlessly connected to Delhi, making it an ideal satellite city.</li>
-        <li><strong>Educational Capital:</strong> Home to Maharshi Dayanand University (MDU) and top medical institutes, the city guarantees steady rental yields from students and professionals.</li>
-        <li><strong>Affordable Luxury:</strong> Compared to Gurugram or Noida, Rohtak offers premium luxury villas and large plots at highly competitive prices.</li>
-        <li><strong>HSVP Development:</strong> The Haryana Shahari Vikas Pradhikaran (HSVP) is aggressively developing new, well-planned sectors with wide roads and underground wiring.</li>
-        <li><strong>Industrial Growth:</strong> The IMT (Industrial Model Township) Rohtak has attracted major multinational corporations, creating thousands of jobs and driving housing demand.</li>
+        <li><strong>Proximity to Delhi:</strong> Highway upgrades on the Delhi–Rohtak corridor have cut travel time and make Rohtak a practical satellite city.</li>
+        <li><strong>Education hub:</strong> Maharshi Dayanand University (MDU) and PGIMS draw students and professionals, which supports steady rental demand.</li>
+        <li><strong>Value compared with NCR:</strong> Plots and villas in Rohtak are generally priced well below Gurugram or Noida.</li>
+        <li><strong>HSVP planning:</strong> Haryana Shahari Vikas Pradhikaran (HSVP) sectors offer planned layouts, wide roads and underground services.</li>
+        <li><strong>Industrial growth:</strong> IMT Rohtak (Industrial Model Township) creates jobs, which in turn drives housing demand.</li>
       </ol>
-      
-      <p>Partner with Arjun Buildtech to find the best investment opportunities in Rohtak today.</p>
+
+      <p>Ready to look at options? Start with our <a href="/blog/top-sectors-for-investment-rohtak">top sectors for investment</a> and the <a href="/blog/guide-to-buying-hsvp-plots">guide to buying HSVP plots</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80"
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80",
   },
   {
     id: 5,
     slug: "guide-to-buying-hsvp-plots",
-    title: "The Ultimate Guide to Buying HSVP Plots in Rohtak",
-    date: "August 05, 2026",
+    title: "How to Buy HSVP Plots in Rohtak: A Complete Guide",
+    date: "2026-08-05",
     category: "Buying Guide",
-    excerpt: "Everything you need to know about purchasing government-approved HSVP (formerly HUDA) residential plots securely.",
+    excerpt:
+      "Buying an HSVP plot in Rohtak? Learn how to verify allotment papers, clear dues and complete the transfer safely.",
     content: `
-      <h2>Investing in HSVP Plots</h2>
-      <p>HSVP (Haryana Shahari Vikas Pradhikaran) sectors are highly sought after due to their systematic planning, wide roads, and guaranteed government infrastructure. However, navigating the purchase of an HSVP plot requires careful diligence.</p>
-      
-      <h3>Steps to a Secure Purchase</h3>
-      <ul>
-        <li><strong>Verify the Allotment Letter:</strong> Always check the original allotment letter issued by the estate officer.</li>
-        <li><strong>Check for Pending Dues:</strong> Ensure all enhancement fees and extension fees have been cleared by the current owner.</li>
-        <li><strong>Transfer Policy:</strong> Understand the HSVP transfer policy, which requires permission from the Estate Office before the registry can take place.</li>
-      </ul>
-      
-      <p>Sectors 1, 2, 3, 25, and 27 are currently the most active HSVP sectors in Rohtak. Arjun Buildtech specializes in verified HSVP plot transactions, guaranteeing a safe and transparent buying process.</p>
+      <h2>Buying an HSVP plot safely</h2>
+      <p>HSVP (Haryana Shahari Vikas Pradhikaran, formerly HUDA) sectors are popular because of planned layouts, wide roads and government-developed infrastructure. A resale purchase still needs careful checking.</p>
+
+      <h3>Steps to a secure purchase</h3>
+      <ol>
+        <li><strong>Verify the papers:</strong> Check the original allotment or transfer letter and match the owner's name, plot number and sector.</li>
+        <li><strong>Check dues:</strong> Confirm with the Estate Office that enhancement, extension and any other fees are cleared.</li>
+        <li><strong>Inspect the plot:</strong> Visit the site, confirm boundaries and possession, and check for encroachment.</li>
+        <li><strong>Complete the transfer formalities:</strong> Follow HSVP's transfer process and obtain the required NDC before the registry.</li>
+        <li><strong>Register the deed:</strong> Pay stamp duty and registration charges and register at the Tehsil. See our <a href="/blog/understanding-property-taxes-haryana">cost breakdown</a>.</li>
+      </ol>
+
+      <p>Sectors 1, 2, 3, 25 and 27 are among the more active HSVP sectors in Rohtak. Arjun Buildtech handles verified HSVP plot transactions with transparent documentation.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1524813686514-a57563d77965?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80"
+    image:
+      "https://images.unsplash.com/photo-1524813686514-a57563d77965?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80",
   },
   {
     id: 6,
     slug: "commercial-property-trends-2026",
-    title: "Commercial Property Trends: What to Expect in Late 2026",
-    date: "July 18, 2026",
+    title: "Rohtak Commercial Property Trends for Late 2026",
+    date: "2026-07-18",
     category: "Commercial",
-    excerpt: "Retail spaces and office plots in Rohtak are seeing a major shift. Find out where the smart money is going.",
+    excerpt:
+      "High-street shops, warehousing and co-working are shaping Rohtak's commercial market. See the trends investors are watching in late 2026.",
     content: `
-      <h2>The Shift in Commercial Real Estate</h2>
-      <p>The commercial real estate landscape in Rohtak is evolving. As consumer behavior shifts and the local economy diversifies, the demand for specific types of commercial properties is changing.</p>
-      
-      <h3>Key Trends</h3>
+      <h2>What is changing in Rohtak's commercial market</h2>
+      <p>As shopping habits change and the local economy diversifies, demand is shifting toward specific kinds of commercial property.</p>
+
+      <h3>Key trends</h3>
       <ul>
-        <li><strong>High-Street Retail over Malls:</strong> Investors are showing a strong preference for high-street retail shops (SCOs) in established sectors rather than enclosed malls, due to higher footfall and lower maintenance costs.</li>
-        <li><strong>Warehousing Demand:</strong> With the growth of e-commerce, areas surrounding IMT Rohtak are seeing high demand for warehousing and logistics plots.</li>
-        <li><strong>Co-working Spaces:</strong> As remote work normalizes, smaller commercial office spaces are being converted into co-working hubs for freelancers and small businesses.</li>
+        <li><strong>High-street retail:</strong> Many investors prefer shops and SCOs in established sectors over enclosed malls because of steady footfall and lower maintenance costs.</li>
+        <li><strong>Warehousing:</strong> E-commerce growth is increasing demand for storage and logistics plots around IMT Rohtak.</li>
+        <li><strong>Co-working spaces:</strong> Smaller offices are being converted into co-working hubs for freelancers and small businesses.</li>
       </ul>
+
+      <p>Commercial returns depend heavily on location, frontage, tenant quality and lease terms. For a closer look at one of the main retail hubs, read <a href="/blog/commercial-shops-sector-14-rohtak">commercial shops in Sector 14</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1169&q=80"
+    image:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1169&q=80",
   },
   {
     id: 7,
     slug: "tips-for-selling-your-property-fast",
-    title: "Top 7 Tips for Selling Your Property Fast in Rohtak",
-    date: "July 02, 2026",
+    title: "7 Tips to Sell Your Property Fast in Rohtak",
+    date: "2026-07-02",
     category: "Selling Guide",
-    excerpt: "Looking to sell your plot or villa? Follow these expert tips to attract serious buyers and close the deal quickly.",
+    excerpt:
+      "Want to sell your plot or villa in Rohtak? These seven practical tips help you price right, attract serious buyers and close faster.",
     content: `
-      <h2>How to Sell Fast and Get the Best Price</h2>
-      <p>Selling a property can be a lengthy process, but with the right strategy, you can attract buyers quickly and secure a great price.</p>
-      
-      <h3>Expert Tips from Arjun Buildtech</h3>
+      <h2>How to sell quickly and get a fair price</h2>
+      <p>Selling can take months if the price, paperwork or presentation is off. These steps help you attract serious buyers sooner.</p>
+
+      <h3>Seven tips from Arjun Buildtech</h3>
       <ol>
-        <li><strong>Price it Right:</strong> Overpricing is the #1 reason properties sit on the market. Get a professional valuation from a trusted local agent.</li>
-        <li><strong>Curb Appeal:</strong> First impressions matter. For villas, ensure the exterior is painted and the lawn is manicured. For plots, clear away debris and overgrowth.</li>
-        <li><strong>Clear Documentation:</strong> Have your registry, latest tax receipts, and NDC (No Dues Certificate) ready to show to serious buyers.</li>
-        <li><strong>Professional Photography:</strong> High-quality photos significantly increase online inquiries.</li>
-        <li><strong>Highlight Location Benefits:</strong> Emphasize proximity to schools, hospitals, and major highways.</li>
-        <li><strong>Be Flexible with Viewings:</strong> Make your property available for visits, especially on weekends.</li>
-        <li><strong>Hire a Local Expert:</strong> A local real estate agency like Arjun Buildtech has an existing database of ready buyers.</li>
+        <li><strong>Price it right:</strong> Overpricing is the most common reason properties sit unsold. Get a realistic valuation first. See <a href="/blog/property-valuation-rohtak">how property valuation works</a>.</li>
+        <li><strong>Improve curb appeal:</strong> For villas, repaint the exterior and tidy the garden. For plots, clear debris and overgrowth.</li>
+        <li><strong>Keep documents ready:</strong> Have the registry, latest tax receipts, Property ID and NDC available for serious buyers.</li>
+        <li><strong>Use good photos:</strong> Clear, bright photos increase online enquiries.</li>
+        <li><strong>Highlight location benefits:</strong> Mention schools, hospitals, markets and highway access.</li>
+        <li><strong>Be flexible with viewings:</strong> Allow visits on weekends and evenings.</li>
+        <li><strong>Work with a local expert:</strong> A local agency has buyers already looking for properties in your sector.</li>
       </ol>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=1296&q=80"
+    image:
+      "https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=1296&q=80",
   },
   {
     id: 8,
     slug: "understanding-property-taxes-haryana",
-    title: "Understanding Property Taxes and Stamp Duty in Haryana",
-    date: "June 15, 2026",
+    title: "Stamp Duty and Registration Charges in Haryana 2026",
+    date: "2026-06-15",
     category: "Financial Insights",
-    excerpt: "A comprehensive breakdown of the stamp duty, registration charges, and municipal taxes applicable when buying property in Rohtak.",
+    excerpt:
+      "Current stamp duty for male, female and joint buyers in urban Haryana, plus registration fee rules and a worked cost example.",
     content: `
-      <h2>The Financials of Property Registration</h2>
-      <p>Buying a property involves more than just the agreed purchase price. Buyers must account for government taxes and duties. Here is a breakdown of the costs in Haryana for 2026.</p>
-      
-      <h3>Stamp Duty Charges</h3>
-      <p>Stamp duty in Haryana varies based on the location (urban vs. rural) and the gender of the buyer to promote women's empowerment:</p>
+      <h2>What it costs to register a property in Haryana</h2>
+      <p>The purchase price is only part of your budget. Buyers also pay stamp duty and a registration fee. The rates below are commonly reported for 2026, but they can change, so confirm them with the sub-registrar or the official notification before you register.</p>
+
+      <h3>Stamp duty (municipal / urban areas)</h3>
       <ul>
-        <li><strong>Male Buyers (Urban):</strong> 7% of the transaction value.</li>
-        <li><strong>Female Buyers (Urban):</strong> 5% of the transaction value.</li>
-        <li><strong>Joint Ownership (Male + Female):</strong> 6% of the transaction value.</li>
+        <li><strong>Male buyer:</strong> 7% of the transaction value</li>
+        <li><strong>Female buyer:</strong> 5% of the transaction value</li>
+        <li><strong>Joint (male and female):</strong> 6% of the transaction value</li>
       </ul>
-      
-      <h3>Registration Fees</h3>
-      <p>The registration fee is generally fixed based on the property's value slab, capping at ₹50,000 for properties valued above ₹25 Lakhs.</p>
-      
-      <p><em>Note: It is crucial to always register your property at the actual transaction value or the Collector Rate, whichever is higher, to avoid legal complications.</em></p>
+      <p>Rural areas carry lower rates.</p>
+
+      <h3>Registration fee</h3>
+      <p>The registration fee is generally 1% of the property value, subject to a cap of ₹50,000. Small additional charges such as e-registration and pasting fees also apply.</p>
+
+      <h3>Worked example</h3>
+      <p>For a ₹40 lakh property, a male buyer pays about ₹2.8 lakh in stamp duty plus ₹40,000 in registration fee, roughly ₹3.2 lakh in total. A female buyer pays about ₹2 lakh plus ₹40,000, roughly ₹2.4 lakh. On an ₹80 lakh property, the 1% fee would be ₹80,000, but the cap limits it to ₹50,000.</p>
+
+      <h3>Which value is used?</h3>
+      <p>Duty is calculated on the higher of the actual sale price or the collector (circle) rate. Always register at the correct value to avoid legal and tax problems later.</p>
+      <p>Also read: <a href="/blog/property-registration-guidelines-egras">E-GRAS registration guidelines</a> and <a href="/blog/rohtak-property-tax-online-payment">Rohtak property tax online payment</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1311&q=80"
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1311&q=80",
   },
   {
     id: 9,
     slug: "luxury-villas-vs-plots",
-    title: "Luxury Villas vs. Residential Plots: Which is the Better Investment?",
-    date: "June 01, 2026",
+    title: "Villa vs Plot in Rohtak: Which Investment Is Better?",
+    date: "2026-06-01",
     category: "Investment Guide",
-    excerpt: "Should you buy a ready-to-move luxury villa or a residential plot to build your dream home? We compare the pros and cons.",
+    excerpt:
+      "Ready-built villa or open plot? Compare appreciation, cost, rental income and effort to decide which suits your goals in Rohtak.",
     content: `
-      <h2>Making the Right Choice</h2>
-      <p>One of the most common questions we get at Arjun Buildtech is whether to invest in a residential plot or a ready-built luxury villa. Both have their unique advantages.</p>
-      
-      <h3>Residential Plots</h3>
-      <p><strong>Pros:</strong> High appreciation rate, complete freedom to design your home, lower initial maintenance costs.<br>
-      <strong>Cons:</strong> Requires time, effort, and supervision to build; no immediate rental income.</p>
-      
-      <h3>Luxury Villas</h3>
-      <p><strong>Pros:</strong> Immediate possession, zero construction hassle, potential for immediate rental yield, access to ready amenities.<br>
-      <strong>Cons:</strong> Higher initial capital required, limited customization of the core structure.</p>
-      
-      <h3>The Verdict</h3>
-      <p>If your goal is pure long-term capital appreciation and you have the patience to build, a plot in HSVP Sector 27 is ideal. If you want a hassle-free premium lifestyle immediately, a villa in Suncity is the way to go.</p>
+      <h2>Choosing between a villa and a plot</h2>
+      <p>One of the most common questions we hear at Arjun Buildtech is whether to buy a residential plot or a ready-built luxury villa. Both have clear advantages.</p>
+
+      <h3>Residential plots</h3>
+      <p><strong>Pros:</strong> Lower entry cost, freedom to design your own home, and potential for strong land appreciation.<br>
+      <strong>Cons:</strong> Construction takes time, money and supervision, and a vacant plot earns no rent.</p>
+
+      <h3>Luxury villas</h3>
+      <p><strong>Pros:</strong> Immediate possession, no construction hassle, rental potential from day one, and access to ready amenities.<br>
+      <strong>Cons:</strong> Higher upfront capital and limited scope to change the core structure.</p>
+
+      <h3>Which one fits you?</h3>
+      <p>If you want long-term land appreciation and are willing to build, a plot in an HSVP sector such as Sector 27 may suit you. If you want a ready premium home, a villa in <a href="/blog/suncity-sector-appreciation">Suncity</a> is worth considering.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1175&q=80"
+    image:
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1175&q=80",
   },
   {
     id: 10,
     slug: "nri-property-investment-india",
-    title: "A Complete Guide for NRIs Investing in Rohtak Real Estate",
-    date: "May 22, 2026",
+    title: "NRI Guide to Buying Property in Rohtak",
+    date: "2026-05-22",
     category: "NRI Services",
-    excerpt: "Are you an NRI looking to invest in your hometown? Learn the rules, regulations, and best practices for investing in Rohtak.",
+    excerpt:
+      "NRIs can buy residential and commercial property in India under FEMA. Learn the rules, payment channels and limits for investing in Rohtak.",
     content: `
-      <h2>NRI Investment in Indian Real Estate</h2>
-      <p>Non-Resident Indians (NRIs) are showing increasing interest in tier-2 cities like Rohtak for real estate investments due to high growth potential and emotional ties to their hometowns.</p>
-      
-      <h3>FEMA Guidelines</h3>
-      <p>Under the Foreign Exchange Management Act (FEMA), NRIs are freely permitted to purchase residential or commercial properties in India. However, they cannot purchase agricultural land, plantation property, or farmhouses.</p>
-      
-      <h3>Funding the Purchase</h3>
-      <p>Payments must be made through banking channels via NRE, NRO, or FCNR accounts. Home loans are also readily available for NRIs from Indian banks.</p>
-      
-      <h3>How Arjun Buildtech Helps NRIs</h3>
-      <p>We offer specialized property management and investment consulting for NRIs, ensuring your investments are secure, verified, and well-managed even while you are abroad.</p>
+      <h2>NRI investment in Indian real estate</h2>
+      <p>Many Non-Resident Indians are looking at tier-2 cities like Rohtak for growth potential and ties to their hometown.</p>
+
+      <h3>FEMA rules in brief</h3>
+      <p>Under the Foreign Exchange Management Act (FEMA), NRIs can buy residential and commercial property in India. They cannot buy agricultural land, plantation property or farmhouses.</p>
+
+      <h3>Payment and funding</h3>
+      <p>Payments must go through normal banking channels from an NRE, NRO or FCNR(B) account. Indian banks also offer home loans to NRIs.</p>
+
+      <h3>Before you invest</h3>
+      <ul>
+        <li>Verify title and dues through a trusted local representative or lawyer.</li>
+        <li>If you use a power of attorney, keep it limited and properly registered.</li>
+        <li>Check tax and repatriation rules with a chartered accountant, since they depend on your situation.</li>
+      </ul>
+
+      <p>Arjun Buildtech offers property consulting and management support for NRIs so that purchases are verified and well looked after while you are abroad.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1174&q=80"
+    image:
+      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1174&q=80",
   },
   {
     id: 11,
     slug: "top-5-mistakes-first-time-buyers",
-    title: "Top 5 Mistakes First-Time Home Buyers Make",
-    date: "May 10, 2026",
+    title: "5 Mistakes First-Time Home Buyers Make in Rohtak",
+    date: "2026-05-10",
     category: "Buying Guide",
-    excerpt: "Avoid these common pitfalls when buying your first property to save money and prevent future legal headaches.",
+    excerpt:
+      "Skipping title checks and ignoring hidden costs are common errors. Learn the five mistakes first-time buyers should avoid in Rohtak.",
     content: `
-      <h2>First-Time Buyer Traps</h2>
-      <p>Buying your first property is exciting, but it can also be overwhelming. Here are 5 common mistakes to avoid:</p>
-      
+      <h2>Common first-time buyer mistakes</h2>
+      <p>Buying your first property is exciting but can be overwhelming. Avoid these five mistakes:</p>
+
       <ol>
-        <li><strong>Skipping the Title Search:</strong> Never buy a property without having a lawyer verify the chain of title and ensure there are no encumbrances.</li>
-        <li><strong>Ignoring Hidden Costs:</strong> Budget for stamp duty, registration fees, brokerage, and maintenance deposits—not just the property price.</li>
-        <li><strong>Not Checking RERA Registration:</strong> If buying an under-construction apartment, ensure the project is registered under HRERA (Haryana Real Estate Regulatory Authority).</li>
-        <li><strong>Emotional Buying:</strong> Don't let emotions override logic. Ensure the property meets your practical needs and budget.</li>
-        <li><strong>Bypassing Professional Help:</strong> Trying to save on agent fees can cost you lakhs if you end up buying a disputed property. Always use a reputed consultant like Arjun Buildtech.</li>
+        <li><strong>Skipping the title search:</strong> Have a lawyer verify the chain of title and confirm there are no loans, disputes or encumbrances.</li>
+        <li><strong>Ignoring hidden costs:</strong> Budget for stamp duty, registration, brokerage and maintenance deposits, not just the price. See <a href="/blog/understanding-property-taxes-haryana">stamp duty and registration charges</a>.</li>
+        <li><strong>Not checking RERA registration:</strong> For under-construction projects, confirm the project is registered with HRERA (Haryana Real Estate Regulatory Authority).</li>
+        <li><strong>Buying on emotion:</strong> Make sure the property fits your budget, commute and long-term needs.</li>
+        <li><strong>Skipping professional help:</strong> Saving on agent fees can cost far more if you buy a disputed property. Work with a registered, reputed consultant. Here is <a href="/blog/best-real-estate-broker-in-rohtak">how to choose one</a>.</li>
       </ol>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 12,
     slug: "future-of-rohtak-real-estate",
-    title: "The Future of Rohtak Real Estate: 2026-2030 Outlook",
-    date: "April 28, 2026",
+    title: "Rohtak Real Estate Outlook 2026–2030",
+    date: "2026-04-28",
     category: "Market Insights",
-    excerpt: "A deep dive into the long-term projections for the Rohtak real estate market over the next five years.",
+    excerpt:
+      "Where could Rohtak real estate be heading by 2030? A look at NCR integration, IMT expansion and smart-city plans, without the hype.",
     content: `
-      <h2>Looking Ahead: 2026 to 2030</h2>
-      <p>As Rohtak continues to integrate more deeply with the National Capital Region (NCR), its real estate trajectory looks incredibly promising. What can we expect over the next 5 years?</p>
-      
-      <h3>Smart City Initiatives</h3>
-      <p>With local governance pushing for 'Smart City' features, we expect to see increased digitalization of municipal services, better waste management, and improved public transport, all of which will drive up the Livability Index.</p>
-      
-      <h3>Expansion of IMT</h3>
-      <p>The continuous expansion of the Industrial Model Township will bring more white-collar jobs to the city, creating a massive demand for premium housing and rental apartments.</p>
-      
-      <h3>Price Projections</h3>
-      <p>Conservative estimates project a cumulative growth of 40-50% in land values in prime sectors (like Sector 27 and Suncity) by 2030. Now is the time to secure your investment.</p>
+      <h2>Looking ahead: 2026 to 2030</h2>
+      <p>As Rohtak integrates more closely with the National Capital Region (NCR), several trends could shape its property market over the next five years. No one can predict prices exactly, but these factors are worth watching.</p>
+
+      <h3>Smart city and civic upgrades</h3>
+      <p>Digital municipal services, better waste management and improved public transport can raise a city's livability, which supports housing demand.</p>
+
+      <h3>IMT expansion</h3>
+      <p>Growth of the Industrial Model Township can bring more jobs to the region, creating demand for quality housing and rentals.</p>
+
+      <h3>Connectivity</h3>
+      <p>Better highways and rail links to Delhi make Rohtak more attractive to people who want NCR access at lower property prices.</p>
+
+      <h3>How to plan</h3>
+      <p>Focus on well-planned sectors with clear titles, compare recent registry values rather than asking prices, and invest with a time horizon of several years. For current picks, see <a href="/blog/top-sectors-for-investment-rohtak">top sectors to invest in</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 13,
     slug: "3-bhk-flats-in-rohtak",
-    title: "The Ultimate Guide to Buying 3 BHK Flats in Rohtak",
-    date: "April 15, 2026",
+    title: "3 BHK Flats in Rohtak: Best Areas and Buying Guide",
+    date: "2026-04-15",
     category: "Buying Guide",
-    excerpt: "Looking for a spacious 3 BHK apartment? Explore the best sectors, average prices, and premium societies available in Rohtak today.",
+    excerpt:
+      "Compare the best areas for 3 BHK flats in Rohtak and learn what to check before you buy: RERA, carpet area, parking and more.",
     content: `
-      <h2>Why 3 BHK Flats are in High Demand</h2>
-      <p>As the nuclear family structure evolves and more professionals relocate to Rohtak due to the IMT expansion, the demand for <strong>3 BHK flats in Rohtak</strong> has skyrocketed. These apartments offer the perfect balance of space, affordability, and community amenities.</p>
-      
-      <h3>Top Locations for Flats</h3>
+      <h2>Why 3 BHK flats are in demand</h2>
+      <p>As more professionals move to Rohtak for work in IMT and nearby institutions, demand for <strong>3 BHK flats in Rohtak</strong> has grown. They offer a good balance of space, cost and community amenities.</p>
+
+      <h3>Areas to consider</h3>
       <ul>
-        <li><strong>Sector 14 & 1:</strong> Established sectors with premium builder floors and high-rise apartments.</li>
-        <li><strong>Omaxe City & Sun City:</strong> Gated townships offering resort-like amenities, swimming pools, and clubhouse access.</li>
-        <li><strong>Sector 27:</strong> A rapidly developing area with excellent connectivity to NH-9.</li>
+        <li><strong>Sector 14 and Sector 1:</strong> Established sectors with builder floors and apartments.</li>
+        <li><strong>Omaxe City and Suncity:</strong> Gated townships with clubhouse and recreation facilities.</li>
+        <li><strong>Sector 27:</strong> A developing area with good access to the highway.</li>
       </ul>
-      
-      <p>Whether you want a ready-to-move-in apartment or an under-construction project for investment, Arjun Buildtech has exclusive listings. Contact our agents to book a site visit.</p>
+
+      <h3>Checks before you buy</h3>
+      <ul>
+        <li>Confirm HRERA registration for under-construction projects.</li>
+        <li>Compare carpet area, not just super built-up area.</li>
+        <li>Check parking, water supply, power backup and maintenance charges.</li>
+        <li>Verify the occupancy or completion certificate for ready flats.</li>
+      </ul>
+
+      <p>Not sure whether a flat or an independent floor suits you? Read <a href="/blog/builder-floors-vs-high-rise">builder floors vs high-rise apartments</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 14,
     slug: "agricultural-land-for-sale-rohtak",
-    title: "Investing in Agricultural Land in Rohtak: A Smart Move?",
-    date: "April 02, 2026",
-    category: "Investment Update",
-    excerpt: "Agricultural land near Rohtak is seeing massive appreciation due to urban expansion. Find out how to capitalize on this trend.",
+    title: "Agricultural Land in Rohtak: Is It a Smart Investment?",
+    date: "2026-04-02",
+    category: "Investment Guide",
+    excerpt:
+      "Farmland around Rohtak is drawing investors as the city grows. Understand the opportunity, the risks and the legal checks first.",
     content: `
-      <h2>The Shift Towards Land Investment</h2>
-      <p>While residential and commercial properties offer steady returns, <strong>agricultural land for sale in Rohtak</strong> and surrounding villages has become a goldmine for long-term investors.</p>
-      
-      <h3>Why Buy Agricultural Land?</h3>
-      <p>The expansion of the city limits and the development of new highways mean that today's farmland could be tomorrow's residential sector or commercial hub. Villages along the Rohtak-Panipat and Rohtak-Delhi highways are witnessing massive price appreciation as developers acquire land for future townships.</p>
-      
-      <h3>Legal Considerations</h3>
-      <p>Unlike some states, Haryana allows non-agriculturists to buy agricultural land. However, obtaining a Change of Land Use (CLU) certificate is required if you plan to use it for commercial purposes. Arjun Buildtech provides complete legal assistance for land acquisition and CLU processing.</p>
+      <h2>The case for land investment</h2>
+      <p>Alongside residential and commercial property, <strong>agricultural land for sale in Rohtak</strong> and nearby villages attracts long-term investors who expect the city to expand.</p>
+
+      <h3>Why investors look at agricultural land</h3>
+      <p>New highways and city expansion can change land use over time, and land near growing corridors often becomes more valuable. Land, however, can be illiquid and may take years to appreciate, so it suits patient investors.</p>
+
+      <h3>Legal checks</h3>
+      <ul>
+        <li>Haryana generally allows non-agriculturists to buy agricultural land.</li>
+        <li>Verify ownership through the latest Jamabandi and mutation (intkal) records.</li>
+        <li>Check for disputes, mortgages or acquisition notices on the land.</li>
+        <li>Any commercial or residential use needs a Change of Land Use (CLU) permission and the relevant approvals.</li>
+      </ul>
+
+      <p>Arjun Buildtech assists with land verification, paperwork and CLU guidance. NRIs should note that they cannot buy agricultural land; see our <a href="/blog/nri-property-investment-india">NRI guide</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80"
+    image:
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80",
   },
   {
     id: 15,
     slug: "best-real-estate-broker-in-rohtak",
     title: "How to Choose the Best Real Estate Broker in Rohtak",
-    date: "March 20, 2026",
-    category: "Market Insights",
-    excerpt: "Don't risk your life savings. Learn how to identify and partner with verified, trusted real estate consultants in Haryana.",
+    date: "2026-03-20",
+    category: "Buying Guide",
+    excerpt:
+      "Choosing the wrong broker can cost lakhs. Here is how to check HRERA registration, local expertise and service quality in Rohtak.",
     content: `
-      <h2>The Importance of a Trusted Consultant</h2>
-      <p>The real estate market is filled with unverified agents. Choosing the <strong>best real estate broker in Rohtak</strong> is critical to ensuring your transaction is legally sound and financially profitable.</p>
-      
-      <h3>What to Look For:</h3>
+      <h2>Why your choice of consultant matters</h2>
+      <p>The market has many unverified agents. Choosing the <strong>best real estate broker in Rohtak</strong> helps keep your transaction legally sound and financially fair.</p>
+
+      <h3>What to look for</h3>
       <ol>
-        <li><strong>HRERA Registration:</strong> Never work with an agent who is not registered with the Haryana Real Estate Regulatory Authority.</li>
-        <li><strong>Local Expertise:</strong> A good broker knows the exact block-by-block pricing of HSVP sectors and private townships.</li>
-        <li><strong>End-to-End Service:</strong> Look for a consultancy that handles everything from property hunting to legal documentation, bank loans, and Tehsil registration.</li>
+        <li><strong>HRERA registration:</strong> Real estate agents in Haryana are required to be registered with the Haryana Real Estate Regulatory Authority. Ask for the number and verify it.</li>
+        <li><strong>Local expertise:</strong> A good broker knows sector-wise pricing in HSVP areas and private townships.</li>
+        <li><strong>End-to-end service:</strong> Look for help with property search, legal checks, loans and Tehsil registration.</li>
+        <li><strong>Transparency:</strong> Brokerage terms should be clear and in writing.</li>
+        <li><strong>Track record:</strong> Ask for references from recent clients.</li>
       </ol>
-      
-      <p>At <strong>Arjun Buildtech</strong>, we pride ourselves on 100% transparency. As a top-rated real estate agency in Rohtak, we safeguard our clients' interests at every step.</p>
+
+      <p>At <strong>Arjun Buildtech</strong> we focus on transparent dealings and verified listings. Read about the <a href="/blog/top-5-mistakes-first-time-buyers">mistakes first-time buyers make</a> before you start your search.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80"
+    image:
+      "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80",
   },
   {
     id: 16,
     slug: "commercial-shops-sector-14-rohtak",
-    title: "Commercial Shops in Sector 14 Rohtak: High ROI Opportunities",
-    date: "March 05, 2026",
+    title: "Commercial Shops in Sector 14 Rohtak: Investment Guide",
+    date: "2026-03-05",
     category: "Commercial",
-    excerpt: "Sector 14 remains the premier commercial hub of Rohtak. Discover why retail spaces here guarantee high rental yields.",
+    excerpt:
+      "Sector 14 is Rohtak's main commercial hub. Learn what drives shop demand and rents there, and what to check before you invest.",
     content: `
-      <h2>Sector 14: The Heart of Rohtak's Commerce</h2>
-      <p>If you are looking for assured rental income, investing in <strong>commercial shops in Sector 14 Rohtak</strong> is one of the safest bets in the market.</p>
-      
-      <h3>Why Sector 14?</h3>
-      <p>Sector 14 is fully developed, heavily populated by high-net-worth individuals, and serves as the primary shopping and dining destination for the city. The footfall is consistent, making it highly attractive to premium retail brands, banks, and restaurant chains.</p>
-      
-      <h3>Rental Yields</h3>
-      <p>Investors can expect a steady rental yield of 6-8% annually, with capital appreciation adding another 8-10% to the total ROI. Due to high demand, vacancy rates in the main HUDA market are near zero.</p>
-      <p>Looking for off-market commercial deals? Contact Arjun Buildtech for exclusive listings.</p>
+      <h2>Sector 14: the heart of Rohtak's retail</h2>
+      <p>Investors who want rental income often look at <strong>commercial shops in Sector 14 Rohtak</strong>. The sector is fully developed and remains one of the city's main shopping and dining destinations.</p>
+
+      <h3>Why Sector 14 attracts tenants</h3>
+      <p>Consistent footfall appeals to banks, retail brands and restaurants. Shops on main roads or in busy market clusters tend to see stronger demand.</p>
+
+      <h3>Returns: what to expect</h3>
+      <p>Rental yields differ widely by shop size, floor, frontage and tenant. Commercial yields in tier-2 cities are usually in the mid single digits, with appreciation depending on the market. Check actual lease rents in the same lane and compare them with the price per square foot before you invest.</p>
+
+      <h3>Checklist</h3>
+      <ul>
+        <li>Verify ownership and approved use of the shop.</li>
+        <li>Check existing tenancy and lease terms.</li>
+        <li>Review parking and access.</li>
+      </ul>
+      <p>See also our overview of <a href="/blog/commercial-property-trends-2026">commercial property trends</a>.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1582062547070-5899981beeb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1582062547070-5899981beeb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 17,
     slug: "affordable-housing-projects-rohtak",
-    title: "Affordable Housing Projects in Rohtak: Deen Dayal Jan Awas Yojana",
-    date: "February 18, 2026",
+    title: "DDJAY Affordable Housing and Plots in Rohtak",
+    date: "2026-02-18",
     category: "Policy Update",
-    excerpt: "Learn how the Deen Dayal Jan Awas Yojana (DDJAY) is making property ownership accessible to the middle class in Haryana.",
+    excerpt:
+      "How DDJAY plotted housing works in Haryana, who it suits, and what to verify before buying an affordable plot near Rohtak.",
     content: `
-      <h2>Affordable Housing under DDJAY</h2>
-      <p>The Haryana Government's Deen Dayal Jan Awas Yojana (DDJAY) has revolutionized the real estate sector by promoting high-density, plotted colonies. For buyers looking for <strong>affordable housing projects in Rohtak</strong>, this scheme is a game-changer.</p>
-      
-      <h3>Benefits of DDJAY Plots</h3>
+      <h2>Affordable plotted housing under DDJAY</h2>
+      <p>The Haryana Government's Deen Dayal Jan Awas Yojana (DDJAY) promotes affordable, plotted colonies. For buyers looking at <strong>affordable housing projects in Rohtak</strong>, it created a budget-friendly route to owning a plot.</p>
+
+      <h3>Features of DDJAY colonies</h3>
       <ul>
-        <li><strong>Smaller Plot Sizes:</strong> Plots are available in smaller, budget-friendly sizes (up to 150 sq. meters).</li>
-        <li><strong>Registry Allowed:</strong> Independent floor-wise registry is permitted, meaning you can build up to 4 floors and sell them individually.</li>
-        <li><strong>Bank Financing:</strong> Up to 80% home loan availability from leading nationalized banks.</li>
+        <li><strong>Smaller plots:</strong> Plot sizes are capped at modest sizes, which keeps entry costs lower.</li>
+        <li><strong>Floor-wise registry:</strong> The policy allows separate registration of floors, depending on the approved building plan.</li>
+        <li><strong>Bank finance:</strong> Plots and floors in approved colonies are generally eligible for home loans, subject to bank policy.</li>
       </ul>
-      
-      <p>Several top developers are launching DDJAY projects on the outskirts of Rohtak. Reach out to Arjun Buildtech to find the best DDJAY plots before they sell out.</p>
+
+      <h3>What to verify</h3>
+      <ul>
+        <li>The colony has a valid licence from the Town and Country Planning department.</li>
+        <li>Approved layout plan, roads, and the status of services.</li>
+        <li>Current policy rules, since they have been revised over time.</li>
+      </ul>
+
+      <p>Arjun Buildtech can help you shortlist licensed DDJAY projects near Rohtak. Compare the costs with an HSVP sector using our <a href="/blog/guide-to-buying-hsvp-plots">HSVP plot guide</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 18,
     slug: "property-valuation-rohtak",
-    title: "How is Property Valuation Calculated in Rohtak?",
-    date: "February 05, 2026",
+    title: "How Property Valuation Works in Rohtak",
+    date: "2026-02-05",
     category: "Financial Insights",
-    excerpt: "Don't guess your property's worth. Understand the factors that determine property valuation and collector rates in Rohtak.",
+    excerpt:
+      "Collector rate vs market rate: learn what drives property valuation in Rohtak and how to estimate your plot or house's worth.",
     content: `
-      <h2>Understanding Property Valuation</h2>
-      <p>Whether you are buying or selling, knowing the accurate market value of a property is crucial. In Rohtak, <strong>property valuation</strong> depends on a mix of government-defined rates and current market dynamics.</p>
-      
-      <h3>Collector Rate vs. Market Rate</h3>
-      <p>The <em>Collector Rate</em> (or circle rate) is the minimum value at which a property can be registered, as set by the Haryana Government. The <em>Market Rate</em> is the actual price buyers are willing to pay, which is usually 20% to 40% higher than the collector rate in prime sectors like Sector 2 & Sector 3.</p>
-      
-      <h3>Factors Affecting Value:</h3>
+      <h2>Understanding property valuation</h2>
+      <p>Whether you are buying or selling, knowing a property's realistic value matters. In Rohtak, <strong>property valuation</strong> combines government-set rates with live market demand.</p>
+
+      <h3>Collector rate vs market rate</h3>
+      <p>The <em>collector rate</em> (circle rate) is the minimum value used for registration and stamp duty, set by the government. The <em>market rate</em> is what buyers actually pay, and in popular sectors it is often higher than the collector rate.</p>
+
+      <h3>Factors that affect value</h3>
       <ul>
-        <li>Location and Sector (HSVP vs. Unauthorized)</li>
-        <li>Proximity to main roads, parks, and corner plots</li>
-        <li>Width of the road facing the plot (e.g., 12m vs 24m road)</li>
-        <li>Age of construction (for built-up houses)</li>
+        <li>Sector and approval status (HSVP, licensed colony or unauthorised)</li>
+        <li>Corner plots, park-facing plots and proximity to main roads</li>
+        <li>Width of the facing road, for example 12 m vs 24 m</li>
+        <li>Age and condition of construction for built-up houses</li>
       </ul>
-      
-      <p>Want a free, accurate valuation of your property? Contact Arjun Buildtech for a professional assessment.</p>
+
+      <h3>How to estimate</h3>
+      <p>Compare recent registry values for similar plots in the same sector, adjust for facing and road width, and cross-check with a local expert. Stamp duty is paid on the higher of price or collector rate; see our <a href="/blog/understanding-property-taxes-haryana">stamp duty guide</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 19,
     slug: "rohtak-property-tax-online-payment",
-    title: "Step-by-Step Guide: Rohtak Property Tax Online Payment",
-    date: "January 20, 2026",
+    title: "Rohtak Property Tax Online Payment: Step-by-Step",
+    date: "2026-01-20",
     category: "Policy Update",
-    excerpt: "Pay your municipal corporation property tax easily online using your Property ID to avoid late penalties.",
+    excerpt:
+      "Pay your Rohtak municipal property tax online with your Property ID, avoid penalties and keep your NDC ready for resale.",
     content: `
-      <h2>Paying Property Tax in Rohtak</h2>
-      <p>Paying your annual property tax to the Municipal Corporation Rohtak (MCR) is mandatory and crucial for obtaining a No Dues Certificate (NDC) when selling property. The process is now completely digital.</p>
-      
-      <h3>How to Pay Online:</h3>
+      <h2>Paying property tax in Rohtak</h2>
+      <p>Annual property tax to the Municipal Corporation Rohtak (MCR) is mandatory, and cleared dues are needed to get a No Dues Certificate (NDC) when you sell. Payment is now online.</p>
+
+      <h3>How to pay online</h3>
       <ol>
-        <li>Visit the official ULB Haryana portal (ulbharyana.gov.in).</li>
-        <li>Click on 'Pay Property Tax' and select 'Rohtak' as your municipality.</li>
-        <li>Enter your unique Property ID (available on older tax receipts or via Parivar Pehchan Patra).</li>
-        <li>Verify the owner details and pending amount.</li>
-        <li>Complete the payment using UPI, Net Banking, or Credit/Debit card.</li>
-        <li>Download and save the PDF receipt.</li>
+        <li>Open the official Urban Local Bodies (ULB) Haryana property tax portal.</li>
+        <li>Choose the property tax payment option and select Rohtak as your municipality.</li>
+        <li>Enter your Property ID, which you can find on older tax receipts or through your Parivar Pehchan Patra linked records.</li>
+        <li>Check the owner details and the pending amount.</li>
+        <li>Pay using UPI, net banking or card.</li>
+        <li>Download and save the receipt.</li>
       </ol>
-      
-      <p>Keeping your property tax updated ensures a smooth, hassle-free transfer of property. If your property data is incorrect on the portal, Arjun Buildtech can assist you with the rectification process.</p>
+
+      <p>Keeping your tax up to date makes a future sale or transfer smoother. If your property details are wrong on the portal, Arjun Buildtech can help you get them corrected. Related: <a href="/blog/property-registration-guidelines-egras">E-GRAS registration guidelines</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 20,
     slug: "builder-floors-vs-high-rise",
-    title: "Independent Builder Floors vs High-Rise Apartments in Rohtak",
-    date: "January 08, 2026",
+    title: "Builder Floor vs High-Rise Flat in Rohtak",
+    date: "2026-01-08",
     category: "Buying Guide",
-    excerpt: "Confused between an independent builder floor and a high-rise flat? We break down the pros and cons for Rohtak homebuyers.",
+    excerpt:
+      "Independent builder floor or high-rise flat? Compare privacy, land share, maintenance and amenities for Rohtak homebuyers.",
     content: `
-      <h2>Choosing the Right Home Type</h2>
-      <p>Homebuyers in Rohtak often face a dilemma: should they invest in an <strong>independent builder floor</strong> in an HSVP sector, or a high-rise apartment in a gated society?</p>
-      
-      <h3>Independent Builder Floors</h3>
-      <p>Common in sectors like 2, 3, and 14, these are low-rise buildings (usually 3-4 floors) built on individual plots.</p>
+      <h2>Choosing the right home type</h2>
+      <p>Many Rohtak buyers have to choose between an <strong>independent builder floor</strong> in an HSVP sector and a flat in a gated high-rise society.</p>
+
+      <h3>Independent builder floors</h3>
+      <p>Common in sectors such as 2, 3 and 14, these are low-rise buildings (usually three to four floors) on individual plots.</p>
       <ul>
-        <li><strong>Pros:</strong> More privacy, higher undivided share of land (UDS), lower maintenance fees, and you can buy the roof rights.</li>
-        <li><strong>Cons:</strong> Fewer luxury amenities like swimming pools or large gyms; security relies on sector gates rather than dedicated guards.</li>
+        <li><strong>Pros:</strong> More privacy, a larger undivided share of land, lower maintenance charges, and often roof rights.</li>
+        <li><strong>Cons:</strong> Fewer amenities such as pools and gyms, and security that depends on the sector rather than a dedicated society team.</li>
       </ul>
-      
-      <h3>High-Rise Apartments</h3>
+
+      <h3>High-rise apartments</h3>
       <ul>
-        <li><strong>Pros:</strong> 24/7 multi-tier security, power backup, clubhouse, parks, and community living.</li>
-        <li><strong>Cons:</strong> Higher monthly maintenance charges, negligible land ownership share.</li>
+        <li><strong>Pros:</strong> Round-the-clock security, power backup, clubhouse, parks and community living.</li>
+        <li><strong>Cons:</strong> Higher monthly maintenance and a small share of land.</li>
       </ul>
-      
-      <p>Your choice depends on your lifestyle priorities. Arjun Buildtech offers the best options for both categories across Rohtak.</p>
+
+      <p>The right choice depends on your lifestyle and budget. If you are leaning toward flats, read our <a href="/blog/3-bhk-flats-in-rohtak">3 BHK buying guide</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
   {
     id: 21,
     slug: "renting-property-rohtak-guide",
-    title: "The Landlord's Guide to Renting Property in Rohtak",
-    date: "December 15, 2025",
+    title: "Landlord's Guide to Renting Out Property in Rohtak",
+    date: "2025-12-15",
     category: "Financial Insights",
-    excerpt: "Maximize your rental income while securing your property. Learn the best practices for drafting lease agreements in Haryana.",
+    excerpt:
+      "Protect your rental income: tenant verification, registered lease deeds, security deposits and clear maintenance clauses in Haryana.",
     content: `
-      <h2>Maximizing Rental Yields Safely</h2>
-      <p>Rohtak’s growing status as an educational and industrial hub means rental demand is always high. However, landlords must be cautious to protect their assets.</p>
-      
-      <h3>Best Practices for Landlords</h3>
+      <h2>Renting out safely and profitably</h2>
+      <p>Rohtak's mix of education and industry keeps rental demand healthy, but landlords still need sound paperwork to protect their property.</p>
+
+      <h3>Best practices for landlords</h3>
       <ul>
-        <li><strong>Tenant Verification:</strong> Always complete police verification for tenants. It is mandatory in Haryana.</li>
-        <li><strong>Registered Rent Agreement:</strong> Do not rely on notarized agreements for long-term leases (over 11 months). Register the lease deed at the Tehsil.</li>
-        <li><strong>Security Deposit:</strong> Standard practice in Rohtak is collecting 2 months of rent as a security deposit.</li>
-        <li><strong>Maintenance Clauses:</strong> Clearly define who pays for municipal taxes, society maintenance, and minor repairs.</li>
+        <li><strong>Tenant verification:</strong> Complete tenant verification with the police as required in Haryana.</li>
+        <li><strong>Written, registered agreement:</strong> A lease of one year or more must be registered. Many landlords use 11-month agreements; whichever you choose, put the terms in writing.</li>
+        <li><strong>Security deposit:</strong> The amount is negotiable and commonly one to three months of rent. State the refund conditions clearly.</li>
+        <li><strong>Maintenance clauses:</strong> Define who pays property tax, society maintenance, utilities and minor repairs.</li>
+        <li><strong>Inspection:</strong> Record the condition of the property at move-in with photos.</li>
       </ul>
-      
-      <p>Arjun Buildtech provides comprehensive property management services, from finding reliable tenants to drafting foolproof legal agreements.</p>
+
+      <p>Arjun Buildtech provides property management support, from finding reliable tenants to drafting clear agreements. Planning to sell instead? Read our <a href="/blog/tips-for-selling-your-property-fast">tips for selling fast</a>.</p>
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80"
+    // TODO: this image is also used by post id 4. Use a different one to avoid duplicate images.
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1073&q=80",
   },
   {
     id: 22,
     slug: "top-sectors-for-investment-rohtak",
-    title: "Top 5 Sectors for Real Estate Investment in Rohtak (2026)",
-    date: "November 30, 2025",
-    category: "Investment Update",
-    excerpt: "Looking for the highest ROI? Here are the top 5 sectors and townships in Rohtak that guarantee massive returns.",
+    title: "Top 5 Sectors to Invest in Rohtak (2026)",
+    date: "2025-11-30",
+    category: "Investment Guide",
+    excerpt:
+      "Sector 27, Suncity, Sector 2, Sector 25 and the IMT surroundings: five Rohtak locations investors are watching in 2026.",
     content: `
-      <h2>Where to Invest in Rohtak Today</h2>
-      <p>If you have capital ready to deploy, choosing the right sector is the difference between average returns and massive wealth creation. Here are our top 5 picks for 2026:</p>
-      
+      <h2>Where investors are looking in Rohtak</h2>
+      <p>Picking the right location matters as much as picking the right price. Here are five areas on our watchlist for 2026:</p>
+
       <ol>
-        <li><strong>Sector 27:</strong> Benefiting massively from highway connectivity. Plot prices are surging but still offer entry points for mid-sized investors.</li>
-        <li><strong>Suncity Township (Sector 34-36):</strong> The most premium address in Rohtak. Ideal for luxury villas and high-end plots.</li>
-        <li><strong>Sector 2:</strong> A fully developed, extremely affluent sector. Highly liquid market with constant demand.</li>
-        <li><strong>Sector 25:</strong> Growing commercial and residential mix, fueled by nearby institutional development.</li>
-        <li><strong>IMT Surroundings:</strong> Villages and new sectors near the Industrial Model Township are excellent for long-term land holding.</li>
+        <li><strong>Sector 27:</strong> Benefits from highway connectivity. Prices are rising but still offer entry points for mid-sized budgets.</li>
+        <li><strong>Suncity Township (Sectors 34–36A):</strong> One of Rohtak's most premium addresses, suited to villas and high-end plots. See the <a href="/blog/suncity-sector-appreciation">latest price update</a>.</li>
+        <li><strong>Sector 2:</strong> A fully developed, affluent sector with active resale demand.</li>
+        <li><strong>Sector 25:</strong> A growing mix of residential and commercial use near institutional development.</li>
+        <li><strong>IMT surroundings:</strong> Villages and new sectors near the Industrial Model Township, better for long-term land holding.</li>
       </ol>
-      
-      <p>Arjun Buildtech’s investment advisors can help you build a profitable real estate portfolio. Contact us today.</p>
+
+      <p>Every investment carries risk, so check titles, approvals and recent registry values for any plot you consider. Arjun Buildtech's advisors can help you build a balanced property portfolio.</p>
+      ${INVEST_NOTE}
+      ${CTA}
     `,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80"
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
-  ...moreBlogs
+  ...moreBlogs,
 ];
+
+// Newest first. Works best when every date is ISO ("YYYY-MM-DD").
+export const blogs = [...allBlogs].sort(
+  (a, b) => new Date(b.date) - new Date(a.date)
+);

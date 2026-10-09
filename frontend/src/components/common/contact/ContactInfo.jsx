@@ -12,8 +12,8 @@ const ContactInfo = () => {
     {
       icon: <FaPhone className="text-green-600 w-5 h-5" />,
       label: "Phone",
-      value: "+91 76177 11003",
-      action: () => (window.location.href = "tel:+917617711003"),
+      value: "+91 93504 47531",
+      action: () => (window.location.href = "tel:+919350447531"),
     },
     {
       icon: <FaEnvelope className="text-purple-600 w-5 h-5" />,

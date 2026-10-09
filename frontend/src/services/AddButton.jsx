@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import DynamicPropertyForm from "../components/common/admin/DynamicPropertyForm";
+import toast from "react-hot-toast";
+import DynamicPropertyForm from "../components/admin/DynamicPropertyForm";
 import { db } from "./firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { buildFirestorePropertyPayload } from "../utils/propertySchema";
 
 const AdminPropertyManager = () => {
   const [loading, setLoading] = useState(false);
@@ -11,24 +13,25 @@ const AdminPropertyManager = () => {
     try {
       // formData.images already contains Cloudinary URLs from ImageUploader
       // No need to upload again!
+      const payload = buildFirestorePropertyPayload(formData);
       const propertyData = {
-        ...formData,
+        ...payload,
         // images are already Cloudinary URLs, just ensure we have array
-        images: formData.images || [],
+        images: payload.images || [],
         createdAt: serverTimestamp(),
-        status: "active",
         featured: false,
         views: 0,
       };
 
       await addDoc(collection(db, "properties"), propertyData);
-      alert("✅ Property successfully added!");
+      toast.success("Property successfully added!");
 
       // Optional: Reset form or redirect
       window.scrollTo(0, 0);
     } catch (err) {
       console.error("❌ Error saving property:", err);
-      alert("Failed to save property. Please try again.");
+      toast.error("Failed to save property. Please try again.");
+      throw err;
     } finally {
       setLoading(false);
     }

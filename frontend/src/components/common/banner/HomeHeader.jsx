@@ -2,13 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import HomeSearchBar from "../form/HomeSearchBar";
 
+
 const HomeHeader = () => {
-  const navigate = useNavigate();
-
-  const handleCityClick = () => {
-    navigate("/properties/rohtak");
-  };
-
   return (
     <section
       className="relative w-full min-h-[480px] md:min-h-[520px] bg-cover bg-center flex flex-col items-center justify-center overflow-hidden"

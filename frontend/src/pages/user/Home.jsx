@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import React, { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 
 import HomeHeader from "../../components/common/banner/HomeHeader";
@@ -9,11 +9,12 @@ import FAQSection from "../../components/FAQSection";
 import FeaturedProperties from "../../components/FeaturedProperties";
 import MapSection from "../../components/MapSection";
 import MarketInsights from "../../components/MarketInsights";
+import PopularLocalities from "../../components/common/PopularLocalities";
 import SocialEmbeds from "../../components/common/SocialEmbeds";
 import EmiCalculator from "../../components/common/EmiCalculator";
+import PostPropertyBanner from "../../components/common/banner/PostPropertyBanner";
 
 // --- Popup Inquiry Form ---
-import InquiryPopup from "../../components/common/form/InquiryPopup";
 
 // --- Lazy-loaded (below the fold) sections ---
 const ClientReviews = lazy(() => import("../../components/ClientReviews"));
@@ -33,17 +34,16 @@ const LoadingFallback = () => (
 );
 
 const Home = () => {
-  // --- Popup State ---
-  const [popupOpen, setPopupOpen] = useState(false);
-
-  // --- Auto show popup after 5 seconds ---
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPopupOpen(true);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://arjunbuildtech.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://arjunbuildtech.com/properties?location={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
 
   return (
     <div className="bg-[#F9F9F9] min-h-screen">
@@ -58,6 +58,9 @@ const Home = () => {
           content="real estate Rohtak, plots in Rohtak, buy villa Rohtak, property for sale Rohtak, Arjun Buildtech"
         />
         <link rel="canonical" href="https://arjunbuildtech.com" />
+        <script type="application/ld+json">
+          {JSON.stringify(schemaData)}
+        </script>
       </Helmet>
 
       {/* 1️⃣ Hero Header */}
@@ -68,6 +71,15 @@ const Home = () => {
 
       {/* 3️⃣ Featured Properties */}
       <FeaturedProperties />
+
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-12">
+        <PostPropertyBanner />
+      </div>
+
+      {/* Popular Localities Section */}
+      <div className="container mx-auto px-4 md:px-8 max-w-7xl mt-4">
+        <PopularLocalities />
+      </div>
 
       {/* 4️⃣ Real Estate Services */}
       <RealEstateServices />
@@ -96,7 +108,7 @@ const Home = () => {
       </Suspense>
 
       {/* 9️⃣ Inquiry Popup */}
-      <InquiryPopup isOpen={popupOpen} onClose={() => setPopupOpen(false)} />
+
     </div>
   );
 };

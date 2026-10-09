@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { db } from "../../../services/firebase"; // adjust path if needed
 import {
   doc,
@@ -9,6 +10,10 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import DynamicPropertyForm from "../../admin/DynamicPropertyForm";
+import {
+  buildFirestorePropertyPayload,
+  normalizePropertyData,
+} from "../../../utils/propertySchema";
 
 const PropertyFormContainer = ({
   propertyId = null,
@@ -27,7 +32,9 @@ const PropertyFormContainer = ({
         const docRef = doc(db, collectionName, propertyId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setInitialData({ id: docSnap.id, ...docSnap.data() });
+          setInitialData(
+            normalizePropertyData({ id: docSnap.id, ...docSnap.data() }),
+          );
         } else {
           console.warn(`${collectionName} document not found:`, propertyId);
         }
@@ -44,24 +51,27 @@ const PropertyFormContainer = ({
   // Handle add or update
   const handleSubmit = async (data) => {
     try {
+      const payload = buildFirestorePropertyPayload(data);
+
       if (propertyId) {
         // update existing
         const docRef = doc(db, collectionName, propertyId);
         await setDoc(
           docRef,
-          { ...data, updatedAt: serverTimestamp() },
-          { merge: true }
+          { ...payload, updatedAt: serverTimestamp() },
+          { merge: true },
         );
-        alert(`✅ Property updated successfully in ${collectionName}`);
+        toast.success(`Property updated successfully in ${collectionName}`);
       } else {
         // create new
         const colRef = collection(db, collectionName);
-        await addDoc(colRef, { ...data, createdAt: serverTimestamp() });
-        alert(`✅ New property added successfully to ${collectionName}`);
+        await addDoc(colRef, { ...payload, createdAt: serverTimestamp() });
+        toast.success(`New property added successfully to ${collectionName}`);
       }
     } catch (error) {
       console.error("Error saving property:", error);
-      alert("❌ Failed to save property");
+      toast.error("Failed to save property");
+      throw error;
     }
   };
 
