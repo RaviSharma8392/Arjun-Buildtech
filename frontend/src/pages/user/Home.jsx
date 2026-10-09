@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 import HomeHeader from "../../components/common/banner/HomeHeader";
@@ -101,7 +102,25 @@ const Home = () => {
       {/* 7️⃣ Social Media Embeds */}
       <SocialEmbeds />
 
-      {/* 8️⃣ FAQ + Contact */}
+      {/* 8️⃣ Quick Links / Sitelinks */}
+      <div className="bg-white py-12 border-t border-gray-100">
+        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Quick Links</h2>
+            <div className="w-16 h-1 bg-red-600 mx-auto rounded"></div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+            <Link to="/properties" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">All Properties</Link>
+            <Link to="/services" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">Our Services</Link>
+            <Link to="/testimonials" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">Client Reviews</Link>
+            <Link to="/blogs" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">Real Estate Blog</Link>
+            <Link to="/properties/Rohtak" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">Properties in Rohtak</Link>
+            <Link to="/contact-us" className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">Contact Us</Link>
+          </div>
+        </div>
+      </div>
+
+      {/* 9️⃣ FAQ + Contact */}
       <Suspense fallback={<LoadingFallback />}>
         <FAQSection />
         <ContactUs />
