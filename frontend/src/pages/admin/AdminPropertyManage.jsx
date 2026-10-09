@@ -167,7 +167,7 @@ const AdminPropertyManage = () => {
           {filteredProperties.map((property) => (
             <div
               key={property.docId}
-              className="glass-panel rounded-2xl transition-all duration-300 overflow-hidden relative group hover:-translate-y-1 hover:shadow-xl">
+              className={`glass-panel rounded-2xl transition-all duration-300 overflow-hidden relative group hover:-translate-y-1 hover:shadow-xl ${isDeleting === property.docId ? "opacity-50 pointer-events-none" : ""}`}>
               <PropertyCard
                 property={property}
                 isAdmin={true}
