@@ -10,6 +10,8 @@ import {
   FaPhoneAlt,
   FaWhatsapp,
   FaShareAlt,
+  FaBed,
+  FaBath,
 } from "react-icons/fa";
 import { ChevronRight, Home, Building } from "lucide-react";
 
