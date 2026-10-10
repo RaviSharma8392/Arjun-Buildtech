@@ -3,8 +3,10 @@ import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { Send } from "lucide-react";
 import Notification from "../notification/Notification";
+import { useLanguage } from "../../../context/useLanguage";
 
 const ContactForm = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,15 +55,20 @@ const ContactForm = () => {
 
       // Show success notification
       setNotification({
-        message:
+        message: t(
+          "contact.success",
           "Message sent successfully! We'll get back to you within 24 hours.",
+        ),
         type: "success",
         visible: true,
       });
     } catch (error) {
       console.error("Error saving contact:", error);
       setNotification({
-        message: "Error submitting the form. Please try again.",
+        message: t(
+          "contact.error",
+          "Error submitting the form. Please try again.",
+        ),
         type: "error",
         visible: true,
       });
@@ -85,12 +92,14 @@ const ContactForm = () => {
       {/* Standard Portal Heading Design */}
       <div className="mb-6 md:mb-8 text-center md:text-left">
         <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-4">
-          Get Expert Property Advice
+          {t("contact.formTitle", "Get Expert Property Advice")}
         </h2>
         <div className="w-16 h-1 bg-red-600 mb-4 mx-auto md:mx-0"></div>
         <p className="text-sm md:text-[15px] text-gray-600">
-          Speak with Rohtak's top real estate consultants today. We'll help you
-          secure the best deal on your dream property.
+          {t(
+            "contact.formDescription",
+            "Speak with Rohtak's top real estate consultants today. We'll help you secure the best deal on your dream property.",
+          )}
         </p>
       </div>
 
@@ -101,7 +110,7 @@ const ContactForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Your Name*"
+            placeholder={t("contact.name", "Your Name*")}
             required
             className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
@@ -110,7 +119,7 @@ const ContactForm = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Your Email*"
+            placeholder={t("contact.email", "Your Email*")}
             required
             className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
@@ -122,7 +131,7 @@ const ContactForm = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            placeholder="Phone Number*"
+            placeholder={t("contact.phone", "Phone Number*")}
             required
             className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
@@ -131,7 +140,7 @@ const ContactForm = () => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            placeholder="Your Location*"
+            placeholder={t("contact.location", "Your Location*")}
             required
             className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors"
           />
@@ -141,7 +150,7 @@ const ContactForm = () => {
           name="message"
           value={formData.message}
           onChange={handleChange}
-          placeholder="Your Message*"
+          placeholder={t("contact.message", "Your Message*")}
           required
           rows="4"
           className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded text-[15px] text-gray-900 focus:bg-white focus:outline-none focus:border-red-600 transition-colors resize-none"
@@ -157,8 +166,10 @@ const ContactForm = () => {
             className="mt-1 w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-600 shrink-0 cursor-pointer"
           />
           <span className="text-[13px] text-gray-600 leading-snug">
-            I consent to storing my information to respond to my inquiry and
-            agree to be contacted by Arjun Buildtech experts.
+            {t(
+              "contact.consent",
+              "I consent to storing my information to respond to my inquiry and agree to be contacted by Arjun Buildtech experts.",
+            )}
           </span>
         </div>
 
@@ -166,13 +177,15 @@ const ContactForm = () => {
           <button
             type="submit"
             disabled={loading || !formData.gdprAgreement}
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-3.5 px-6 rounded font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            className="w-full bg-[#d9534f] hover:bg-[#c9302c] text-white py-3.5 px-6 rounded font-semibold text-[15px] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
             {loading ? (
-              "Submitting..."
+              t("common.submitting", "Submitting...")
             ) : (
               <>
                 <Send size={18} />
-                <span>Get Free Consultation</span>
+                <span>
+                  {t("contact.getConsultation", "Get Free Consultation")}
+                </span>
               </>
             )}
           </button>

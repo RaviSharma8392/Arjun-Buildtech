@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { Toaster } from "react-hot-toast";
+import { useLanguage } from "./context/useLanguage";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -38,6 +39,9 @@ const SeoListingPage = lazy(() => import("./pages/SeoListingPage"));
 const HelpCenter = lazy(() => import("./pages/user/HelpCenter"));
 const SalesEnquiry = lazy(() => import("./pages/user/SalesEnquiry"));
 const ChatWithUs = lazy(() => import("./pages/user/ChatWithUs"));
+const EmiCalculatorPage = lazy(() => import("./pages/user/EmiCalculatorPage"));
+const AreaConverterPage = lazy(() => import("./pages/user/AreaConverterPage"));
+const ToolsPage = lazy(() => import("./pages/user/ToolsPage"));
 
 // Admin Lazy Pages
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
@@ -59,6 +63,7 @@ const RequireAdmin = ({ children }) => {
 
 // -------- App Component --------
 const App = () => {
+  const { t } = useLanguage();
   return (
     <HelmetProvider>
       <Toaster position="top-center" reverseOrder={false} />
@@ -74,11 +79,13 @@ const App = () => {
               <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
             </div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              Loading Your Dream Property...
+              {t("common.loadingTitle", "Loading Your Dream Property...")}
             </h2>
             <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto">
-              Please wait a moment while we prepare your personalized real
-              estate experience.
+              {t(
+                "common.loadingDescription",
+                "Please wait a moment while we prepare your personalized real estate experience.",
+              )}
             </p>
           </div>
         }>
@@ -103,23 +110,22 @@ const App = () => {
               path="real-estate-services"
               element={<RealEstateServices />}
             />
-            <Route path="contact-agent" element={<ContactUs />} />
             <Route path="contact" element={<ContactUs />} />
             <Route path="profile" element={<Profile />} />
             <Route path="services" element={<RealEstateServices />} />
             <Route path="services/:slug" element={<ServicePage />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="terms-of-service" element={<TermsOfService />} />
-            
             {/* Help & Support Routes */}
             <Route path="help-center" element={<HelpCenter />} />
             <Route path="sales-enquiry" element={<SalesEnquiry />} />
             <Route path="chat-with-us" element={<ChatWithUs />} />
-            
             {/* Blog Routes */}
             <Route path="blog" element={<BlogListingPage />} />
             <Route path="blog/:slug" element={<BlogDetailsPage />} />
-
+            <Route path="emi-calculator" element={<EmiCalculatorPage />} />
+            <Route path="area-converter" element={<AreaConverterPage />} />
+            <Route path="tools" element={<ToolsPage />} />
             {/* Programmatic Dynamic Handler for SEO Pages */}
             <Route path=":slug" element={<SeoListingPage />} />
           </Route>

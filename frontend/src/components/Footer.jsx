@@ -6,13 +6,15 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/useLanguage";
 
 const Footer = () => {
+  const { t } = useLanguage();
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Property", path: "/properties" },
-    { name: "Testimonials", path: "/testimonials" },
+    { name: "Home", key: "nav.home", path: "/" },
+    { name: "Services", key: "nav.services", path: "/services" },
+    { name: "Property", key: "nav.properties", path: "/properties" },
+    { name: "Testimonials", key: "nav.testimonials", path: "/testimonials" },
   ];
 
   const socialLinks = [
@@ -44,12 +46,10 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-gray-600 text-[14px] leading-relaxed mb-6">
-              If you are looking for a property consultant to help you get your
-              dream plot, luxury villa, or high-return investment, then you are
-              at the right place. We, at Arjun Buildtech, are one of the leading
-              real estate advisors in Rohtak, Haryana, with a decade of
-              experience. Our main motive is to provide excellent quality and
-              planning tailored to the needs of our clients.
+              {t(
+                "footer.about",
+                "If you are looking for a property consultant to help you get your dream plot, luxury villa, or high-return investment, then you are at the right place. We, at Arjun Buildtech, are one of the leading real estate advisors in Rohtak, Haryana, with a decade of experience. Our main motive is to provide excellent quality and planning tailored to the needs of our clients.",
+              )}
             </p>
 
             {/* Social Media Links */}
@@ -72,7 +72,7 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="lg:col-span-1">
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 mb-4">
-              Quick Links
+              {t("footer.quickLinks", "Quick Links")}
             </h3>
             <ul className="space-y-2.5">
               {navLinks.map((link, idx) => (
@@ -80,7 +80,7 @@ const Footer = () => {
                   <Link
                     to={link.path}
                     className="text-[14px] text-gray-600 hover:text-red-600 transition-colors inline-block">
-                    {link.name}
+                    {t(link.key, link.name)}
                   </Link>
                 </li>
               ))}
@@ -90,14 +90,16 @@ const Footer = () => {
           {/* Contact Information */}
           <div className="lg:col-span-1">
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 mb-4">
-              Contact Info
+              {t("footer.contactInfo", "Contact Info")}
             </h3>
             <div className="space-y-4 text-[14px]">
               {/* Phone Numbers */}
               <div className="flex items-start gap-2.5">
                 <FaPhone className="w-4 h-4 text-red-600 mt-1 shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900">Contact Numbers</p>
+                  <p className="font-semibold text-gray-900">
+                    {t("footer.contactNumbers", "Contact Numbers")}
+                  </p>
                   <div className="text-gray-600 space-y-0.5 mt-0.5 text-[13px]">
                     <p>Parveen Gehlawat: 93504-47531, 98994-81428</p>
                     <p>Naveen Gehlawat: 98121-50126</p>
@@ -110,7 +112,7 @@ const Footer = () => {
                 <FaMapMarkerAlt className="w-4 h-4 text-red-600 mt-1 shrink-0" />
                 <div>
                   <p className="font-semibold text-gray-900">
-                    Office Locations
+                    {t("footer.officeLocations", "Office Locations")}
                   </p>
                   <div className="text-gray-600 space-y-0.5 mt-0.5 text-[13px]">
                     <p>• G74P, Sector-27, Rohtak</p>
@@ -124,11 +126,13 @@ const Footer = () => {
           {/* Business Hours */}
           <div className="lg:col-span-1">
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900 mb-4">
-              Business Hours
+              {t("footer.businessHours", "Business Hours")}
             </h3>
             <div className="bg-gray-50 rounded p-4 border border-gray-200">
               <div className="space-y-1 mb-4 text-[13px]">
-                <div className="text-gray-600">All 7 days available</div>
+                <div className="text-gray-600">
+                  {t("footer.allDays", "All 7 days available")}
+                </div>
                 <div className="font-semibold text-gray-900">
                   10:00 AM - 7:00 PM
                 </div>
@@ -136,12 +140,12 @@ const Footer = () => {
 
               <div className="pt-3 border-t border-gray-200">
                 <p className="text-[13px] text-gray-700 font-medium text-center mb-2">
-                  Ready to find your dream property?
+                  {t("footer.ready", "Ready to find your dream property?")}
                 </p>
                 <Link
                   to="/contact"
                   className="block text-center w-full bg-red-600 text-white py-2 px-3 rounded text-[13px] font-semibold hover:bg-red-700 transition-colors">
-                  Get Free Consultation
+                  {t("common.getFreeConsultation", "Get Free Consultation")}
                 </Link>
               </div>
             </div>
@@ -154,31 +158,63 @@ const Footer = () => {
             {/* Government & Useful Links */}
             <div>
               <h4 className="text-gray-900 font-bold mb-3 text-xs uppercase tracking-wider">
-                Government & Useful Links
+                {t("footer.governmentLinks", "Government & Useful Links")}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px] text-gray-500">
-                <a href="https://jamabandi.nic.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://jamabandi.nic.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   Jamabandi Nakal (Digital Land Record)
                 </a>
-                <a href="https://haryanarera.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://haryanarera.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   HRERA Policies
                 </a>
-                <a href="https://ulbhryndc.org/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://ulbhryndc.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   Property ID Status
                 </a>
-                <a href="https://hsvp.org.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://hsvp.org.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   HSVP Plots Status
                 </a>
-                <a href="https://hsvpeauction.org.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://hsvpeauction.org.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   HSVP e-Auction News
                 </a>
-                <a href="https://tcpharyana.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://tcpharyana.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   Master Plan Rohtak 2031
                 </a>
-                <a href="https://tcpharyana.gov.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://tcpharyana.gov.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   Haryana Building Code
                 </a>
-                <a href="https://egrashry.nic.in/" target="_blank" rel="noopener noreferrer" className="hover:text-red-600 transition-colors">
+                <a
+                  href="https://egrashry.nic.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-600 transition-colors">
                   Online Stamp (E-GRAS)
                 </a>
               </div>
@@ -187,7 +223,7 @@ const Footer = () => {
             {/* Properties by Area */}
             <div>
               <h4 className="text-gray-900 font-bold mb-3 text-xs uppercase tracking-wider">
-                Properties in Rohtak
+                {t("footer.propertiesRohtak", "Properties in Rohtak")}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[13px] text-gray-500">
                 <Link

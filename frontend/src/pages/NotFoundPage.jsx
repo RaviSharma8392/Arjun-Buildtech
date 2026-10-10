@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useLanguage } from "../context/useLanguage";
 
 const NotFoundPage = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,11 +23,13 @@ const NotFoundPage = () => {
       </Helmet>
       <h1 className="text-6xl font-bold text-red-600 mb-4">404</h1>
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-        Oops! Page Not Found
+        {t("notFound.title", "Oops! Page Not Found")}
       </h2>
       <p className="text-gray-600 mb-6 text-center max-w-sm">
-        The page you are looking for does not exist. You will be redirected to
-        the homepage shortly.
+        {t(
+          "notFound.copy",
+          "The page you are looking for does not exist. You will be redirected to the homepage shortly.",
+        )}
       </p>
       <div className="w-24 h-1 bg-red-600 rounded-full animate-pulse"></div>
     </div>

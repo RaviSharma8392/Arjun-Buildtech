@@ -7,22 +7,30 @@ import {
   FaRegEnvelope,
   FaRegClock,
   FaChevronRight,
-  FaGlobe,
 } from "react-icons/fa";
+import LanguageSwitcher from "../LanguageSwitcher";
+import { useLanguage } from "../../../context/useLanguage";
+import { companyInfo } from "../../../data/companyInfo";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   // Exactly matching the screenshot links
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Properties", path: "/properties", badge: "NEW" },
-    { name: "Testimonials", path: "/testimonials" },
-    { name: "Profile", path: "/profile" },
-    { name: "Blog", path: "/blog" },
+    { name: "Home", key: "nav.home", path: "/" },
+    { name: "Services", key: "nav.services", path: "/services" },
+    {
+      name: "Properties",
+      key: "nav.properties",
+      path: "/properties",
+      badge: "NEW",
+    },
+    { name: "Testimonials", key: "nav.testimonials", path: "/testimonials" },
+    { name: "Profile", key: "nav.profile", path: "/profile" },
+    { name: "Blog", key: "nav.blog", path: "/blog" },
   ];
 
   // Handle scroll effect
@@ -52,21 +60,21 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-200 bg-white border-b border-gray-200 ${
-          isScrolled ? "shadow-sm py-3" : "py-4"
+          isScrolled ? "shadow-sm py-2" : "py-3"
         }`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="site-container">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link to="/" className="flex items-center shrink-0">
               <img
                 src="/arjunBuildTechLogo.png"
                 alt="Arjun Buildtech"
-                className="w-32 md:w-36 object-contain"
+                className="h-9 w-32 md:w-36 object-contain"
               />
             </Link>
 
             {/* Desktop Navigation (Center) */}
-            <div className="hidden lg:flex items-center space-x-7 flex-1 justify-center">
+            <div className="hidden lg:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 flex-1 justify-center">
               {navLinks.map((link) => {
                 const isActive =
                   location.pathname === link.path ||
@@ -77,14 +85,23 @@ export default function Navbar() {
                     {link.name === "Blog" ? (
                       <div className="relative group py-1 cursor-pointer">
                         <div
-                          className={`text-[16px] transition-colors duration-150 flex items-center gap-1.5 ${
+                          className={`text-[14px] transition-colors duration-150 flex items-center gap-1.5 ${
                             isActive
                               ? "text-red-600 font-semibold"
                               : "text-gray-600 font-medium hover:text-red-600"
                           }`}>
-                          Blog
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          {t("nav.blog", "Blog")}
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M19 9l-7 7-7-7"
+                            />
                           </svg>
                         </div>
                         {isActive && (
@@ -93,20 +110,34 @@ export default function Navbar() {
                         {/* Blog Dropdown Menu */}
                         <div className="absolute top-full left-0 mt-2 w-52 bg-white border border-gray-100 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left z-50">
                           <div className="py-2 flex flex-col">
-                            <Link to="/blog?category=Market+News" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                              Market News
+                            <Link
+                              to="/blog?category=Market+News"
+                              className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                              {t("blog.category.MarketNews", "Market News")}
                             </Link>
-                            <Link to="/blog?category=Investment+Guide" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                              Investment Guide
+                            <Link
+                              to="/blog?category=Investment+Guide"
+                              className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                              {t(
+                                "blog.category.InvestmentGuide",
+                                "Investment Guide",
+                              )}
                             </Link>
-                            <Link to="/blog?category=Buying+Guide" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                              Buying Guide
+                            <Link
+                              to="/blog?category=Buying+Guide"
+                              className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                              {t("blog.category.BuyingGuide", "Buying Guide")}
                             </Link>
-                            <Link to="/blog?category=Policy+Update" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                              Policy Update
+                            <Link
+                              to="/blog?category=Policy+Update"
+                              className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                              {t("blog.category.PolicyUpdate", "Policy Update")}
                             </Link>
-                            <Link to="/blog" className="px-4 py-2.5 text-[14px] font-medium text-red-600 border-t border-gray-100 mt-1 hover:bg-gray-50 transition-colors">
-                              View All Articles &rarr;
+                            <Link
+                              to="/blog"
+                              className="px-4 py-2.5 text-[14px] font-medium text-red-600 border-t border-gray-100 mt-1 hover:bg-gray-50 transition-colors">
+                              {t("nav.viewAllArticles", "View All Articles")}{" "}
+                              &rarr;
                             </Link>
                           </div>
                         </div>
@@ -115,12 +146,12 @@ export default function Navbar() {
                       <>
                         <Link
                           to={link.path}
-                          className={`text-[16px] transition-colors duration-150 flex items-center gap-1.5 ${
+                          className={`text-[14px] transition-colors duration-150 flex items-center gap-1.5 ${
                             isActive
                               ? "text-red-600 font-semibold"
                               : "text-gray-600 font-medium hover:text-red-600"
                           }`}>
-                          {link.name}
+                          {t(link.key, link.name)}
                         </Link>
 
                         {/* Exact Screenshot Active Line */}
@@ -141,26 +172,43 @@ export default function Navbar() {
             </div>
 
             {/* Right Side Actions (Cleaned Up) */}
-            <div className="hidden lg:flex items-center shrink-0 gap-6">
+            <div className="hidden lg:flex items-center shrink-0 gap-4 xl:gap-6">
+              <LanguageSwitcher />
+
               {/* Help Dropdown */}
               <div className="relative group py-2 cursor-pointer">
                 <div className="flex items-center gap-1 text-[15px] font-medium text-gray-600 hover:text-red-600 transition-colors">
-                  Help
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  {t("nav.help", "Help")}
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
                 {/* Dropdown Menu */}
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
                   <div className="py-2 flex flex-col">
-                    <Link to="/help-center" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                      Help Center
+                    <Link
+                      to="/help-center"
+                      className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                      {t("nav.helpCenter", "Help Center")}
                     </Link>
-                    <Link to="/sales-enquiry" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                      Sales Enquiry
+                    <Link
+                      to="/sales-enquiry"
+                      className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                      {t("nav.salesEnquiry", "Sales Enquiry")}
                     </Link>
-                    <Link to="/chat-with-us" className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
-                      Chat with Us
+                    <Link
+                      to="/chat-with-us"
+                      className="px-4 py-2.5 text-[14px] text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors">
+                      {t("nav.chatWithUs", "Chat with Us")}
                     </Link>
                   </div>
                 </div>
@@ -169,19 +217,22 @@ export default function Navbar() {
               {/* Contact Us CTA (Always Red with FREE badge) */}
               <Link
                 to="/contact"
-                className="px-5 py-2 rounded-full text-[15px] transition-all shadow-sm flex items-center justify-center gap-2 border bg-red-600 border-red-600 text-white hover:bg-red-700 hover:border-red-700">
-                <span className="font-medium">Contact Us</span>
+                className="px-4 py-2 rounded-full text-[13px] font-semibold transition-all shadow-sm flex items-center justify-center gap-2 border bg-red-600 border-red-600 text-white hover:bg-red-700 hover:border-red-700">
+                <span className="font-medium">
+                  {t("nav.contactUs", "Contact Us")}
+                </span>
                 <span className="text-[10px] uppercase font-bold bg-[#FFC107] text-gray-900 px-2 py-0.5 rounded-full tracking-wide">
-                  Free
+                  {t("nav.free", "Free")}
                 </span>
               </Link>
             </div>
 
             {/* Mobile Menu Toggles */}
-            <div className="flex lg:hidden items-center gap-3">
+            <div className="flex lg:hidden items-center gap-2">
+              <LanguageSwitcher />
               <button
                 onClick={() => setIsMenuOpen(true)}
-                className="p-2.5 text-gray-800 focus:outline-none bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 transition">
+                className="p-2 text-gray-800 focus:outline-none bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 transition">
                 <FaBars className="w-5 h-5" />
               </button>
             </div>
@@ -223,11 +274,13 @@ export default function Navbar() {
                 key={link.name}
                 to={link.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`flex items-center justify-between px-5 py-4 border-b border-gray-200 text-[17px] font-normal transition-colors ${
-                  isActive ? "text-red-600 bg-red-50/50" : "text-[#303030] hover:text-red-600 hover:bg-gray-50"
+                className={`flex items-center justify-between px-5 py-4 border-b border-gray-200 text-[14px] font-normal transition-colors ${
+                  isActive
+                    ? "text-red-600 bg-red-50/50"
+                    : "text-[#303030] hover:text-red-600 hover:bg-gray-50"
                 }`}>
                 <div className="flex items-center gap-3">
-                  {link.name}
+                  {t(link.key, link.name)}
                   {link.badge && (
                     <span className="text-[10px] font-medium bg-[#FFC107] text-gray-900 px-2 py-0.5 rounded shadow-sm tracking-wide">
                       {link.badge}
@@ -244,14 +297,18 @@ export default function Navbar() {
 
         {/* Drawer Footer (Clean, Modern Mobile Contacts) */}
         <div className="p-6 bg-gray-50 border-t border-gray-100 mt-auto">
+          <div className="mb-5">
+            <LanguageSwitcher mobile />
+          </div>
+
           <div className="space-y-4 mb-6">
             <a
-              href="tel:+919899481428"
+              href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
               className="flex items-center gap-3 text-gray-800 font-semibold text-[16px] hover:text-red-600 transition-colors">
               <div className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-red-600 shadow-sm">
                 <FaPhoneAlt className="w-3.5 h-3.5" />
               </div>
-              +91 98994 81428
+              {companyInfo.phone}
             </a>
 
             <a

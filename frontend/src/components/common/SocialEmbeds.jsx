@@ -5,7 +5,7 @@ import { companyInfo } from "../../data/companyInfo";
 const SocialEmbeds = () => {
   return (
     <section className="py-12 bg-[#F9F9F9]">
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+      <div className="site-container">
         {/* Standard Portal Heading Design (Matched with ClientReviews) */}
         <div className="mb-8 md:mb-10">
           <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">

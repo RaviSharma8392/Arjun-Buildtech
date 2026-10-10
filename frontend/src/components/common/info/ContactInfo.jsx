@@ -1,18 +1,22 @@
 import React from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { useLanguage } from "../../../context/useLanguage";
 
 const ContactInfo = () => {
+  const { t } = useLanguage();
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 h-full">
       {/* Standard Portal Heading Design */}
       <div className="mb-8 text-center md:text-left">
         <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-4">
-          Get In Touch
+          {t("contactInfo.title", "Get In Touch")}
         </h2>
         <div className="w-16 h-1 bg-red-600 mb-4 mx-auto md:mx-0"></div>
         <p className="text-sm md:text-[15px] text-gray-600">
-          Reach out to our experts for inquiries, site visits, or property
-          consultations. We are here to help.
+          {t(
+            "contactInfo.description",
+            "Reach out to our experts for inquiries, site visits, or property consultations. We are here to help.",
+          )}
         </p>
       </div>
 
@@ -24,7 +28,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
-              Our Locations
+              {t("contactInfo.locations", "Our Locations")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
               G74P, Sector-27, Rohtak
@@ -42,7 +46,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
-              Call Us
+              {t("contactInfo.call", "Call Us")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
               Parveen Gehlawat: 93504-47531, 98994-81428
@@ -60,7 +64,7 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
-              Email
+              {t("contactInfo.email", "Email")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
               arjunbuildtech27@gmail.com
@@ -75,13 +79,13 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
-              Office Hours
+              {t("contactInfo.hours", "Office Hours")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
-              Mon–Fri: 9am–6pm
+              {t("contactInfo.weekdays", "Mon–Fri: 9am–6pm")}
             </p>
             <p className="text-[14px] text-gray-600 leading-relaxed mt-0.5">
-              Sat: 10am–4pm
+              {t("contactInfo.saturday", "Sat: 10am–4pm")}
             </p>
           </div>
         </div>

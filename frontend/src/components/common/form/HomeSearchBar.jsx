@@ -5,9 +5,11 @@ import { createSlug } from "../../../utils/slugify";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 import { normalizePropertyData } from "../../../utils/propertySchema";
+import { useLanguage } from "../../../context/useLanguage";
 
 const HomeSearchBar = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [location, setLocation] = useState("All Locations");
   const [propertyStatus, setPropertyStatus] = useState("Any");
@@ -31,6 +33,18 @@ const HomeSearchBar = () => {
   ]);
 
   const statuses = ["Any", "For Sale", "Investment"];
+  const translateType = (type) => {
+    const keys = {
+      "All Types": ["property.allTypes", "All Types"],
+      House: ["property.house", "House"],
+      Villa: ["property.villa", "Villa"],
+      Plot: ["property.plot", "Plot"],
+      Flat: ["property.flat", "Flat"],
+      Commercial: ["property.commercial", "Commercial"],
+    };
+    const entry = keys[type];
+    return entry ? t(entry[0], entry[1]) : type;
+  };
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -126,7 +140,7 @@ const HomeSearchBar = () => {
 
             <div className="flex-1 min-w-0">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
-                Location
+                {t("homeSearch.location", "Location")}
               </label>
 
               <select
@@ -146,7 +160,9 @@ const HomeSearchBar = () => {
                 ">
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
-                    {loc}
+                    {loc === "All Locations"
+                      ? t("common.allLocations", "All Locations")
+                      : loc}
                   </option>
                 ))}
               </select>
@@ -187,7 +203,7 @@ const HomeSearchBar = () => {
 
             <div className="flex-1 min-w-0">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
-                Status
+                {t("homeSearch.status", "Status")}
               </label>
 
               <select
@@ -207,7 +223,11 @@ const HomeSearchBar = () => {
                 ">
                 {statuses.map((st) => (
                   <option key={st} value={st}>
-                    {st}
+                    {st === "Any"
+                      ? t("homeSearch.any", "Any")
+                      : st === "For Sale"
+                        ? t("homeSearch.forSale", "For Sale")
+                        : t("homeSearch.investment", "Investment")}
                   </option>
                 ))}
               </select>
@@ -248,7 +268,7 @@ const HomeSearchBar = () => {
 
             <div className="flex-1 min-w-0">
               <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
-                Type
+                {t("homeSearch.type", "Type")}
               </label>
 
               <select
@@ -268,7 +288,7 @@ const HomeSearchBar = () => {
                 ">
                 {types.map((t) => (
                   <option key={t} value={t}>
-                    {t}
+                    {translateType(t)}
                   </option>
                 ))}
               </select>
@@ -321,7 +341,7 @@ const HomeSearchBar = () => {
               active:scale-[0.98]
             ">
             <Search className="w-4 h-4" />
-            <span>Search</span>
+            <span>{t("homeSearch.search", "Search")}</span>
           </button>
         </div>
       </div>

@@ -14,8 +14,13 @@ import { Helmet } from "react-helmet-async";
 
 import PremiumPropertyDetails from "../../components/common/info/PremiumPropertyDetails";
 import { normalizePropertyData } from "../../utils/propertySchema";
+import { getLocalizedField } from "../../utils/localizedField";
+import { useLanguage } from "../../context/useLanguage";
+import EmiCalculatorBanner from "../../components/common/banner/EmiCalculatorBanner";
+import InlineEnquiryForm from "../../components/common/form/InlineEnquiryForm";
 
 const PropertyDetailsPage = () => {
+  const { language, t } = useLanguage();
   const { id } = useParams(); // Firestore document ID
   const [property, setProperty] = useState(null);
   const [similarProperties, setSimilarProperties] = useState([]);
@@ -29,17 +34,20 @@ const PropertyDetailsPage = () => {
         // Fetch from both properties and featuredproperties in parallel for speed
         const [mainSnap, featuredSnap] = await Promise.allSettled([
           getDoc(doc(db, "properties", id)),
-          getDoc(doc(db, "featuredproperties", id))
+          getDoc(doc(db, "featuredproperties", id)),
         ]);
 
         let foundProperty = null;
 
-        if (mainSnap.status === 'fulfilled' && mainSnap.value.exists()) {
+        if (mainSnap.status === "fulfilled" && mainSnap.value.exists()) {
           foundProperty = normalizePropertyData({
             id: mainSnap.value.id,
             ...mainSnap.value.data(),
           });
-        } else if (featuredSnap.status === 'fulfilled' && featuredSnap.value.exists()) {
+        } else if (
+          featuredSnap.status === "fulfilled" &&
+          featuredSnap.value.exists()
+        ) {
           foundProperty = normalizePropertyData({
             id: featuredSnap.value.id,
             ...featuredSnap.value.data(),
@@ -55,17 +63,19 @@ const PropertyDetailsPage = () => {
           const q = query(
             propertiesRef,
             where("location", "==", foundProperty.location),
-            limit(5)
+            limit(5),
           );
           const querySnapshot = await getDocs(q);
 
           const simProps = [];
           querySnapshot.forEach((docSnap) => {
             if (docSnap.id !== foundProperty.id && simProps.length < 4) {
-              simProps.push(normalizePropertyData({
-                id: docSnap.id,
-                ...docSnap.data(),
-              }));
+              simProps.push(
+                normalizePropertyData({
+                  id: docSnap.id,
+                  ...docSnap.data(),
+                }),
+              );
             }
           });
 
@@ -92,7 +102,7 @@ const PropertyDetailsPage = () => {
         </Helmet>
         <div className="w-10 h-10 border-[3px] border-gray-100 border-t-red-600 rounded-full animate-spin mb-3"></div>
         <p className="text-gray-600 text-sm font-medium">
-          Loading property details...
+          {t("detail.loading", "Loading property details...")}
         </p>
       </div>
     );
@@ -107,19 +117,22 @@ const PropertyDetailsPage = () => {
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <h2 className="text-xl font-semibold text-gray-800 mb-1">
-          Property not found
+          {t("detail.notFound", "Property not found")}
         </h2>
         <p className="text-gray-500 text-sm">
-          The property you are looking for may have been removed or is no longer
-          available.
+          {t(
+            "detail.notFoundDescription",
+            "The property you are looking for may have been removed or is no longer available.",
+          )}
         </p>
       </div>
     );
   }
 
-  const pageTitle = property.name
-    ? `${property.name} | Arjun Buildtech`
-    : "Property Details | Arjun Buildtech";
+  const propertyName = getLocalizedField(property, "name", language);
+  const pageTitle = propertyName
+    ? `${propertyName} | Arjun Buildtech`
+    : `${t("detail.title", "Property Details")} | Arjun Buildtech`;
 
   const pageDescription =
     property.shortTitle ||
@@ -145,11 +158,15 @@ const PropertyDetailsPage = () => {
           similarProperties={similarProperties}
         />
 
+        <div className="mt-8">
+          <EmiCalculatorBanner />
+        </div>
+
         {/* Optional Compass Illustration / Footer Note */}
         <div className="flex justify-center md:justify-start mt-12 opacity-75">
           <img
             src="/northIllustration.64463390.svg"
-            alt="Compass Illustration"
+            alt={t("detail.compassAlt", "Compass Illustration")}
             className="w-20 md:w-24 object-contain"
           />
         </div>

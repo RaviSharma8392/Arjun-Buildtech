@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { Mail, CheckCircle, AlertCircle } from "lucide-react";
 import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useLanguage } from "../../../context/useLanguage";
 
 const NewsletterSubscribe = () => {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
       setStatus("error");
-      setErrorMessage("Please enter a valid email address.");
+      setErrorMessage(
+        t("newsletter.invalidEmail", "Please enter a valid email address."),
+      );
       return;
     }
 
@@ -30,7 +34,9 @@ const NewsletterSubscribe = () => {
     } catch (error) {
       console.error("Error subscribing:", error);
       setStatus("error");
-      setErrorMessage("Something went wrong. Please try again later.");
+      setErrorMessage(
+        t("newsletter.error", "Something went wrong. Please try again later."),
+      );
     }
   };
 
@@ -38,17 +44,21 @@ const NewsletterSubscribe = () => {
     <div className="bg-gray-900 rounded-lg p-6 text-center shadow-lg border border-gray-800">
       <Mail className="w-10 h-10 text-gray-400 mx-auto mb-4" />
       <h3 className="font-normal text-xl text-white mb-2">
-        Market Updates in your Inbox
+        {t("newsletter.title", "Market Updates in your Inbox")}
       </h3>
       <p className="text-[13px] text-gray-400 mb-6 leading-relaxed">
-        Don't miss out on real estate trends, price drops, and exclusive
-        land opportunities in Rohtak.
+        {t(
+          "newsletter.copy",
+          "Don't miss out on real estate trends, price drops, and exclusive land opportunities in Rohtak.",
+        )}
       </p>
 
       {status === "success" ? (
         <div className="bg-green-500/10 border border-green-500/30 rounded p-4 flex flex-col items-center gap-2">
           <CheckCircle className="w-8 h-8 text-green-500" />
-          <span className="text-green-400 font-semibold text-sm">Successfully subscribed!</span>
+          <span className="text-green-400 font-semibold text-sm">
+            {t("newsletter.success", "Successfully subscribed!")}
+          </span>
         </div>
       ) : (
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -56,7 +66,7 @@ const NewsletterSubscribe = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email ID"
+            placeholder={t("newsletter.email", "Enter your email ID")}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded text-sm text-white focus:outline-none focus:border-red-500 placeholder-gray-500 disabled:opacity-50"
             required
             disabled={status === "loading"}
@@ -73,7 +83,7 @@ const NewsletterSubscribe = () => {
             {status === "loading" ? (
               <span className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"></span>
             ) : (
-              "Subscribe Now"
+              t("newsletter.subscribe", "Subscribe Now")
             )}
           </button>
         </form>

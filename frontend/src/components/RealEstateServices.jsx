@@ -8,67 +8,82 @@ import {
   FaUserTie,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { useLanguage } from "../context/useLanguage";
 
 const services = [
   {
     title: "Invest in Rohtak Properties",
+    translationKey: "services.invest",
     description:
-      "Find lucrative verified residential plots and luxury villas in Rohtak’s prime areas — HSVP Sectors 1, 2, 3, 25, 27, and Suncity 34, 35, 36, 36A.",
+      "Explore residential plots and homes listed in Rohtak. Availability and property details vary by listing.",
     icon: <FaHome className="w-5 h-5 text-red-600" />,
     slug: "invest-in-rohtak-properties",
   },
   {
     title: "Sell Property in Rohtak",
+    translationKey: "services.sell",
     description:
-      "Get the best market value for your land, plot, or villa with expert help from our local real estate team.",
+      "Discuss your property, asking price, and the information buyers may need before listing it for sale.",
     icon: <FaHandshake className="w-5 h-5 text-red-600" />,
     slug: "sell-property-in-rohtak",
   },
   {
     title: "Investment Consulting",
+    translationKey: "services.investment",
     description:
-      "We guide you through high-return investment opportunities across top residential and commercial sectors in Rohtak.",
+      "Compare location, intended use, asking price, documents, and ongoing costs when considering a property purchase.",
     icon: <FaChartLine className="w-5 h-5 text-red-600" />,
     slug: "investment-consulting",
   },
   {
     title: "Property Consultation",
+    translationKey: "services.consult",
     description:
-      "Our experts help you choose the right property based on your needs, budget, and future value potential.",
+      "We help you compare available property options against your needs, budget, and intended use.",
     icon: <FaUserTie className="w-5 h-5 text-red-600" />,
     slug: "property-consultation",
   },
   {
     title: "Prime Areas We Cover",
+    translationKey: "services.areas",
     description:
-      "We specialize in Rohtak’s major real estate zones: HSVP Sector 1–3, 25, 27, and Suncity Sector 34–36A.",
+      "Browse current Rohtak listings by locality and contact us to confirm the areas covered by a specific request.",
     icon: <FaMapMarkerAlt className="w-5 h-5 text-red-600" />,
     slug: "prime-areas",
   },
 ];
 
 const RealEstateServices = () => {
+  const { t } = useLanguage();
   const location = useLocation();
-  const isServicesRoute = location.pathname === "/services" || location.pathname === "/real-estate-services";
+  const isServicesRoute =
+    location.pathname === "/services" ||
+    location.pathname === "/real-estate-services";
 
   return (
-    <section className={`py-12 md:py-16 bg-[#F9F9F9] border-t border-gray-200 ${isServicesRoute ? "mt-[70px] min-h-screen" : ""}`}>
+    <section
+      className={`py-12 md:py-16 bg-[#F9F9F9] border-t border-gray-200 ${isServicesRoute ? "mt-[70px] min-h-screen" : ""}`}>
       {isServicesRoute && (
         <Helmet>
           <title>Real Estate Services | Arjun Buildtech Rohtak</title>
-          <meta name="description" content="Explore top-tier real estate services in Rohtak with Arjun Buildtech. We offer property consultation, investment advice, and dedicated support for buying and selling plots and villas." />
+          <meta
+            name="description"
+            content="Explore top-tier real estate services in Rohtak with Arjun Buildtech. We offer property consultation, investment advice, and dedicated support for buying and selling plots and villas."
+          />
         </Helmet>
       )}
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+      <div className="site-container">
         {/* Standard Portal Heading Design */}
         <div className="mb-8 md:mb-10">
           <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-            Explore Our Real Estate Services
+            {t("services.heading", "Explore Our Real Estate Services")}
           </h2>
           <div className="w-16 h-1 bg-red-600 mb-4"></div>
           <p className="text-sm md:text-base text-gray-600 max-w-2xl">
-            Comprehensive property solutions in Rohtak, from buying and selling
-            to expert investment consulting.
+            {t(
+              "services.description",
+              "Comprehensive property solutions in Rohtak, from buying and selling to expert investment consulting.",
+            )}
           </p>
         </div>
 
@@ -84,13 +99,16 @@ const RealEstateServices = () => {
                   {service.icon}
                 </div>
                 <h3 className="font-semibold text-gray-900 text-[15px] leading-tight">
-                  {service.title}
+                  {t(`${service.translationKey}.title`, service.title)}
                 </h3>
               </div>
 
               {/* Card Body */}
               <p className="text-gray-700 text-[14px] leading-relaxed flex-grow mb-5">
-                {service.description}
+                {t(
+                  `${service.translationKey}.description`,
+                  service.description,
+                )}
               </p>
 
               {/* Card Footer */}
@@ -98,7 +116,7 @@ const RealEstateServices = () => {
                 <Link
                   to={`/services/${service.slug}`}
                   className="inline-flex items-center justify-center text-[13px] font-medium text-red-600 border border-red-600 px-4 py-1.5 rounded hover:bg-red-50 transition-colors w-max">
-                  Read More
+                  {t("services.readMore", "Read More")}
                 </Link>
               </div>
             </div>

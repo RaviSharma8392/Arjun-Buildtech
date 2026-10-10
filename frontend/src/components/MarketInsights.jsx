@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, PlayCircle } from "lucide-react";
 import { blogs } from "../data/blogs";
+import { getLocalizedField } from "../utils/localizedField";
+import { useLanguage } from "../context/useLanguage";
 
 const MarketInsights = () => {
+  const { language, t } = useLanguage();
   // Using dummy slice based on your original code
   const industryArticles = blogs.slice(0, 5);
   const legalArticles = blogs.slice(0, 2);
@@ -15,12 +18,12 @@ const MarketInsights = () => {
   };
 
   return (
-    <section className="bg-white py-12 md:py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-white py-12 md:py-16">
+      <div className="site-container">
         {/* Header Section */}
         <div className="mb-8 md:mb-10">
           <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-            Your Real Estate Guide
+            {t("market.title", "Your Real Estate Guide")}
           </h2>
           <div className="w-16 h-1 bg-red-600"></div>
         </div>
@@ -30,7 +33,7 @@ const MarketInsights = () => {
           {/* Column 1: Industry Insights */}
           <div className="rounded-xl border border-red-600 bg-white p-5 md:p-8 flex flex-col h-full shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
-              Industry Insights
+              {t("market.industry", "Industry Insights")}
             </h3>
 
             <div className="flex-grow flex flex-col mt-2">
@@ -45,7 +48,8 @@ const MarketInsights = () => {
                     <Link
                       to={`/blog/${article.slug}`}
                       className="text-[15px] md:text-base text-gray-700 hover:text-red-600 transition-colors line-clamp-1">
-                      {article.title}
+                      {getLocalizedField(article, "title", language) ||
+                        article.title}
                     </Link>
                   </div>
                 );
@@ -57,7 +61,8 @@ const MarketInsights = () => {
               <Link
                 to="/blog"
                 className="inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-red-600 hover:text-red-700 transition-colors">
-                See all <ArrowRight className="h-4 w-4" />
+                {t("market.seeAll", "See all")}{" "}
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -65,7 +70,7 @@ const MarketInsights = () => {
           {/* Column 2: Legal Updates */}
           <div className="rounded-xl border border-red-600 bg-white p-5 md:p-8 flex flex-col h-full shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6">
-              Legal Updates
+              {t("market.legal", "Legal Updates")}
             </h3>
 
             <div className="flex-grow flex flex-col gap-6">
@@ -77,7 +82,10 @@ const MarketInsights = () => {
                   <div className="relative shrink-0">
                     <img
                       src={article.image}
-                      alt={article.title}
+                      alt={
+                        getLocalizedField(article, "title", language) ||
+                        article.title
+                      }
                       className="h-20 w-24 md:h-24 md:w-28 rounded-md object-cover border border-gray-200"
                     />
                     {/* Play button overlay for the first item as seen in the image */}
@@ -93,13 +101,14 @@ const MarketInsights = () => {
                   {/* Content */}
                   <div className="flex flex-col justify-center min-w-0">
                     <h4 className="text-[15px] md:text-base font-medium text-gray-800 leading-snug mb-3 line-clamp-2">
-                      {article.title}
+                      {getLocalizedField(article, "title", language) ||
+                        article.title}
                     </h4>
 
                     <Link
                       to={`/blog/${article.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm md:text-[15px] font-medium text-red-600 hover:text-red-700 transition-colors">
-                      {index === 0 ? "Read article" : "Read article"}{" "}
+                      {t("market.readArticle", "Read article")}{" "}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -112,13 +121,14 @@ const MarketInsights = () => {
               <Link
                 to="/blog"
                 className="inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-red-600 hover:text-red-700 transition-colors">
-                See all <ArrowRight className="h-4 w-4" />
+                {t("market.seeAll", "See all")}{" "}
+                <ArrowRight className="h-4 w-4" />
               </Link>
 
               <Link
                 to="/services"
                 className="inline-flex items-center justify-center rounded-full bg-[#d32f2f] px-6 py-2.5 text-sm md:text-[15px] font-medium text-white transition hover:bg-red-700">
-                Explore Services
+                {t("market.exploreServices", "Explore Services")}
               </Link>
             </div>
           </div>

@@ -1,16 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined } from "react-icons/fa";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Phone } from "lucide-react";
 import { createSlug } from "../../../utils/slugify";
 import { normalizePropertyData } from "../../../utils/propertySchema";
+import { getLocalizedField } from "../../../utils/localizedField";
+import { useLanguage } from "../../../context/useLanguage";
 
 const PropertyCard = ({
   property: propertyData,
   isAdmin = false,
   onEdit,
   onDelete,
+  onContactAgent,
 }) => {
+  const { language, t } = useLanguage();
   const property = normalizePropertyData(propertyData);
   const locationText =
     typeof property?.location === "string"
@@ -20,8 +24,15 @@ const PropertyCard = ({
         property?.location?.city ||
         "Rohtak";
   const locationSlug = createSlug(locationText) || "location";
-  const propertyName = property?.title || property?.name || "Property";
-  const nameSlug = createSlug(propertyName) || "property";
+  const propertyName =
+    getLocalizedField(property, "title", language) ||
+    getLocalizedField(property, "name", language) ||
+    t("card.property", "Property");
+  const propertySlugSource =
+    getLocalizedField(property, "title", "en") ||
+    getLocalizedField(property, "name", "en") ||
+    "property";
+  const nameSlug = createSlug(propertySlugSource) || "property";
   const normalizedFeatures = Array.isArray(property?.features)
     ? property.features
     : typeof property?.features === "string"
@@ -43,19 +54,21 @@ const PropertyCard = ({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400 font-medium text-xs">
-            No Image Available
+            {t("card.noImage", "No Image Available")}
           </div>
         )}
 
         {/* Property Type Badge */}
         {property.type && (
           <span className="absolute top-3 left-3 bg-gray-900 text-white px-2.5 py-0.5 rounded text-[10px] font-bold shadow-sm uppercase tracking-wider">
-            {property.type === "house" ? "House/Villa" : property.type}
+            {property.type === "house"
+              ? t("card.houseVilla", "House/Villa")
+              : property.type}
           </span>
         )}
         {property.cornerProperty && (
           <span className="absolute top-3 right-3 bg-amber-500 text-white px-2 py-0.5 rounded text-[10px] font-bold shadow-sm uppercase tracking-wider">
-            Corner
+            {t("card.corner", "Corner")}
           </span>
         )}
         {property.reraNumber && (
@@ -76,13 +89,14 @@ const PropertyCard = ({
               </div>
             ) : (
               <div className="text-lg font-bold text-gray-900">
-                Price on Request
+                {t("card.priceOnRequest", "Price on Request")}
               </div>
             )}
           </div>
           {property.pricePerSqft && (
             <div className="text-xs text-gray-500 font-medium">
-              ₹{property.pricePerSqft.toLocaleString("en-IN")}/{property.areaUnit || "sqft"}
+              ₹{property.pricePerSqft.toLocaleString("en-IN")}/
+              {property.areaUnit || "sqft"}
             </div>
           )}
 
@@ -104,13 +118,17 @@ const PropertyCard = ({
             {property.bedrooms && (
               <div className="flex items-center gap-1">
                 <FaBed className="w-3.5 h-3.5 text-gray-400" />
-                <span>{property.bedrooms} Beds</span>
+                <span>
+                  {property.bedrooms} {t("card.beds", "Beds")}
+                </span>
               </div>
             )}
             {property.bathrooms && (
               <div className="flex items-center gap-1">
                 <FaBath className="w-3.5 h-3.5 text-gray-400" />
-                <span>{property.bathrooms} Baths</span>
+                <span>
+                  {property.bathrooms} {t("card.baths", "Baths")}
+                </span>
               </div>
             )}
             {property.builtUpArea && (
@@ -124,35 +142,46 @@ const PropertyCard = ({
           {/* Features */}
           {normalizedFeatures.length > 0 && (
             <p className="text-xs text-gray-500 line-clamp-1 mb-2">
-              Features: {normalizedFeatures.slice(0, 3).join(", ")}
+              {t("card.features", "Features:")}{" "}
+              {normalizedFeatures.slice(0, 3).join(", ")}
               {normalizedFeatures.length > 3
-                ? ` +${normalizedFeatures.length - 3} more`
+                ? ` +${normalizedFeatures.length - 3} ${t("card.more", "more")}`
                 : ""}
             </p>
           )}
         </div>
 
-        {/* Action Buttons */}
+        {/* Action Buttons (Like 3rd Image) */}
         <div className="mt-4 pt-3 border-t border-gray-100">
           {isAdmin ? (
             <div className="flex gap-2">
               <button
                 onClick={() => onEdit(property.docId)}
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                <Pencil size={14} /> Edit
+                <Pencil size={14} /> {t("common.edit", "Edit")}
               </button>
               <button
                 onClick={() => onDelete(property.docId)}
                 className="flex-1 bg-gray-800 hover:bg-gray-900 text-white py-2 rounded text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
-                <Trash2 size={14} /> Delete
+                <Trash2 size={14} /> {t("common.delete", "Delete")}
               </button>
             </div>
           ) : (
-            <Link
-              to={`/property/${locationSlug}/${nameSlug}/${property.id}`}
-              className="block w-full text-center bg-white border border-red-600 text-red-600 hover:bg-red-50 font-semibold py-2 rounded text-xs sm:text-sm transition-colors">
-              View Details
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onContactAgent) onContactAgent(property);
+                }}
+                className="flex-1 bg-white border border-[#d9534f] text-[#d9534f] hover:bg-red-50 py-1.5 rounded text-[13px] font-medium flex items-center justify-center transition-colors">
+                {t("card.sendEnquiry", "Send Enquiry")}
+              </button>
+              <Link
+                to={`/property/${locationSlug}/${nameSlug}/${property.id}`}
+                className="flex-1 bg-[#d9534f] hover:bg-[#c9302c] text-white py-1.5 rounded text-[13px] font-medium flex items-center justify-center transition-colors">
+                {t("card.viewDetails", "View Details")}
+              </Link>
+            </div>
           )}
         </div>
       </div>

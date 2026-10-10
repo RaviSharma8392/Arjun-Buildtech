@@ -15,6 +15,8 @@ import {
   FaBath,
 } from "react-icons/fa";
 import { ChevronRight, Home, Building } from "lucide-react";
+import { useLanguage } from "../../../context/useLanguage";
+import InlineEnquiryForm from "../form/InlineEnquiryForm";
 
 const formatPrice = (price) => {
   if (!price) return "Price on Request";
@@ -42,7 +44,10 @@ const parseCommaList = (value) => {
 };
 
 const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
+  const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
+  const [showAllDetails, setShowAllDetails] = useState(false);
+  const [showFullDesc, setShowFullDesc] = useState(false);
   const { settings } = useSiteSettings();
   const images =
     property.images?.length > 0 ? property.images : ["/placeholder.jpg"];
@@ -73,7 +78,10 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {formatPrice(property.price)}
             </h1>
             <span className="text-gray-500 text-sm hidden md:inline-block border-l border-gray-300 pl-4">
-              EMI - Calculate | Get Loan offers from 34+ banks
+              {t(
+                "detail.emi",
+                "EMI - Calculate | Get Loan offers from 34+ banks",
+              )}
             </span>
             {property.pricePerSqft && (
               <span className="text-sm font-medium text-gray-500 hidden md:inline-block border-l border-gray-300 pl-4">
@@ -116,8 +124,8 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                 {["rent", "lease"].includes(
                   String(property.transactionType || "").toLowerCase(),
                 )
-                  ? "For Rent"
-                  : "For Sale"}
+                  ? t("detail.forRent", "For Rent")
+                  : t("detail.forSale", "For Sale")}
               </span>
             </div>
             {/* Fake Play Button */}
@@ -164,19 +172,19 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.bedrooms && (
                 <div className="flex items-center gap-2 font-medium">
                   <FaBed className="text-gray-400 text-lg" />{" "}
-                  {property.bedrooms} Beds
+                  {property.bedrooms} {t("detail.beds", "Beds")}
                 </div>
               )}
               {!isPlot && property.bathrooms && (
                 <div className="flex items-center gap-2 font-medium">
                   <FaBath className="text-gray-400 text-lg" />{" "}
-                  {property.bathrooms} Baths
+                  {property.bathrooms} {t("detail.baths", "Baths")}
                 </div>
               )}
               {!isPlot && property.balconies && (
                 <div className="flex items-center gap-2 font-medium">
                   <Home className="text-gray-400 w-5 h-5" />{" "}
-                  {property.balconies} Balconies
+                  {property.balconies} {t("detail.balconies", "Balconies")}
                 </div>
               )}
               {!isPlot && property.parking && (
@@ -199,7 +207,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                       d="M5 3v18h14V3H5z"
                     />
                   </svg>
-                  Corner Plot
+                  {t("detail.cornerPlot", "Corner Plot")}
                 </div>
               )}
             </div>
@@ -209,7 +217,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {(property.area || property.builtUpArea || property.landArea) && (
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500 text-sm">
-                    {isPlot ? "Plot Area" : "Super Area"}
+                    {isPlot
+                      ? t("detail.plotArea", "Plot Area")
+                      : t("detail.superArea", "Super Area")}
                   </span>
                   <span className="font-semibold text-gray-900">
                     {property.area || property.builtUpArea || property.landArea}{" "}
@@ -221,7 +231,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               {!isPlot && (property.floor || property.totalFloor) && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-gray-500 text-sm">Floor</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("detail.floor", "Floor")}
+                  </span>
                   <span className="font-semibold text-gray-900">
                     {property.floor || property.totalFloor}
                   </span>
@@ -230,7 +242,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.transactionType && (
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500 text-sm">
-                    Transaction Type
+                    {t("detail.transactionType", "Transaction Type")}
                   </span>
                   <span className="font-semibold text-gray-900">
                     {property.transactionType}
@@ -239,7 +251,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               {property.status && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-gray-500 text-sm">Status</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("detail.status", "Status")}
+                  </span>
                   <span className="font-semibold text-gray-900">
                     {property.status}
                   </span>
@@ -248,7 +262,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.additionalRooms && (
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500 text-sm">
-                    Additional Rooms
+                    {t("detail.additionalRooms", "Additional Rooms")}
                   </span>
                   <span className="font-semibold text-gray-900">
                     {property.additionalRooms}
@@ -257,7 +271,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               {property.facing && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-gray-500 text-sm">Facing</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("detail.facing", "Facing")}
+                  </span>
                   <span className="font-semibold text-gray-900">
                     {property.facing}
                   </span>
@@ -265,7 +281,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               {!isPlot && property.lift && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-gray-500 text-sm">Lift</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("detail.lift", "Lift")}
+                  </span>
                   <span className="font-semibold text-gray-900">
                     {property.lift}
                   </span>
@@ -274,7 +292,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.furnishing && (
                 <div className="flex flex-col gap-1">
                   <span className="text-gray-500 text-sm">
-                    Furnished Status
+                    {t("detail.furnished", "Furnished Status")}
                   </span>
                   <span className="font-semibold text-gray-900">
                     {property.furnishing}
@@ -283,7 +301,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               {!isPlot && property.parking && (
                 <div className="flex flex-col gap-1">
-                  <span className="text-gray-500 text-sm">Car Parking</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("detail.carParking", "Car Parking")}
+                  </span>
                   <span className="font-semibold text-gray-900">
                     {property.parking}
                   </span>
@@ -337,12 +357,12 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
           {/* More Details Grid */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 md:p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
-              More Details
+              {t("detail.moreDetails", "More Details")}
             </h2>
             <div className="grid grid-cols-1 gap-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                 <div className="text-gray-500 font-medium text-sm">
-                  Price Breakup
+                  {t("detail.priceBreakup", "Price Breakup")}
                 </div>
                 <div className="text-gray-900 font-bold text-sm">
                   {formatPrice(property.price)}
@@ -351,7 +371,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.bookingAmount && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Booking Amount
+                    {t("detail.bookingAmount", "Booking Amount")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.bookingAmount}
@@ -361,7 +381,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.carpetArea && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Carpet Area
+                    {t("detail.carpetArea", "Carpet Area")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.carpetArea} {property.areaUnit || "Sq.Ft."}
@@ -370,7 +390,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                 <div className="text-gray-500 font-medium text-sm">
-                  Address
+                  {t("detail.address", "Address")}
                 </div>
                 <div className="text-gray-900 font-bold text-sm">
                   {property.location}
@@ -379,7 +399,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.landmarks && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Landmarks
+                    {t("detail.landmarks", "Landmarks")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.landmarks}
@@ -389,7 +409,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.furnishing && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Furnishing
+                    {t("detail.furnishing", "Furnishing")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.furnishing}
@@ -399,7 +419,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.flooring && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Flooring
+                    {t("detail.flooring", "Flooring")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.flooring}
@@ -409,7 +429,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {!isPlot && property.propertyAge && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Property Age
+                    {t("detail.propertyAge", "Property Age")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.propertyAge}
@@ -419,7 +439,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.constructionStatus && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Construction Status
+                    {t("detail.construction", "Construction Status")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.constructionStatus}
@@ -429,27 +449,27 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.priceNegotiable && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Price Terms
+                    {t("detail.priceTerms", "Price Terms")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
-                    Negotiable
+                    {t("detail.negotiable", "Negotiable")}
                   </div>
                 </div>
               )}
               {!isPlot && Number(property.parkingOpen) > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Open Parking
+                    {t("detail.openParking", "Open Parking")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
-                    {property.parkingOpen} spaces
+                    {property.parkingOpen} {t("detail.spaces", "spaces")}
                   </div>
                 </div>
               )}
               {property.ownershipType && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Type of Ownership
+                    {t("detail.ownership", "Type of Ownership")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.ownershipType}
@@ -459,7 +479,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.societyName && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Society / Project
+                    {t("detail.project", "Society / Project")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.societyName}
@@ -469,7 +489,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.reraNumber && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    RERA Number
+                    {t("detail.rera", "RERA Number")}
                   </div>
                   <div className="text-green-700 font-bold text-sm flex items-center gap-1.5">
                     <FaCheckCircle className="text-green-500 text-sm" />
@@ -480,7 +500,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.waterSupply && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Water Supply
+                    {t("detail.water", "Water Supply")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.waterSupply}
@@ -490,7 +510,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.powerBackup && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Power Backup
+                    {t("detail.power", "Power Backup")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.powerBackup}
@@ -500,7 +520,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.gasConnection && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Gas Connection
+                    {t("detail.gas", "Gas Connection")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.gasConnection}
@@ -510,7 +530,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.gatedCommunity && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Gated Community
+                    {t("detail.gated", "Gated Community")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.gatedCommunity}
@@ -520,7 +540,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.approvalAuthority && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Approval Authority
+                    {t("detail.approval", "Approval Authority")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.approvalAuthority}
@@ -530,15 +550,17 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.cornerProperty && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Corner Property
+                    {t("detail.cornerProperty", "Corner Property")}
                   </div>
-                  <div className="text-gray-900 font-bold text-sm">Yes</div>
+                  <div className="text-gray-900 font-bold text-sm">
+                    {t("detail.yes", "Yes")}
+                  </div>
                 </div>
               )}
               {property.roadWidth && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Road Width
+                    {t("detail.roadWidth", "Road Width")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.roadWidth} {property.roadWidthUnit || "ft"}
@@ -548,7 +570,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.plotDimensions && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Plot Dimensions
+                    {t("detail.dimensions", "Plot Dimensions")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.plotDimensions}
@@ -558,7 +580,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.boundaryWall && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Boundary Wall
+                    {t("detail.boundaryWall", "Boundary Wall")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.boundaryWall}
@@ -568,7 +590,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.maintenanceCharges && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Maintenance Charges
+                    {t("detail.maintenance", "Maintenance Charges")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     ₹{property.maintenanceCharges}/month
@@ -578,7 +600,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.possessionDate && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Possession Date
+                    {t("detail.possession", "Possession Date")}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     {property.possessionDate}
@@ -588,7 +610,9 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               {property.pricePerSqft && (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-4">
                   <div className="text-gray-500 font-medium text-sm">
-                    Price per {property.areaUnit || "Sq.Ft."}
+                    {t("detail.pricePer", "Price per {unit}", {
+                      unit: property.areaUnit || "Sq.Ft.",
+                    })}
                   </div>
                   <div className="text-gray-900 font-bold text-sm">
                     ₹{property.pricePerSqft.toLocaleString("en-IN")}
@@ -597,27 +621,102 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               )}
             </div>
 
+            {showAllDetails && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-gray-100">
+                {property.propertyType && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.propertyType", "Property Type")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm capitalize">
+                      {property.propertyType}
+                    </div>
+                  </div>
+                )}
+                {property.furnishing && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.furnishing", "Furnishing")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm capitalize">
+                      {property.furnishing}
+                    </div>
+                  </div>
+                )}
+                {property.facing && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.facing", "Facing")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm capitalize">
+                      {property.facing}
+                    </div>
+                  </div>
+                )}
+                {property.ownership && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.ownership", "Ownership")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm capitalize">
+                      {property.ownership}
+                    </div>
+                  </div>
+                )}
+                {property.bathrooms && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.bathrooms", "Bathrooms")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm">
+                      {property.bathrooms}
+                    </div>
+                  </div>
+                )}
+                {property.balcony && (
+                  <div>
+                    <div className="text-gray-500 text-[13px] mb-1">
+                      {t("detail.balconies", "Balconies")}
+                    </div>
+                    <div className="text-gray-900 font-semibold text-sm">
+                      {property.balcony}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="mt-8 mb-6">
-              <button className="text-[#d92228] font-bold text-sm underline hover:no-underline flex items-center gap-1">
-                View all details <ChevronRight className="w-4 h-4 rotate-90" />
+              <button 
+                onClick={() => setShowAllDetails(!showAllDetails)}
+                className="text-[#d92228] font-bold text-sm underline hover:no-underline flex items-center gap-1">
+                {showAllDetails ? t("detail.hideAll", "Hide details") : t("detail.viewAll", "View all details")}{" "}
+                <ChevronRight className={`w-4 h-4 transition-transform ${showAllDetails ? '-rotate-90' : 'rotate-90'}`} />
               </button>
             </div>
 
             <div className="text-gray-500 leading-relaxed text-[15px]">
-              <strong className="text-gray-900 font-bold">Description: </strong>
+              <strong className="text-gray-900 font-bold">
+                {t("detail.description", "Description:")}{" "}
+              </strong>
               {property.description ? (
                 <>
-                  {property.description.length > 200
+                  {!showFullDesc && property.description.length > 200
                     ? property.description.substring(0, 200) + "... "
                     : property.description + " "}
                   {property.description.length > 200 && (
-                    <button className="text-gray-900 font-bold underline hover:text-[#d92228]">
-                      Read more
+                    <button 
+                      onClick={() => setShowFullDesc(!showFullDesc)}
+                      className="text-gray-900 font-bold underline hover:text-[#d92228] ml-1">
+                      {showFullDesc ? t("detail.readLess", "Read less") : t("detail.readMore", "Read more")}
                     </button>
                   )}
                 </>
               ) : (
-                "A premium property available for you."
+                t(
+                  "detail.defaultDescription",
+                  "A premium property available for you.",
+                )
               )}
             </div>
           </div>
@@ -627,7 +726,8 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 md:p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-bl-full -z-10 opacity-50"></div>
               <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-3">
-                <Home className="text-red-600 w-6 h-6" /> Property Highlights
+                <Home className="text-red-600 w-6 h-6" />{" "}
+                {t("detail.highlights", "Property Highlights")}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6">
                 {features.map((item, idx) => (
@@ -649,8 +749,8 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 md:p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10 opacity-50"></div>
               <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-3">
-                <Building className="text-red-600 w-6 h-6" /> Lifestyle
-                Amenities
+                <Building className="text-red-600 w-6 h-6" />{" "}
+                {t("detail.amenities", "Lifestyle Amenities")}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-6">
                 {amenities.map((item, idx) => (
@@ -668,55 +768,10 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
           )}
         </div>
 
-        {/* Right Sidebar (Sticky Inquiry) */}
+        {/* Right Sidebar (Sticky Inquiry Form) */}
         <div className="w-full lg:w-[380px]">
           <div className="sticky top-24 space-y-6">
-            <div className="bg-white rounded-xl shadow border border-gray-200 p-6">
-              <h3 className="text-[19px] font-bold text-gray-900 mb-4">
-                Contact {settings.companyName}
-              </h3>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-red-50 p-3 rounded-full text-red-600">
-                  <FaPhoneAlt size={18} />
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Call us directly</p>
-                  <p className="text-gray-900 font-bold text-lg">
-                    {settings.phone}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-3">
-                <a
-                  href={`tel:${settings.phoneRaw}`}
-                  className="w-full text-center bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2">
-                  <FaPhoneAlt /> Call Now
-                </a>
-                <a
-                  href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Hi, I am interested in this property: " + property.name)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full text-center bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 transition flex items-center justify-center gap-2">
-                  <FaWhatsapp /> WhatsApp
-                </a>
-                <button
-                  onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({
-                        title: property.name,
-                        text: `Check out this property: ${property.name} in ${property.location}`,
-                        url: window.location.href,
-                      });
-                    } else {
-                      navigator.clipboard.writeText(window.location.href);
-                      alert("Link copied to clipboard!");
-                    }
-                  }}
-                  className="w-full text-center border border-gray-300 text-gray-700 font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition">
-                  <FaShareAlt /> Share Property
-                </button>
-              </div>
-            </div>
+            <InlineEnquiryForm property={property} />
           </div>
         </div>
       </div>
@@ -730,7 +785,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
       {similarProperties.length > 0 && (
         <div className="mt-8 bg-white rounded-xl border border-gray-200 p-5 md:p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-5">
-            Properties in Similar Projects
+            {t("detail.similarProjects", "Properties in Similar Projects")}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {similarProperties.map((simProp) => (
@@ -760,23 +815,28 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
         return (
           <div className="mt-8 bg-white rounded-xl border border-gray-200 p-5 md:p-6">
             <h2 className="text-lg font-bold text-gray-900 mb-2">
-              Price Trends in {property.location.split(",")[0]}
+              {t("detail.priceTrends", "Price Trends in {location}", {
+                location: property.location.split(",")[0],
+              })}
             </h2>
             <p className="text-gray-500 text-sm mb-6">
-              Comparable rate analysis for this area
+              {t(
+                "detail.comparableRate",
+                "Comparable rate analysis for this area",
+              )}
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead>
                   <tr className="border-b border-gray-100">
                     <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      Project Name
+                      {t("detail.projectName", "Project Name")}
                     </th>
                     <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      Avg Rate per sqft
+                      {t("detail.avgRate", "Avg Rate per sqft")}
                     </th>
                     <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      Rental Yield
+                      {t("detail.rentalYield", "Rental Yield")}
                     </th>
                   </tr>
                 </thead>
@@ -793,7 +853,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                   {nearbyRate && (
                     <tr className="border-b border-gray-50">
                       <td className="py-4 text-gray-800 text-sm font-medium">
-                        Nearby Residential
+                        {t("detail.nearbyResidential", "Nearby Residential")}
                       </td>
                       <td className="py-4 text-gray-600 text-sm">
                         {nearbyRate}
@@ -811,104 +871,119 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
       {/* Closer to Your Search */}
       <div className="mt-8 bg-white rounded-xl border border-gray-200 p-5 md:p-6 mb-12">
         <h2 className="text-lg font-bold text-gray-900 mb-5">
-          Closer to Your Search
+          {t("detail.closerSearch", "Closer to Your Search")}
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative">
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">
-              Similar Searches
+              {t("detail.similarSearches", "Similar Searches")}
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   to={`/properties?search=${encodeURIComponent(property.location.split(",")[0])}&type=Buy`}
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Flats in {property.location.split(",")[0]}
+                  {t("detail.flatsIn", "Flats in {location}", {
+                    location: property.location.split(",")[0],
+                  })}
                 </Link>
               </li>
               <li>
                 <Link
                   to={`/properties?search=${encodeURIComponent(property.location.split(",")[0])}&type=Buy`}
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  House for Sale in {property.location.split(",")[0]}
+                  {t("detail.houseSaleIn", "House for Sale in {location}", {
+                    location: property.location.split(",")[0],
+                  })}
                 </Link>
               </li>
               <li>
                 <Link
                   to={`/properties?search=${encodeURIComponent(property.location.split(",")[0])}&type=Buy`}
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Plots in {property.location.split(",")[0]}
+                  {t("detail.plotsIn", "Plots in {location}", {
+                    location: property.location.split(",")[0],
+                  })}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">
-              Property in {property.location.split(",")[0]}
+              {t("detail.propertyIn", "Property in {location}", {
+                location: property.location.split(",")[0],
+              })}
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   to={`/properties?search=${encodeURIComponent(property.location.split(",")[0])}`}
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  New Projects in {property.location.split(",")[0]}
+                  {t("detail.newProjectsIn", "New Projects in {location}", {
+                    location: property.location.split(",")[0],
+                  })}
                 </Link>
               </li>
               <li>
                 <Link
                   to={`/properties?search=${encodeURIComponent(property.location.split(",")[0])}`}
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Ready to Move in {property.location.split(",")[0]}
+                  {t("detail.readyMoveIn", "Ready to Move in {location}", {
+                    location: property.location.split(",")[0],
+                  })}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">
-              Property in Rohtak
+              {t("detail.propertyRohtak", "Property in Rohtak")}
             </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   to="/properties?search=Rohtak&type=Buy"
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Flats in Rohtak
+                  {t("detail.flatsRohtak", "Flats in Rohtak")}
                 </Link>
               </li>
               <li>
                 <Link
                   to="/properties?search=Rohtak&type=Buy"
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  House for Sale in Rohtak
+                  {t("detail.houseRohtak", "House for Sale in Rohtak")}
                 </Link>
               </li>
               <li>
                 <Link
                   to="/properties?search=Rohtak&type=Buy"
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Villa in Rohtak
+                  {t("detail.villaRohtak", "Villa in Rohtak")}
                 </Link>
               </li>
               <li>
                 <Link
                   to="/properties?search=Rohtak"
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Ready to Move Flats in Rohtak
+                  {t(
+                    "detail.readyFlatsRohtak",
+                    "Ready to Move Flats in Rohtak",
+                  )}
                 </Link>
               </li>
               <li>
                 <Link
                   to="/properties?search=Rohtak"
                   className="text-gray-500 hover:text-red-600 text-sm transition">
-                  Resale Flats in Rohtak
+                  {t("detail.resaleFlatsRohtak", "Resale Flats in Rohtak")}
                 </Link>
               </li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">
-              Nearby Projects
+              {t("detail.nearbyProjects", "Nearby Projects")}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -937,12 +1012,17 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-100 text-xs text-gray-500 leading-relaxed">
-          <strong className="text-gray-700">Disclaimer:</strong> Arjun Buildtech
-          has endeavoured to ascertain the requirement of RERA registration.
-          However, the advertiser claims that there is no requirement for such
-          registration. Users are cautioned accordingly...{" "}
-          <Link to="/terms-of-service" className="text-gray-900 font-semibold underline">
-            Read more
+          <strong className="text-gray-700">
+            {t("detail.disclaimer", "Disclaimer:")}
+          </strong>{" "}
+          {t(
+            "detail.disclaimerCopy",
+            "Arjun Buildtech has endeavoured to ascertain the requirement of RERA registration. However, the advertiser claims that there is no requirement for such registration. Users are cautioned accordingly...",
+          )}{" "}
+          <Link
+            to="/terms-of-service"
+            className="text-gray-900 font-semibold underline">
+            {t("detail.readMore", "Read more")}
           </Link>
         </div>
       </div>

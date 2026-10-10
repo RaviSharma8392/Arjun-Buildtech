@@ -7,8 +7,11 @@ import { FaWhatsapp, FaShareAlt, FaHome } from "react-icons/fa";
 import toast from "react-hot-toast";
 import NewsletterSubscribe from "../../components/common/form/NewsletterSubscribe";
 import Breadcrumb from "../../components/common/Breadcrumb";
+import { useLanguage } from "../../context/useLanguage";
+import { getLocalizedField } from "../../utils/localizedField";
 
 const BlogListingPage = () => {
+  const { language, t } = useLanguage();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,7 +21,7 @@ const BlogListingPage = () => {
 
   // State for Filters & Pagination
   const [activeCategory, setActiveCategory] = useState(initialCategory);
-  
+
   // Sync category state when URL changes
   useEffect(() => {
     setActiveCategory(searchParams.get("category") || "All");
@@ -70,6 +73,10 @@ const BlogListingPage = () => {
 
   // Trending Blogs (Sidebar) - Just taking top 4 for demo purposes
   const trendingBlogs = blogs.slice(0, 4);
+  const blogTitle = (blog) =>
+    getLocalizedField(blog, "title", language) || blog.title;
+  const blogExcerpt = (blog) =>
+    getLocalizedField(blog, "excerpt", language) || blog.excerpt;
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 6);
@@ -92,14 +99,14 @@ const BlogListingPage = () => {
       navigator.clipboard.writeText(fullUrl);
       toast.success("Link copied to clipboard!", {
         style: {
-          border: '1px solid #e2e8f0',
-          padding: '12px',
-          color: '#1f2937',
-          fontWeight: '500',
+          border: "1px solid #e2e8f0",
+          padding: "12px",
+          color: "#1f2937",
+          fontWeight: "500",
         },
         iconTheme: {
-          primary: '#dc2626',
-          secondary: '#fff',
+          primary: "#dc2626",
+          secondary: "#fff",
         },
       });
     }
@@ -145,17 +152,24 @@ const BlogListingPage = () => {
       </Helmet>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-        <Breadcrumb items={[{ name: "Home", path: "/" }, { name: "Property News & Updates" }]} />
+        <Breadcrumb
+          items={[
+            { name: t("common.home", "Home"), path: "/" },
+            { name: t("blog.breadcrumb", "Property News & Updates") },
+          ]}
+        />
 
         {/* Page Header */}
         <div className="mb-10 max-w-3xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-normal text-gray-800 mb-4 tracking-tight leading-snug">
-            Real Estate News & Insights
+            {t("blog.heading", "Real Estate News & Insights")}
           </h1>
           <div className="w-16 h-1 bg-red-600 mb-4"></div>
           <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
-            Expert analysis, investment guides, and the latest infrastructure
-            updates shaping the Rohtak real estate market.
+            {t(
+              "blog.intro",
+              "Expert analysis, investment guides, and the latest infrastructure updates shaping the Rohtak real estate market.",
+            )}
           </p>
         </div>
 
@@ -178,7 +192,7 @@ const BlogListingPage = () => {
                         ? "bg-red-50 text-red-600 border border-red-200"
                         : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}>
-                    {cat === "All" ? "Latest News" : cat}
+                    {cat === "All" ? t("blog.latestNews", "Latest News") : cat}
                   </button>
                 ))}
               </div>
@@ -188,7 +202,7 @@ const BlogListingPage = () => {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search articles..."
+                    placeholder={t("blog.search", "Search articles...")}
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -204,7 +218,7 @@ const BlogListingPage = () => {
             {filteredBlogs.length === 0 && (
               <div className="text-center py-20 px-4 bg-white border border-gray-200 rounded-lg">
                 <h3 className="text-xl font-normal text-gray-800 mb-2">
-                  No articles found
+                  {t("blog.noArticles", "No articles found")}
                 </h3>
                 <button
                   onClick={() => {
@@ -212,7 +226,7 @@ const BlogListingPage = () => {
                     setSearchQuery("");
                   }}
                   className="text-sm font-semibold text-red-600 hover:underline">
-                  Clear all filters
+                  {t("blog.clearFilters", "Clear all filters")}
                 </button>
               </div>
             )}
@@ -226,11 +240,11 @@ const BlogListingPage = () => {
                   <div className="w-full md:w-1/2 bg-gray-100 overflow-hidden relative">
                     <img
                       src={featuredBlog.image}
-                      alt={featuredBlog.title}
+                      alt={blogTitle(featuredBlog)}
                       className="w-full h-full aspect-[16/10] md:aspect-auto object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
                     />
                     <div className="absolute top-4 left-4 bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">
-                      Featured
+                      {t("blog.featured", "Featured")}
                     </div>
                   </div>
                   <div className="w-full md:w-1/2 flex flex-col justify-center p-6">
@@ -244,10 +258,10 @@ const BlogListingPage = () => {
                       </span>
                     </div>
                     <h2 className="text-2xl font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors">
-                      {featuredBlog.title}
+                      {blogTitle(featuredBlog)}
                     </h2>
                     <p className="text-[14px] text-gray-600 leading-relaxed mb-6 line-clamp-3">
-                      {featuredBlog.excerpt}
+                      {blogExcerpt(featuredBlog)}
                     </p>
 
                     {/* Share & Read More Row */}
@@ -262,7 +276,7 @@ const BlogListingPage = () => {
                             )
                           }
                           className="text-gray-400 hover:text-gray-800 transition-colors"
-                          title="Share Article">
+                          title={t("blog.shareArticle", "Share Article")}>
                           <FaShareAlt className="text-[16px]" />
                         </button>
                         <a
@@ -271,12 +285,13 @@ const BlogListingPage = () => {
                           rel="noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="text-gray-400 hover:text-[#25D366] transition-colors"
-                          title="WhatsApp Share">
+                          title={t("blog.whatsappShare", "WhatsApp Share")}>
                           <FaWhatsapp className="text-[18px]" />
                         </a>
                       </div>
                       <span className="flex items-center text-sm font-semibold text-red-600">
-                        Read Full Story <ArrowRight className="w-4 h-4 ml-1" />
+                        {t("blog.readStory", "Read Full Story")}{" "}
+                        <ArrowRight className="w-4 h-4 ml-1" />
                       </span>
                     </div>
                   </div>
@@ -296,7 +311,7 @@ const BlogListingPage = () => {
                     <div className="overflow-hidden bg-gray-100 relative">
                       <img
                         src={blog.image}
-                        alt={blog.title}
+                        alt={blogTitle(blog)}
                         className="w-full aspect-[16/10] object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
                       />
                       <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">
@@ -308,10 +323,10 @@ const BlogListingPage = () => {
                         {blog.date}
                       </span>
                       <h3 className="text-[18px] font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors line-clamp-2">
-                        {blog.title}
+                        {blogTitle(blog)}
                       </h3>
                       <p className="text-[14px] text-gray-600 leading-relaxed mb-4 line-clamp-2">
-                        {blog.excerpt}
+                        {blogExcerpt(blog)}
                       </p>
 
                       <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
@@ -333,7 +348,7 @@ const BlogListingPage = () => {
                           </a>
                         </div>
                         <span className="text-sm font-semibold text-gray-800">
-                          Read More
+                          {t("blog.readMore", "Read More")}
                         </span>
                       </div>
                     </div>
@@ -347,7 +362,7 @@ const BlogListingPage = () => {
                 <button
                   onClick={handleLoadMore}
                   className="inline-flex items-center justify-center px-8 py-3 rounded bg-white border border-gray-300 text-gray-800 font-semibold text-sm hover:border-gray-800 hover:text-white transition-all duration-300">
-                  Load More News
+                  {t("blog.loadMore", "Load More News")}
                 </button>
               </div>
             )}
@@ -362,23 +377,25 @@ const BlogListingPage = () => {
                 <FaHome className="text-xl" />
               </div>
               <h3 className="font-normal text-xl text-gray-800 mb-2">
-                Buy Premium Properties
+                {t("blog.buyPremium", "Buy Premium Properties")}
               </h3>
               <p className="text-[13px] text-gray-500 mb-5 leading-relaxed">
-                Explore exclusive residential plots and commercial lands in
-                Rohtak from the city's most trusted property dealer.
+                {t(
+                  "blog.buyCopy",
+                  "Explore exclusive residential plots and commercial lands in Rohtak from the city's most trusted property dealer.",
+                )}
               </p>
               <Link
                 to="/properties/rohtak"
                 className="block w-full bg-red-600 text-white text-sm font-semibold py-3 rounded hover:bg-red-700 transition-colors shadow-sm">
-                View Available Properties
+                {t("blog.viewProperties", "View Available Properties")}
               </Link>
             </div>
 
             {/* Widget 2: Trending Articles */}
             <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
               <h3 className="font-normal text-lg text-gray-800 mb-4 flex items-center justify-between">
-                Trending Topics
+                {t("blog.trending", "Trending Topics")}
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
@@ -397,7 +414,7 @@ const BlogListingPage = () => {
                     </div>
                     <div className="flex-1">
                       <h4 className="text-[14px] font-semibold text-gray-800 group-hover:text-red-600 transition-colors leading-snug line-clamp-2 mb-1">
-                        {blog.title}
+                        {blogTitle(blog)}
                       </h4>
                       <span className="text-[11px] text-gray-500">
                         {blog.date}

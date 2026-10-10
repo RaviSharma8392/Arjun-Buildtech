@@ -9,8 +9,8 @@ import { normalizePropertyData } from "../utils/propertySchema";
 // Components
 import PropertyCard from "../components/common/card/PropertyCard";
 import UserPropertyCard from "./common/card/UserPropertyCard";
-
-
+import PropertyEnquiryPopup from "./common/form/PropertyEnquiryPopup";
+import { useLanguage } from "../context/useLanguage";
 
 // --- Sub-Component: Clean Skeleton Loader ---
 const PropertySkeleton = () => (
@@ -28,9 +28,13 @@ const PropertySkeleton = () => (
 );
 
 const FeaturedProperties = () => {
+  const { t } = useLanguage();
   const [properties, setProperties] = useState([]);
   const [recentProperties, setRecentProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [isEnquiryPopupOpen, setIsEnquiryPopupOpen] = useState(false);
+  const [enquiryProperty, setEnquiryProperty] = useState(null);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -81,18 +85,20 @@ const FeaturedProperties = () => {
   }, []);
 
   return (
-    <section className="bg-[#F9F9F9] py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto">
+    <section className="border-t border-gray-200 bg-[#F9F9F9] py-12 md:py-16">
+      <div className="site-container">
         {/* --- Standard Portal-Style Header 1 --- */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div className="flex-1">
             <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-              Featured Properties
+              {t("home.featuredTitle", "Featured Properties")}
             </h2>
             <div className="w-16 h-1 bg-red-600 mb-4"></div>
             <p className="text-sm md:text-base text-gray-600 max-w-2xl">
-              Explore our handpicked selection of premium HSVP plots, luxury
-              villas, and investment-ready commercial spaces.
+              {t(
+                "home.featuredDescription",
+                "Explore our handpicked selection of premium HSVP plots, luxury villas, and investment-ready commercial spaces.",
+              )}
             </p>
           </div>
 
@@ -100,7 +106,8 @@ const FeaturedProperties = () => {
           <Link
             to="/properties"
             className="hidden md:flex items-center gap-1.5 text-[15px] font-medium text-red-600 hover:text-red-700 transition-colors pb-1">
-            See all properties <ArrowRight className="w-4 h-4" />
+            {t("home.seeAllProperties", "See all properties")}{" "}
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
@@ -121,11 +128,13 @@ const FeaturedProperties = () => {
                 <Building className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-[17px] font-semibold text-gray-900 mb-1">
-                No featured properties right now
+                {t("home.noFeatured", "No featured properties right now")}
               </h3>
               <p className="text-gray-500 text-[14px] max-w-sm">
-                We are currently updating our premium listings. Please check
-                back later.
+                {t(
+                  "home.updatingListings",
+                  "We are currently updating our premium listings. Please check back later.",
+                )}
               </p>
             </div>
           ) : (
@@ -139,11 +148,23 @@ const FeaturedProperties = () => {
               {properties.map((property) => (
                 <div key={property.id} className="group block">
                   {isMobile ? (
-                    <UserPropertyCard property={property} />
+                    <UserPropertyCard
+                      property={property}
+                      onContactAgent={(prop) => {
+                        setEnquiryProperty(prop);
+                        setIsEnquiryPopupOpen(true);
+                      }}
+                    />
                   ) : (
                     // Subtle hover effect suitable for professional portals
                     <div className="transition-all duration-300 hover:shadow-md hover:-translate-y-1 rounded-lg bg-white h-full border border-gray-200">
-                      <PropertyCard property={property} />
+                      <PropertyCard
+                        property={property}
+                        onContactAgent={(prop) => {
+                          setEnquiryProperty(prop);
+                          setIsEnquiryPopupOpen(true);
+                        }}
+                      />
                     </div>
                   )}
                 </div>
@@ -157,7 +178,7 @@ const FeaturedProperties = () => {
           <Link
             to="/properties"
             className="flex items-center justify-center gap-2 w-full bg-white border border-red-600 text-red-600 py-2.5 rounded text-[15px] font-semibold hover:bg-red-50 transition-colors">
-            View all properties
+            {t("common.allProperties", "View all properties")}
           </Link>
         </div>
 
@@ -167,19 +188,22 @@ const FeaturedProperties = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
               <div className="flex-1">
                 <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-                  New Properties in Rohtak
+                  {t("home.newProperties", "New Properties in Rohtak")}
                 </h2>
                 <div className="w-16 h-1 bg-red-600 mb-4"></div>
                 <p className="text-sm md:text-base text-gray-600 max-w-2xl">
-                  Discover our most recently added property listings and
-                  exclusive real estate opportunities.
+                  {t(
+                    "home.newPropertiesDescription",
+                    "Discover our most recently added property listings and exclusive real estate opportunities.",
+                  )}
                 </p>
               </div>
 
               <Link
                 to="/properties"
                 className="hidden md:flex items-center gap-1.5 text-[15px] font-medium text-red-600 hover:text-red-700 transition-colors pb-1">
-                View all listings <ArrowRight className="w-4 h-4" />
+                {t("home.allListings", "View all listings")}{" "}
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
@@ -192,10 +216,22 @@ const FeaturedProperties = () => {
               {recentProperties.map((property) => (
                 <div key={property.id} className="group block">
                   {isMobile ? (
-                    <UserPropertyCard property={property} />
+                    <UserPropertyCard
+                      property={property}
+                      onContactAgent={(prop) => {
+                        setEnquiryProperty(prop);
+                        setIsEnquiryPopupOpen(true);
+                      }}
+                    />
                   ) : (
                     <div className="transition-all duration-300 hover:shadow-md hover:-translate-y-1 rounded-lg bg-white h-full border border-gray-200">
-                      <PropertyCard property={property} />
+                      <PropertyCard
+                        property={property}
+                        onContactAgent={(prop) => {
+                          setEnquiryProperty(prop);
+                          setIsEnquiryPopupOpen(true);
+                        }}
+                      />
                     </div>
                   )}
                 </div>
@@ -207,12 +243,22 @@ const FeaturedProperties = () => {
               <Link
                 to="/properties"
                 className="flex items-center justify-center gap-2 w-full bg-white border border-red-600 text-red-600 py-2.5 rounded text-[15px] font-semibold hover:bg-red-50 transition-colors">
-                View all listings
+                {t("home.allListings", "View all listings")}
               </Link>
             </div>
           </div>
         )}
       </div>
+
+      {/* Enquiry Popup */}
+      <PropertyEnquiryPopup
+        isOpen={isEnquiryPopupOpen}
+        onClose={() => {
+          setIsEnquiryPopupOpen(false);
+          setEnquiryProperty(null);
+        }}
+        property={enquiryProperty}
+      />
     </section>
   );
 };

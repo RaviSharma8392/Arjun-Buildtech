@@ -1,78 +1,50 @@
 import React from "react";
-import { FaStar, FaCheckCircle, FaShieldAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhoneAlt, FaShieldAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { companyInfo } from "../../data/companyInfo";
+import { useLanguage } from "../../context/useLanguage";
 
 const TrustedBrands = () => {
+  const { t } = useLanguage();
+
   return (
-    <section className="bg-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-          {/* Left Content */}
-          <div className="flex-1 w-full text-center md:text-left">
-            {/* Standard Portal Heading Design */}
-            <div className="mb-4">
-              <div className="flex items-center justify-center md:justify-start gap-2 text-gray-500 mb-3">
-                <FaShieldAlt className="w-4 h-4" />
-                <span className="text-[12px] font-semibold uppercase tracking-wider">
-                  100% Independent
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-                Rohtak's Premier Real Estate Consultant
-              </h2>
-              <div className="w-16 h-1 bg-red-600 mb-6 mx-auto md:mx-0"></div>
-            </div>
-
-            <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed max-w-2xl mx-auto md:mx-0">
-              Arjun Buildtech is a dedicated local property dealership operating
-              in Rohtak, with a focus on{" "}
-              <span className="font-semibold text-gray-800">
-                Sector 27 & Sector 1.
-              </span>{" "}
-              We operate independently and are{" "}
-              <strong className="font-semibold text-gray-800">
-                not affiliated with any corporate entities or construction
-                companies in Kurukshetra.
-              </strong>
-            </p>
+    <section className="border-t border-gray-200 bg-white py-12 md:py-16">
+      <div className="site-container grid items-center gap-8 md:grid-cols-[1fr_320px] md:gap-12">
+        <div>
+          <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-700">
+            <FaShieldAlt className="h-4 w-4" />
+            <span>Local property guidance</span>
           </div>
+          <h2 className="font-display mb-4 text-3xl leading-tight text-gray-900 md:text-4xl">
+            Rohtak property, explained by a local team
+          </h2>
+          <p className="max-w-2xl text-[15px] leading-relaxed text-gray-600">
+            {t(
+              "home.trustIntro",
+              "Arjun Buildtech helps buyers and sellers explore property options in Rohtak, Haryana. Browse current listings, ask questions about the details, and make decisions at your own pace.",
+            )}
+          </p>
+        </div>
 
-          {/* Right Content - Rating Card */}
-          <div className="w-full md:w-[320px] bg-[#F9F9F9] border border-gray-200 rounded-lg p-6 shrink-0 flex flex-col items-center md:items-start hover:shadow-md transition-shadow duration-200">
-            {/* Rating Section */}
-            <div className="flex items-center gap-4 mb-4">
-              <span className="font-bold text-4xl text-gray-900">4.9</span>
-              <div>
-                <div className="flex items-center gap-1 text-[#F5A623] text-[15px] mb-1">
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                </div>
-                <p className="text-[12px] text-gray-500">Customer rating</p>
-              </div>
-            </div>
-
-            <div className="w-full h-px bg-gray-200 my-4"></div>
-
-            {/* Justdial Section */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-[13px] text-gray-600">
-                Verified reviews on
-              </span>
-              <img
-                src="https://akam.cdn.jdmagicbox.com/images/icontent/jdrwd/jdlogosvg.svg"
-                alt="Justdial"
-                className="h-6 w-auto object-contain"
-              />
-            </div>
-
-            {/* Verified Badge */}
-            <div className="flex items-center gap-2 text-[13px] font-semibold text-[#00875A]">
-              <FaCheckCircle className="w-4 h-4 shrink-0" />
-              <span>100% Verified Agents</span>
-            </div>
-          </div>
+        <div className="border-l-2 border-red-600 bg-gray-50 p-5 md:p-6">
+          <p className="mb-3 text-sm font-semibold text-gray-900">
+            Speak with Arjun Buildtech
+          </p>
+          <a
+            href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
+            className="mb-4 inline-flex items-center gap-2 text-lg font-semibold text-gray-900 hover:text-red-700">
+            <FaPhoneAlt className="h-4 w-4 text-red-600" />
+            {companyInfo.phone}
+          </a>
+          <p className="mb-4 flex items-start gap-2 text-sm leading-relaxed text-gray-600">
+            <FaMapMarkerAlt className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+            {companyInfo.address}
+          </p>
+          <Link
+            to="/contact"
+            className="text-sm font-semibold text-red-700 hover:text-red-800">
+            Contact the team <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </section>
