@@ -333,6 +333,18 @@ export default function Navbar() {
             }`}>
             Help & Support
           </Link>
+
+          {/* Developer Credit Link in Mobile Drawer */}
+          <div className="mt-3 pt-3 border-t border-gray-200">
+            <Link
+              to="/developer"
+              onClick={() => setIsMenuOpen(false)}
+              className="flex items-center justify-between text-xs text-gray-500 hover:text-red-600 transition-colors py-1"
+            >
+              <span>Website Architecture</span>
+              <span className="font-semibold text-gray-700 hover:text-red-600">Ravi Sharma ↗</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>

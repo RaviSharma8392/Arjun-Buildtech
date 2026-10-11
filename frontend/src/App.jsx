@@ -36,6 +36,7 @@ const ToolsPage = lazy(() => import("./pages/user/ToolsPage"));
 const SitemapPage = lazy(() => import("./pages/user/Sitemap"));
 const BlogListingPage = lazy(() => import("./pages/user/BlogListingPage"));
 const BlogDetailsPage = lazy(() => import("./pages/user/BlogDetailsPage"));
+const DeveloperPage = lazy(() => import("./pages/user/DeveloperPage"));
 
 // Admin Lazy Pages
 const AdminPropertyManage = lazy(
@@ -177,6 +178,8 @@ const App = () => {
             <Route path="emi-calculator" element={<EmiCalculatorPage />} />
             <Route path="area-converter" element={<AreaConverterPage />} />
             <Route path="tools" element={<ToolsPage />} />
+            <Route path="developer" element={<DeveloperPage />} />
+            <Route path="who-built-arjun-buildtech" element={<DeveloperPage />} />
             {/* Programmatic Dynamic Handler for SEO Pages */}
             <Route path=":slug" element={<SeoListingPage />} />
           </Route>

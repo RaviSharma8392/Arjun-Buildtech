@@ -58,6 +58,20 @@ http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 </url>
 
 <url>
+<loc>https://arjunbuildtech.com/developer</loc>
+<lastmod>2026-10-11</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://arjunbuildtech.com/who-built-arjun-buildtech</loc>
+<lastmod>2026-10-11</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
 <loc>https://arjunbuildtech.com/services/invest-in-rohtak-properties</loc>
 <lastmod>2026-10-08</lastmod>
 <changefreq>weekly</changefreq>

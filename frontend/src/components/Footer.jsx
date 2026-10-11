@@ -271,11 +271,23 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <div>
-            &copy; {new Date().getFullYear()} Arjun Buildtech. All rights
-            reserved. Made & Managed by{" "}
-            <span className="font-semibold text-gray-700">Ravi Sharma</span>.
+        <div className="pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 text-center md:text-left">
+            <span>&copy; {new Date().getFullYear()} Arjun Buildtech. All rights reserved.</span>
+            <span className="hidden sm:inline text-gray-300">•</span>
+            <span>
+              Made &amp; Managed by{" "}
+              <Link
+                to="/developer"
+                className="font-semibold text-gray-700 hover:text-red-600 transition-colors inline-flex items-center gap-1 group"
+                title="Learn about website developer Ravi Sharma"
+              >
+                <span className="underline decoration-gray-300 group-hover:decoration-red-600 underline-offset-2">
+                  Ravi Sharma
+                </span>
+                <span className="text-[10px] text-gray-400 group-hover:text-red-600">↗</span>
+              </Link>
+            </span>
           </div>
 
           <div className="flex gap-6">
@@ -288,6 +300,11 @@ const Footer = () => {
               to="/terms-of-service"
               className="hover:text-red-600 transition-colors">
               Terms of Service
+            </Link>
+            <Link
+              to="/developer"
+              className="hover:text-red-600 transition-colors">
+              Developer
             </Link>
             <Link
               to="/sitemap"

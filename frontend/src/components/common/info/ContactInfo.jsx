@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useLanguage } from "../../../context/useLanguage";
 import { companyInfo } from "../../../data/companyInfo";
@@ -88,6 +89,27 @@ const ContactInfo = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Website Technical Credit / Developer Info */}
+      <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/70 p-4 rounded-xl border border-gray-200/60">
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 block">
+            Website Design &amp; Development
+          </span>
+          <span className="text-sm font-bold text-gray-900 block mt-0.5">
+            Ravi Sharma &bull; MERN &amp; Firebase
+          </span>
+          <span className="text-xs text-gray-500">
+            Need a website like this for your business?
+          </span>
+        </div>
+        <Link
+          to="/developer"
+          className="self-start sm:self-center px-3.5 py-2 text-xs font-bold text-red-700 hover:text-white bg-red-50 hover:bg-[#d8232a] border border-red-200 hover:border-[#d8232a] rounded-lg transition-all duration-150 shadow-2xs whitespace-nowrap"
+        >
+          View Developer Profile ↗
+        </Link>
       </div>
     </div>
   );
