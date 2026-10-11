@@ -4,7 +4,10 @@ import { db } from "../services/firebase";
 import { Link } from "react-router-dom";
 import { ArrowRight, Building } from "lucide-react";
 
-import { normalizePropertyData } from "../utils/propertySchema";
+import {
+  isPropertyPubliclyAvailable,
+  normalizePropertyData,
+} from "../utils/propertySchema";
 
 // Components
 import PropertyCard from "../components/common/card/PropertyCard";
@@ -50,15 +53,15 @@ const FeaturedProperties = () => {
         setLoading(true);
         const q = query(collection(db, "featuredproperties"));
         const snapshot = await getDocs(q);
-        const data = snapshot.docs.map((doc) =>
-          normalizePropertyData({ id: doc.id, ...doc.data() }),
-        );
+        const data = snapshot.docs
+          .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
+          .filter(isPropertyPubliclyAvailable);
         setProperties(data);
 
         const recentSnapshot = await getDocs(collection(db, "properties"));
-        const recentData = recentSnapshot.docs.map((doc) =>
-          normalizePropertyData({ id: doc.id, ...doc.data() }),
-        );
+        const recentData = recentSnapshot.docs
+          .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
+          .filter(isPropertyPubliclyAvailable);
 
         const sortedRecent = [...recentData].sort((a, b) => {
           const aTime = a.createdAt?.seconds

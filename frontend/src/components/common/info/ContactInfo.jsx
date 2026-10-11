@@ -1,6 +1,7 @@
 import React from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { useLanguage } from "../../../context/useLanguage";
+import { companyInfo } from "../../../data/companyInfo";
 
 const ContactInfo = () => {
   const { t } = useLanguage();
@@ -31,10 +32,7 @@ const ContactInfo = () => {
               {t("contactInfo.locations", "Our Locations")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
-              G74P, Sector-27, Rohtak
-            </p>
-            <p className="text-[14px] text-gray-600 leading-relaxed mt-0.5">
-              828, Sector-1, Rohtak, 124001
+              {companyInfo.address}
             </p>
           </div>
         </div>
@@ -48,12 +46,11 @@ const ContactInfo = () => {
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
               {t("contactInfo.call", "Call Us")}
             </h4>
-            <p className="text-[14px] text-gray-600 leading-relaxed">
-              Parveen Gehlawat: 93504-47531, 98994-81428
-            </p>
-            <p className="text-[14px] text-gray-600 leading-relaxed mt-0.5">
-              Naveen Gehlawat: 98121-50126
-            </p>
+            <a
+              href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
+              className="text-[14px] text-gray-600 leading-relaxed hover:text-red-600">
+              {companyInfo.phone}
+            </a>
           </div>
         </div>
 
@@ -66,9 +63,11 @@ const ContactInfo = () => {
             <h4 className="font-semibold text-gray-900 text-[15px] mb-1">
               {t("contactInfo.email", "Email")}
             </h4>
-            <p className="text-[14px] text-gray-600 leading-relaxed">
-              arjunbuildtech27@gmail.com
-            </p>
+            <a
+              href={`mailto:${companyInfo.email}`}
+              className="text-[14px] text-gray-600 leading-relaxed hover:text-red-600">
+              {companyInfo.email}
+            </a>
           </div>
         </div>
 
@@ -82,10 +81,10 @@ const ContactInfo = () => {
               {t("contactInfo.hours", "Office Hours")}
             </h4>
             <p className="text-[14px] text-gray-600 leading-relaxed">
-              {t("contactInfo.weekdays", "Mon–Fri: 9am–6pm")}
+              {t("contactInfo.weekdays", "Mon–Sat: 10am–6pm")}
             </p>
             <p className="text-[14px] text-gray-600 leading-relaxed mt-0.5">
-              {t("contactInfo.saturday", "Sat: 10am–4pm")}
+              {t("contactInfo.saturday", "Contact us to confirm availability")}
             </p>
           </div>
         </div>

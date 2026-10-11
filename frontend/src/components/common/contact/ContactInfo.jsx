@@ -1,5 +1,6 @@
 import React from "react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import { companyInfo } from "../../../data/companyInfo";
 
 const ContactInfo = () => {
   const isHome = window.location.pathname === "/";
@@ -7,19 +8,20 @@ const ContactInfo = () => {
     {
       icon: <FaMapMarkerAlt className="text-red-500 w-5 h-5" />,
       label: "Address",
-      value: "Bhateliya, Mukteshwar, Nainital, Uttarakhand, India",
+      value: companyInfo.address,
     },
     {
       icon: <FaPhone className="text-green-600 w-5 h-5" />,
       label: "Phone",
-      value: "+91 93504 47531",
-      action: () => (window.location.href = "tel:+919350447531"),
+      value: companyInfo.phone,
+      action: () =>
+        (window.location.href = `tel:${companyInfo.phone.replace(/\s/g, "")}`),
     },
     {
       icon: <FaEnvelope className="text-purple-600 w-5 h-5" />,
       label: "Email",
-      value: "naitikbisht1@gmail.com",
-      action: () => (window.location.href = "mailto:naitikbisht1@gmail.com"),
+      value: companyInfo.email,
+      action: () => (window.location.href = `mailto:${companyInfo.email}`),
     },
   ];
 
@@ -53,7 +55,7 @@ const ContactInfo = () => {
           <div className="mt-8">
             <iframe
               title="Google Map"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13914.415517530062!2d79.54313820289677!3d29.323293154710555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a0977d3a2728eb%3A0x51e41c838d9641a2!2sJoonstate%2C%20Uttarakhand%20263136!5e0!3m2!1sen!2sin!4v1759227849002!5m2!1sen!2sin" // replace with your link
+              src={`https://www.google.com/maps?q=${encodeURIComponent(companyInfo.address)}&output=embed`}
               width="100%"
               height="250"
               style={{ border: 0 }}

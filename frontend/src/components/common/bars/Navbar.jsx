@@ -59,22 +59,22 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-200 bg-white border-b border-gray-200 ${
-          isScrolled ? "shadow-sm py-2" : "py-3"
+        className={`fixed top-0 left-0 right-0 z-[100] w-full border-b border-gray-200 bg-white font-site transition-all duration-200 ${
+          isScrolled ? "py-2.5 shadow-sm" : "py-4"
         }`}>
-        <div className="site-container">
-          <div className="flex justify-between items-center">
+        <div className="mx-auto w-full max-w-[95rem] px-4 md:px-8 2xl:px-10">
+          <div className="flex min-h-10 items-center justify-between gap-5">
             {/* Logo */}
             <Link to="/" className="flex items-center shrink-0">
               <img
                 src="/arjunBuildTechLogo.png"
                 alt="Arjun Buildtech"
-                className="h-9 w-32 md:w-36 object-contain"
+                className="h-10 w-36 object-contain"
               />
             </Link>
 
             {/* Desktop Navigation (Center) */}
-            <div className="hidden lg:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 flex-1 justify-center">
+            <div className="hidden xl:flex flex-1 items-center justify-center space-x-5 2xl:space-x-8">
               {navLinks.map((link) => {
                 const isActive =
                   location.pathname === link.path ||
@@ -85,7 +85,7 @@ export default function Navbar() {
                     {link.name === "Blog" ? (
                       <div className="relative group py-1 cursor-pointer">
                         <div
-                          className={`text-[14px] transition-colors duration-150 flex items-center gap-1.5 ${
+                          className={`flex items-center gap-1.5 whitespace-nowrap text-[15px] transition-colors duration-150 ${
                             isActive
                               ? "text-red-600 font-semibold"
                               : "text-gray-600 font-medium hover:text-red-600"
@@ -146,7 +146,7 @@ export default function Navbar() {
                       <>
                         <Link
                           to={link.path}
-                          className={`text-[14px] transition-colors duration-150 flex items-center gap-1.5 ${
+                          className={`flex items-center gap-1.5 whitespace-nowrap text-[15px] transition-colors duration-150 ${
                             isActive
                               ? "text-red-600 font-semibold"
                               : "text-gray-600 font-medium hover:text-red-600"
@@ -172,12 +172,12 @@ export default function Navbar() {
             </div>
 
             {/* Right Side Actions (Cleaned Up) */}
-            <div className="hidden lg:flex items-center shrink-0 gap-4 xl:gap-6">
+            <div className="hidden xl:flex shrink-0 items-center gap-4 2xl:gap-6">
               <LanguageSwitcher />
 
               {/* Help Dropdown */}
               <div className="relative group py-2 cursor-pointer">
-                <div className="flex items-center gap-1 text-[15px] font-medium text-gray-600 hover:text-red-600 transition-colors">
+                <div className="flex items-center gap-1 whitespace-nowrap text-[15px] font-medium text-gray-600 transition-colors hover:text-red-600">
                   {t("nav.help", "Help")}
                   <svg
                     className="w-3.5 h-3.5"
@@ -217,18 +217,13 @@ export default function Navbar() {
               {/* Contact Us CTA (Always Red with FREE badge) */}
               <Link
                 to="/contact"
-                className="px-4 py-2 rounded-full text-[13px] font-semibold transition-all shadow-sm flex items-center justify-center gap-2 border bg-red-600 border-red-600 text-white hover:bg-red-700 hover:border-red-700">
-                <span className="font-medium">
-                  {t("nav.contactUs", "Contact Us")}
-                </span>
-                <span className="text-[10px] uppercase font-bold bg-[#FFC107] text-gray-900 px-2 py-0.5 rounded-full tracking-wide">
-                  {t("nav.free", "Free")}
-                </span>
+                className="flex items-center justify-center whitespace-nowrap rounded-full border border-red-600 bg-red-600 px-5 py-3 text-[15px] font-semibold text-white shadow-sm transition-colors hover:border-red-700 hover:bg-red-700">
+                <span>{t("nav.contactUs", "Contact Us")}</span>
               </Link>
             </div>
 
             {/* Mobile Menu Toggles */}
-            <div className="flex lg:hidden items-center gap-2">
+            <div className="flex items-center gap-2 xl:hidden">
               <LanguageSwitcher />
               <button
                 onClick={() => setIsMenuOpen(true)}
@@ -244,7 +239,7 @@ export default function Navbar() {
 
       {/* Backdrop Overlay */}
       <div
-        className={`fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-[110] lg:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[110] bg-gray-900/50 backdrop-blur-sm transition-opacity duration-300 xl:hidden ${
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={() => setIsMenuOpen(false)}
@@ -252,7 +247,7 @@ export default function Navbar() {
 
       {/* Side Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white z-[120] lg:hidden border-l border-gray-100 flex flex-col transition-transform duration-300 ease-in-out shadow-2xl ${
+        className={`fixed top-0 right-0 z-[120] flex h-full w-[88%] max-w-md flex-col border-l border-gray-100 bg-white shadow-2xl transition-transform duration-300 ease-in-out xl:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}>
         {/* Drawer Header */}
@@ -274,7 +269,7 @@ export default function Navbar() {
                 key={link.name}
                 to={link.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`flex items-center justify-between px-5 py-4 border-b border-gray-200 text-[14px] font-normal transition-colors ${
+                className={`flex items-center justify-between border-b border-gray-200 px-6 py-4 text-[16px] font-medium transition-colors ${
                   isActive
                     ? "text-red-600 bg-red-50/50"
                     : "text-[#303030] hover:text-red-600 hover:bg-gray-50"

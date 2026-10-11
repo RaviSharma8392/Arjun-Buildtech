@@ -164,7 +164,7 @@ const Home = () => {
               {t("common.clientReviews", "Client Reviews")}
             </Link>
             <Link
-              to="/blogs"
+              to="/blog"
               className="p-4 rounded-lg bg-gray-50 hover:bg-red-50 hover:text-red-600 transition-colors font-semibold text-gray-700 shadow-sm border border-gray-100">
               {t("common.blog", "Real Estate Blog")}
             </Link>

@@ -4,41 +4,41 @@ export const servicesData = {
     hi: {
       title: "रोहतक की प्रॉपर्टी में निवेश करें",
       heroTitle: "रोहतक में प्रीमियम प्रॉपर्टी और विला निवेश",
-      heroSubtitle: "रोहतक के पसंदीदा सेक्टरों में सत्यापित, बेहतर रिटर्न वाले प्लॉट, विला और कमर्शियल जगहें देखें।",
+      heroSubtitle: "रोहतक में उपलब्ध मौजूदा प्लॉट, घर और कमर्शियल लिस्टिंग देखें और विवरण के लिए पूछताछ करें।",
       content: [
-        "Arjun Buildtech रोहतक में प्रीमियम प्रॉपर्टी और लग्ज़री विला का खास पोर्टफोलियो देता है। सपनों का घर बनाने के लिए रिहायशी प्लॉट चाहिए या बेहतर आय देने वाली कमर्शियल जगह, हमारी चुनी हुई लिस्टिंग आपको अधिक मूल्य पाने में मदद करती हैं।",
+        "Arjun Buildtech रोहतक में रिहायशी और कमर्शियल प्रॉपर्टी लिस्ट करता है। हर लिस्टिंग का विवरण और उपलब्धता अलग हो सकती है।",
         "हम HSVP सेक्टर 1, 2, 3, 25, 27 और Suncity सेक्टर 34, 35, 36 तथा 36A में विशेषज्ञता रखते हैं। इन प्रमुख क्षेत्रों में तेज़ बुनियादी विकास हो रहा है, इसलिए ये समझदारी से निवेश करने वालों के लिए उपयुक्त विकल्प हैं।",
-        "हमारी सत्यापित प्रॉपर्टी के स्वामित्व दस्तावेज़ स्पष्ट होते हैं, जिससे लेन-देन सुरक्षित और आसान रहता है। स्थानीय बाज़ार के अनुभव से हम ऐसी प्रॉपर्टी पहचानते हैं जिनमें मूल्य बढ़ने की अच्छी संभावना हो।",
+        "हम प्रॉपर्टी और निवेश संबंधी पूछताछ का जवाब देते हैं। आगे बढ़ने से पहले उपलब्ध दस्तावेज़ों और विवरणों की स्वतंत्र जाँच करें; निवेश के नतीजों की गारंटी नहीं होती।",
       ],
       benefits: [
         "प्रीमियम विला और प्लॉट तक विशेष पहुँच",
-        "स्पष्ट स्वामित्व दस्तावेज़ वाली पूरी तरह सत्यापित प्रॉपर्टी",
-        "मूल्य बढ़ने की अच्छी संभावना वाले प्रमुख स्थान",
-        "दस्तावेज़ीकरण में शुरू से अंत तक सहायता",
+        "मौजूदा लिस्टिंग के बारे में जानकारी",
+        "प्रॉपर्टी और निवेश संबंधी पूछताछ",
+        "उपलब्ध विवरण और दस्तावेज़ों पर चर्चा",
       ],
       faqs: [
-        { question: "रोहतक की रियल एस्टेट में निवेश क्यों करें?", answer: "रोहतक में नए हाईवे, शैक्षणिक केंद्र और कमर्शियल क्षेत्र तेज़ी से विकसित हो रहे हैं। प्रमुख सेक्टरों में अभी निवेश करने से आने वाले वर्षों में बेहतर रिटर्न की संभावना हो सकती है।" },
+        { question: "क्या निवेश पर रिटर्न की गारंटी है?", answer: "नहीं। प्रॉपर्टी निवेश में जोखिम होता है और भविष्य के रिटर्न की गारंटी नहीं दी जा सकती। किसी निर्णय से पहले अपने स्तर पर जाँच करें।" },
         { question: "आप किस तरह की प्रॉपर्टी उपलब्ध कराते हैं?", answer: "हम लग्ज़री विला, रिहायशी प्लॉट (HSVP और Suncity) तथा कमर्शियल जगहें उपलब्ध कराते हैं।" },
       ],
     },
-    heroTitle: "Premium Property & Villa Investments in Rohtak",
-    heroSubtitle: "Discover verified, high-return plots, villas, and commercial spaces in Rohtak's most sought-after sectors.",
+    heroTitle: "Property and Investment Enquiries in Rohtak",
+    heroSubtitle: "Browse current residential and commercial listings and ask about their details and availability.",
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200",
     content: [
-      "Arjun Buildtech offers an exclusive portfolio of premium properties and luxury villas in Rohtak. Whether you are looking for a residential plot to build your dream home or a high-yield commercial space, our curated listings ensure maximum value.",
+      "Arjun Buildtech lists residential and commercial properties in Rohtak. Details and availability vary by listing; contact us to ask about a specific property.",
       "We specialize in HSVP Sectors 1, 2, 3, 25, 27 and Suncity Sectors 34, 35, 36, and 36A. These prime locations are experiencing rapid infrastructural development, making them the perfect choice for smart investors.",
-      "Our verified properties come with clear titles, ensuring a seamless and secure transaction process. With decades of local market experience, we identify properties that offer exceptional appreciation potential."
+      "We respond to property and investment-related enquiries. Review the available property information and documents independently; investment outcomes are not guaranteed."
     ],
     benefits: [
       "Exclusive access to premium villas and plots",
-      "100% verified properties with clear titles",
-      "Prime locations with high appreciation potential",
-      "End-to-end documentation assistance"
+      "Current listing information",
+      "Property and investment enquiry support",
+      "Discuss listing details and documents"
     ],
     faqs: [
       {
         question: "Why invest in Rohtak real estate?",
-        answer: "Rohtak is rapidly developing with new highways, educational hubs, and commercial zones. Investing now in prime sectors guarantees high ROI over the next few years."
+        answer: "Property investment involves risk. Future prices and returns are not guaranteed; review each listing and conduct independent checks before making a decision."
       },
       {
         question: "What types of properties do you offer?",
@@ -215,7 +215,7 @@ export const servicesData = {
     content: [
       "Location is the golden rule of real estate. Arjun Buildtech focuses exclusively on Rohtak's most premium and high-growth areas, ensuring our clients invest only in the best.",
       "Our core expertise lies in HSVP Sectors 1, 2, 3, 25, and 27. These government-approved sectors boast excellent wide roads, lush green parks, and proximity to major educational and medical institutions.",
-      "We also heavily feature Suncity (Sectors 34, 35, 36, and 36A), known for its modern infrastructure, secure gated communities, and luxury villas. Investing in these prime zones guarantees an upgraded lifestyle and immense future value."
+      "Some listings may be in Suncity sectors. Check each property's details and current availability; future value and investment outcomes are not guaranteed."
     ],
     benefits: [
       "Detailed knowledge of HSVP and Suncity layouts",

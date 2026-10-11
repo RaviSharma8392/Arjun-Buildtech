@@ -1,26 +1,17 @@
-import React, { Suspense, lazy } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { Toaster } from "react-hot-toast";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "./services/firebase";
 import { useLanguage } from "./context/useLanguage";
+import { getRouteMetadata, updateDocumentMetadata } from "./utils/seoMetadata";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import NotFoundPage from "./pages/NotFoundPage";
-
-// Admin Pages
-import AdminPropertyManage from "./pages/admin/AdminPropertyManage";
-import AddEditPropertyPage from "./pages/admin/EditPropertyPage";
-import AdminReviewsList from "./pages/admin/AdminReviewsList";
-import AdminReviewForm from "./pages/admin/AdminReviewForm";
-import AdminRegister from "./pages/admin/Register";
-import AdminSettings from "./pages/admin/AdminSettings";
-import SitemapPage from "./pages/user/Sitemap";
-import AdminLocalitiesList from "./pages/admin/AdminLocalitiesList";
-import AdminLocalityForm from "./pages/admin/AdminLocalityForm";
-import BlogListingPage from "./pages/user/BlogListingPage";
-import BlogDetailsPage from "./pages/user/BlogDetailsPage";
 
 // Lazy-loaded Pages
 const Home = lazy(() => import("./pages/user/Home"));
@@ -42,28 +33,88 @@ const ChatWithUs = lazy(() => import("./pages/user/ChatWithUs"));
 const EmiCalculatorPage = lazy(() => import("./pages/user/EmiCalculatorPage"));
 const AreaConverterPage = lazy(() => import("./pages/user/AreaConverterPage"));
 const ToolsPage = lazy(() => import("./pages/user/ToolsPage"));
+const SitemapPage = lazy(() => import("./pages/user/Sitemap"));
+const BlogListingPage = lazy(() => import("./pages/user/BlogListingPage"));
+const BlogDetailsPage = lazy(() => import("./pages/user/BlogDetailsPage"));
 
 // Admin Lazy Pages
+const AdminPropertyManage = lazy(
+  () => import("./pages/admin/AdminPropertyManage"),
+);
+const AddEditPropertyPage = lazy(
+  () => import("./pages/admin/EditPropertyPage"),
+);
+const AdminReviewsList = lazy(() => import("./pages/admin/AdminReviewsList"));
+const AdminReviewForm = lazy(() => import("./pages/admin/AdminReviewForm"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminLocalitiesList = lazy(
+  () => import("./pages/admin/AdminLocalitiesList"),
+);
+const AdminLocalityForm = lazy(() => import("./pages/admin/AdminLocalityForm"));
 const AdminInquiries = lazy(() => import("./pages/admin/AdminInquiries"));
 const AdminSubscribers = lazy(() => import("./pages/admin/AdminSubscribers"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin")); // login/signup page
 
 // -------- Admin Route Guard --------
 const RequireAdmin = ({ children }) => {
-  const adminData = JSON.parse(localStorage.getItem("admin")); // get stored login info
+  const [access, setAccess] = useState("checking");
 
-  console.log(adminData);
-  // If not logged in or role is not admin, redirect to login
-  if (!adminData || !adminData.uid || adminData.role !== "admin") {
-    return <Navigate to="/admin/login" replace />;
+  useEffect(() => {
+    let active = true;
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        if (active) setAccess("denied");
+        return;
+      }
+
+      try {
+        const adminSnapshot = await getDoc(doc(db, "admins", user.uid));
+        const isAdmin =
+          adminSnapshot.exists() && adminSnapshot.data().role === "admin";
+        if (active) setAccess(isAdmin ? "allowed" : "denied");
+        if (!isAdmin) await signOut(auth);
+      } catch (error) {
+        console.error("Unable to verify administrator access:", error);
+        if (active) setAccess("denied");
+        await signOut(auth);
+      }
+    });
+
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, []);
+
+  if (access === "checking") {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-gray-600">
+        Verifying access...
+      </div>
+    );
   }
+  if (access !== "allowed") return <Navigate to="/admin/login" replace />;
 
-  return children;
+  return (
+    <>
+      <Helmet>
+        <title>Admin | Arjun Buildtech</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      {children}
+    </>
+  );
 };
 
 // -------- App Component --------
 const App = () => {
   const { t } = useLanguage();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    updateDocumentMetadata(getRouteMetadata(pathname));
+  }, [pathname]);
+
   return (
     <HelmetProvider>
       <Toaster position="top-center" reverseOrder={false} />
@@ -133,8 +184,6 @@ const App = () => {
           {/* ---------- Admin Auth Routes ---------- */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* <Route path="/admin/register" element={<AdminRegister />} /> */}
-          {/* same component handles signup */}
           {/* ---------- Admin Protected Routes ---------- */}
           <Route
             path="/admin"

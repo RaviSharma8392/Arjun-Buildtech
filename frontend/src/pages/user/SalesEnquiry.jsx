@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ContactForm from "../../components/common/form/ContactForm";
 import { useLanguage } from "../../context/useLanguage";
+import { companyInfo } from "../../data/companyInfo";
 
 const SalesEnquiry = () => {
   const { t } = useLanguage();
@@ -73,9 +74,9 @@ const SalesEnquiry = () => {
                 )}
               </p>
               <a
-                href="tel:+919899481428"
+                href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}
                 className="inline-flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded font-medium hover:bg-red-700 transition-colors">
-                Call +91 98994 81428
+                Call {companyInfo.phone}
               </a>
             </div>
 
@@ -88,7 +89,7 @@ const SalesEnquiry = () => {
                   <span className="text-red-400 mt-1">✔</span>
                   {t(
                     "sales.verified",
-                    "100% verified properties and transparent pricing.",
+                    "Ask about current listings and their availability.",
                   )}
                 </li>
                 <li className="flex items-start gap-2">

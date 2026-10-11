@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FaWhatsapp, FaFacebookMessenger, FaRegComments } from "react-icons/fa";
 import { useLanguage } from "../../context/useLanguage";
+import { companyInfo } from "../../data/companyInfo";
 
 const ChatWithUs = () => {
   const { t } = useLanguage();
@@ -55,7 +56,7 @@ const ChatWithUs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
           {/* WhatsApp Card */}
           <a
-            href="https://wa.me/919899481428"
+            href={`https://wa.me/${companyInfo.whatsapp}`}
             target="_blank"
             rel="noreferrer"
             className="bg-white border border-gray-200 rounded-lg p-8 flex flex-col items-center text-center shadow-sm hover:shadow-md hover:border-[#25D366] transition-all group">

@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/useLanguage";
+import { companyInfo } from "../data/companyInfo";
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -48,7 +49,7 @@ const Footer = () => {
             <p className="text-gray-600 text-[14px] leading-relaxed mb-6">
               {t(
                 "footer.about",
-                "If you are looking for a property consultant to help you get your dream plot, luxury villa, or high-return investment, then you are at the right place. We, at Arjun Buildtech, are one of the leading real estate advisors in Rohtak, Haryana, with a decade of experience. Our main motive is to provide excellent quality and planning tailored to the needs of our clients.",
+                "Arjun Buildtech lists properties in Rohtak, Haryana, and responds to property and investment-related enquiries. Details and availability vary by listing.",
               )}
             </p>
 
@@ -101,8 +102,9 @@ const Footer = () => {
                     {t("footer.contactNumbers", "Contact Numbers")}
                   </p>
                   <div className="text-gray-600 space-y-0.5 mt-0.5 text-[13px]">
-                    <p>Parveen Gehlawat: 93504-47531, 98994-81428</p>
-                    <p>Naveen Gehlawat: 98121-50126</p>
+                    <a href={`tel:${companyInfo.phone.replace(/\s/g, "")}`}>
+                      {companyInfo.phone}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -115,8 +117,7 @@ const Footer = () => {
                     {t("footer.officeLocations", "Office Locations")}
                   </p>
                   <div className="text-gray-600 space-y-0.5 mt-0.5 text-[13px]">
-                    <p>• G74P, Sector-27, Rohtak</p>
-                    <p>• 828, Sector-1, Rohtak, 124001</p>
+                    <p>{companyInfo.address}</p>
                   </div>
                 </div>
               </div>
@@ -130,11 +131,9 @@ const Footer = () => {
             </h3>
             <div className="bg-gray-50 rounded p-4 border border-gray-200">
               <div className="space-y-1 mb-4 text-[13px]">
-                <div className="text-gray-600">
-                  {t("footer.allDays", "All 7 days available")}
-                </div>
+                <div className="text-gray-600">Mon–Sat</div>
                 <div className="font-semibold text-gray-900">
-                  10:00 AM - 7:00 PM
+                  10:00 AM - 6:00 PM
                 </div>
               </div>
 
@@ -145,7 +144,7 @@ const Footer = () => {
                 <Link
                   to="/contact"
                   className="block text-center w-full bg-red-600 text-white py-2 px-3 rounded text-[13px] font-semibold hover:bg-red-700 transition-colors">
-                  {t("common.getFreeConsultation", "Get Free Consultation")}
+                  Contact the team
                 </Link>
               </div>
             </div>

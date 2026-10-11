@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { db } from "../services/firebase";
 import {
   collection,
@@ -14,69 +15,6 @@ import {
 import toast from "react-hot-toast";
 import { useLanguage } from "../context/useLanguage";
 import Breadcrumb from "./common/Breadcrumb";
-
-const fallbackReviews = [
-  {
-    id: "f1",
-    name: "Adish",
-    role: "I am Resident of this Locality",
-    location: "Sector 27, Rohtak",
-    rating: 5,
-    date: "2024-11-21",
-    feedback:
-      "We evaluated multiple locations, but the best appreciation and connectivity are here. Arjun Buildtech handled all paperwork and registry smoothly without any hassle.",
-  },
-  {
-    id: "f2",
-    name: "Himanshu",
-    role: "I am Resident of this Locality",
-    location: "Suncity Sector-36, Rohtak",
-    rating: 5,
-    date: "2024-11-21",
-    feedback:
-      "Good localities for residential and commercial purpose with all types of facilities, clean wide roads, and peaceful environment.",
-  },
-  {
-    id: "f3",
-    name: "Ram Gopal",
-    role: "I am Resident of this Locality",
-    location: "HSVP Sector-2, Rohtak",
-    rating: 5,
-    date: "2024-11-21",
-    feedback:
-      "This is a very clean area with all the necessary amenities, including schools, banks and hospitals nearby. Everything is well managed.",
-  },
-  {
-    id: "f4",
-    name: "Santosh",
-    role: "I am a property consultant",
-    location: "Sector-1, Rohtak",
-    rating: 5,
-    date: "2024-11-20",
-    feedback:
-      "It is one of the top locations of Rohtak. All essential needs like shops, hospitals, schools, and food joints are within 5 minutes reach.",
-  },
-  {
-    id: "f5",
-    name: "Vaishali",
-    role: "I have been living here since 2021",
-    location: "Suncity, Rohtak",
-    rating: 5,
-    date: "2024-11-20",
-    feedback:
-      "All basic facilities like School, Colleges, Universities, and Coaching Centres are in close proximity. Safe and friendly environment.",
-  },
-  {
-    id: "f6",
-    name: "Sharad Ahlawat",
-    role: "I am Resident of this Locality",
-    location: "Sector-25, Rohtak",
-    rating: 5,
-    date: "2024-11-19",
-    feedback:
-      "This city is an excellent place to live. The localities here are lined with lush green parks, wide roads, and great connectivity.",
-  },
-];
 
 const getAvatarColor = (name = "") => {
   const colors = [
@@ -97,7 +35,7 @@ const getAvatarColor = (name = "") => {
 };
 
 const formatDate = (dateVal) => {
-  if (!dateVal) return "21/11/2024";
+  if (!dateVal) return "";
   if (typeof dateVal === "string" && dateVal.includes("-")) {
     const parts = dateVal.split("T")[0].split("-");
     if (parts.length === 3) {
@@ -110,12 +48,13 @@ const formatDate = (dateVal) => {
       d.getMonth() + 1,
     ).padStart(2, "0")}/${d.getFullYear()}`;
   }
-  return "21/11/2024";
+  return "";
 };
 
 const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
   const { t } = useLanguage();
   const [reviews, setReviews] = useState([]);
+  const [reviewsError, setReviewsError] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedReviews, setExpandedReviews] = useState({});
@@ -149,21 +88,18 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
         const q = query(
           collection(db, "reviews"),
           orderBy("createdAt", "desc"),
-          limit(30),
+          limit(50),
         );
         const snapshot = await getDocs(q);
         const data = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        if (data && data.length > 0) {
-          setReviews(data);
-        } else {
-          setReviews(fallbackReviews);
-        }
+        setReviews(data.filter((review) => review.isVisible !== false));
       } catch (error) {
         console.error("Error fetching reviews:", error);
-        setReviews(fallbackReviews);
+        setReviews([]);
+        setReviewsError(true);
       }
     };
 
@@ -175,16 +111,11 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
     if (!newReview.name || !newReview.feedback) return;
     setIsSubmitting(true);
     try {
-      const docRef = await addDoc(collection(db, "reviews"), {
+      await addDoc(collection(db, "reviews"), {
         ...newReview,
+        isVisible: false,
         createdAt: serverTimestamp(),
       });
-      const addedReview = {
-        id: docRef.id,
-        ...newReview,
-        date: new Date().toISOString().split("T")[0],
-      };
-      setReviews([addedReview, ...reviews]);
       setIsModalOpen(false);
       setNewReview({
         name: "",
@@ -193,7 +124,7 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
         location: "",
         role: "I am Resident of this Locality",
       });
-      toast.success(t("reviews.success", "Review submitted successfully!"));
+      toast.success(t("reviews.success", "Review submitted for approval."));
     } catch (error) {
       console.error("Error adding review:", error);
       toast.error(t("reviews.error", "Failed to submit review."));
@@ -209,56 +140,17 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
     }));
   };
 
-  const displayedReviews = reviews.length > 0 ? reviews : fallbackReviews;
+  const displayedReviews = reviews;
 
   const averageRating =
     displayedReviews.length > 0
       ? (
-          displayedReviews.reduce((acc, rev) => acc + (rev.rating || 5), 0) /
-          displayedReviews.length
+          displayedReviews.reduce(
+            (acc, review) => acc + Number(review.rating || 0),
+            0,
+          ) / displayedReviews.length
         ).toFixed(1)
-      : "4.8";
-
-  const totalReviewsCount = Math.max(1319, displayedReviews.length);
-  const totalUsersCount = Math.max(1316, displayedReviews.length - 3);
-
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    name: "Arjun Buildtech",
-    image: "https://arjunbuildtech.com/arjunBuildTechLogo.png",
-    "@id": "https://arjunbuildtech.com",
-    url: "https://arjunbuildtech.com",
-    telephone: "+91-9350447531",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "G74P, Sector-27",
-      addressLocality: "Rohtak",
-      addressRegion: "Haryana",
-      postalCode: "124001",
-      addressCountry: "IN",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: averageRating,
-      reviewCount: totalReviewsCount,
-    },
-    review: displayedReviews.slice(0, 5).map((rev) => ({
-      "@type": "Review",
-      author: {
-        "@type": "Person",
-        name: rev.name,
-      },
-      datePublished: rev.date || "2024-11-21",
-      reviewBody: rev.feedback,
-      reviewRating: {
-        "@type": "Rating",
-        bestRating: "5",
-        ratingValue: rev.rating || "5",
-        worstRating: "1",
-      },
-    })),
-  };
+      : null;
 
   return (
     <section className="py-12 bg-white">
@@ -267,11 +159,12 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
           <title>Client Reviews | Arjun Buildtech</title>
           <meta
             name="description"
-            content={`Read genuine ratings and reviews from verified clients and residents in Rohtak with Arjun Buildtech.`}
+            content="Read reviews shared with Arjun Buildtech about property and local area experiences in Rohtak."
           />
-          <script type="application/ld+json">
-            {JSON.stringify(schemaData)}
-          </script>
+          <link
+            rel="canonical"
+            href="https://arjunbuildtech.com/testimonials"
+          />
         </Helmet>
       )}
 
@@ -300,189 +193,114 @@ const ClientReviews = ({ hideSeo = false, city = "Rohtak" }) => {
           <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed max-w-2xl">
             {t(
               "reviews.description",
-              "Real feedback from property buyers and sellers in Rohtak. We value transparency and take pride in the 100% genuine reviews from our verified clients.",
+              "Reviews shared with Arjun Buildtech about property and local area experiences in Rohtak.",
             )}
           </p>
         </div>
 
-        {/* Top Header Summary Line */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 pt-2 border-t border-gray-100">
-          <div className="text-[15px] sm:text-[16px] text-gray-700 font-normal">
-            <span className="text-[#f59e0b] font-bold inline-flex items-center gap-1">
-              ★ {averageRating}/5
-            </span>{" "}
-            based on{" "}
-            <span className="font-bold text-gray-900">
-              {totalUsersCount.toLocaleString()} users
-            </span>{" "}
-            ratings.{" "}
-            <span className="font-bold text-gray-900">
-              {totalReviewsCount.toLocaleString()} Reviews
-            </span>
-          </div>
-
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="text-xs sm:text-sm font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg border border-red-200 transition-colors">
-            + Write a Review
-          </button>
-        </div>
-
-        {/* 3 Locality Metric Category Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          {/* Card 1: Commuting */}
-          <div className="bg-white rounded-xl border border-gray-200/90 shadow-sm p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900 text-[16px]">Commuting</h3>
-              <span className="bg-green-50 text-green-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
-                4.5 ★
-              </span>
-            </div>
-            <div className="space-y-3 text-[13px] text-gray-600">
-              <div className="flex items-center justify-between">
-                <span>Parking</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Bus Stop</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Banks/ATMs</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Petrol Pump</span>
-                {renderStars(4)}
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Environment */}
-          <div className="bg-white rounded-xl border border-gray-200/90 shadow-sm p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900 text-[16px]">
-                Environment
-              </h3>
-              <span className="bg-green-50 text-green-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
-                4.7 ★
-              </span>
-            </div>
-            <div className="space-y-3 text-[13px] text-gray-600">
-              <div className="flex items-center justify-between">
-                <span>Saftey</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Cleanliness</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Roads</span>
-                {renderStars(4)}
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3: Places of Interest */}
-          <div className="bg-white rounded-xl border border-gray-200/90 shadow-sm p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900 text-[16px]">
-                Places of Interest
-              </h3>
-              <span className="bg-green-50 text-green-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
-                4.6 ★
-              </span>
-            </div>
-            <div className="space-y-3 text-[13px] text-gray-600">
-              <div className="flex items-center justify-between">
-                <span>Schools</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Shopping Mall</span>
-                {renderStars(5)}
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Hospitals</span>
-                {renderStars(5)}
-              </div>
-            </div>
-          </div>
-        </div>
+        <p className="mb-5 text-sm text-gray-600">
+          {displayedReviews.length}{" "}
+          {displayedReviews.length === 1
+            ? "published review"
+            : "published reviews"}
+          {averageRating && ` · Average rating ${averageRating}/5`}
+        </p>
 
         {/* Section Heading */}
         <div className="mb-6">
           <h3 className="text-[18px] sm:text-[20px] text-gray-800 font-normal">
-            Latest Review of City{" "}
-            <span className="font-bold text-gray-900">{city}</span>
+            Reviews for <span className="font-bold text-gray-900">{city}</span>
           </h3>
         </div>
 
         {/* 3 Columns Review Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {displayedReviews
-            .filter((r) => r.isVisible !== false)
-            .slice(0, visibleCount)
-            .map((review, index) => {
-              const avatarColor = getAvatarColor(review.name || `User${index}`);
-              const isExpanded = !!expandedReviews[review.id || index];
-              const textLength = review.feedback?.length || 0;
-              const shouldTruncate = textLength > 115;
-              const displayText =
-                shouldTruncate && !isExpanded
-                  ? review.feedback.slice(0, 115) + "..."
-                  : review.feedback;
+          {displayedReviews.slice(0, visibleCount).map((review, index) => {
+            const avatarColor = getAvatarColor(review.name || `User${index}`);
+            const isExpanded = !!expandedReviews[review.id || index];
+            const textLength = review.feedback?.length || 0;
+            const shouldTruncate = textLength > 115;
+            const displayText =
+              shouldTruncate && !isExpanded
+                ? review.feedback.slice(0, 115) + "..."
+                : review.feedback;
 
-              return (
-                <div
-                  key={review.id || index}
-                  className="bg-white border border-gray-200/90 rounded-xl p-5 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
-                  <div>
-                    {/* Header: User Avatar + Name/Role + Stars/Date */}
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-11 h-11 rounded-full ${avatarColor} text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}>
-                          {(review.name || "U").charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-gray-900 text-[15px] leading-tight">
-                            {review.name}
-                          </div>
-                          <div className="text-[12px] text-gray-500 mt-0.5 line-clamp-1">
-                            {review.role ||
-                              review.location ||
-                              "I am Resident of this Locality"}
-                          </div>
-                        </div>
+            return (
+              <div
+                key={review.id || index}
+                className="bg-white border border-gray-200/90 rounded-xl p-5 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
+                <div>
+                  {/* Header: User Avatar + Name/Role + Stars/Date */}
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-11 h-11 rounded-full ${avatarColor} text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm`}>
+                        {(review.name || "U").charAt(0).toUpperCase()}
                       </div>
-
-                      <div className="flex flex-col items-end shrink-0">
-                        {renderStars(review.rating || 5, "w-3 h-3")}
-                        <span className="text-[11px] text-gray-400 mt-1 font-medium">
-                          {formatDate(review.date || review.createdAt)}
-                        </span>
+                      <div>
+                        <div className="font-semibold text-gray-900 text-[15px] leading-tight">
+                          {review.name}
+                        </div>
+                        <div className="text-[12px] text-gray-500 mt-0.5 line-clamp-1">
+                          {review.role ||
+                            review.location ||
+                            "I am Resident of this Locality"}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Review Feedback Text */}
-                    <p className="text-[13.5px] text-gray-700 leading-relaxed">
-                      {displayText}
-                      {shouldTruncate && (
-                        <button
-                          type="button"
-                          onClick={() => toggleExpand(review.id || index)}
-                          className="text-blue-600 hover:text-blue-700 font-medium ml-1.5 focus:outline-none">
-                          {isExpanded ? "Show Less" : "Read More"}
-                        </button>
-                      )}
-                    </p>
+                    <div className="flex flex-col items-end shrink-0">
+                      {renderStars(review.rating || 5, "w-3 h-3")}
+                      <span className="text-[11px] text-gray-400 mt-1 font-medium">
+                        {formatDate(review.date || review.createdAt)}
+                      </span>
+                    </div>
                   </div>
+
+                  {/* Review Feedback Text */}
+                  <p className="text-[13.5px] text-gray-700 leading-relaxed">
+                    {displayText}
+                    {shouldTruncate && (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(review.id || index)}
+                        className="text-blue-600 hover:text-blue-700 font-medium ml-1.5 focus:outline-none">
+                        {isExpanded ? "Show Less" : "Read More"}
+                      </button>
+                    )}
+                  </p>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
+
+        {displayedReviews.length === 0 && (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 px-6 py-12 text-center">
+            <h3 className="text-lg font-medium text-gray-900">
+              {reviewsError
+                ? "Reviews are temporarily unavailable"
+                : "No published reviews yet"}
+            </h3>
+            <p className="mt-2 text-sm text-gray-600">
+              {reviewsError
+                ? "Please try again later, or contact Arjun Buildtech with a property enquiry."
+                : "Browse current listings or contact Arjun Buildtech with a property enquiry."}
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <Link
+                to="/properties"
+                className="rounded border border-red-600 px-4 py-2 text-sm text-red-700">
+                Explore properties
+              </Link>
+              <Link
+                to="/contact"
+                className="rounded bg-red-600 px-4 py-2 text-sm text-white">
+                Contact us
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* View More Reviews Button */}
         {visibleCount < displayedReviews.length && (

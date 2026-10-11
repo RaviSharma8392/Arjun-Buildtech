@@ -67,25 +67,23 @@ export const moreBlogs = [
   {
     id: 55,
     slug: "diwali-2026-property-offers-rohtak",
-    title: "Diwali 2026: Best Property Deals and Offers in Rohtak",
+    title: "Property Offers in Rohtak: What to Check Before You Decide",
     date: "2026-10-05",
     category: "Market News",
-    excerpt: "दिवाली सीजन में Rohtak builders और dealers दे रहे हैं भारी छूट। जानिए कौन सी properties best deals में हैं।",
+    excerpt: "Offers and included items vary by property. Review the written terms and ask about current availability before proceeding.",
     content: `
-      <h2>Festive Season Property Offers 2026</h2>
-      <p>Diwali 2026 has brought attractive deals for property buyers in Rohtak. Builders, developers and individual sellers are offering incentives to close deals before year-end.</p>
+      <h2>Review Property-Specific Offer Terms</h2>
+      <p>Any price adjustment, fee, or included item depends on the individual property and seller. Ask for current terms in writing before making a decision.</p>
 
-      <h3>Current Offers Available</h3>
+      <h3>Questions to Ask</h3>
       <ul>
-        <li><strong>Registration cost waiver:</strong> Some builders covering 50-100% of registration charges</li>
-        <li><strong>Free modular kitchen:</strong> Worth ₹2-3 lakh on villa purchases</li>
-        <li><strong>Zero brokerage:</strong> Select properties with no broker fees</li>
-        <li><strong>Free parking:</strong> Complimentary covered parking with apartment purchases</li>
+        <li>Which items or services are included in the stated price?</li>
+        <li>Which registration, tax, or other charges are additional?</li>
+        <li>How long are the stated terms and availability valid?</li>
+        <li>Who is responsible for confirming the details in writing?</li>
       </ul>
 
-      <h3>Best Deals by Property Type</h3>
-      <p>DDJAY plots seeing 3-5% discounts, while premium villas in Suncity offering free interior design consultations. Commercial shops in Sector 14 have flexible payment terms.</p>
-      <p>Arjun Buildtech has exclusive festive offers on verified properties. Contact us for details.</p>
+      <p>Compare the full costs and property details rather than relying on a headline discount. Availability and terms may change.</p>
       ${CTA}
     `,
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",

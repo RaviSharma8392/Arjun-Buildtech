@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { createSlug } from "../../utils/slugify";
 import { db } from "../../services/firebase";
 import {
   doc,
@@ -13,8 +14,12 @@ import {
 import { Helmet } from "react-helmet-async";
 
 import PremiumPropertyDetails from "../../components/common/info/PremiumPropertyDetails";
-import { normalizePropertyData } from "../../utils/propertySchema";
+import {
+  isPropertyPubliclyAvailable,
+  normalizePropertyData,
+} from "../../utils/propertySchema";
 import { getLocalizedField } from "../../utils/localizedField";
+import { updateDocumentMetadata } from "../../utils/seoMetadata";
 import { useLanguage } from "../../context/useLanguage";
 import EmiCalculatorBanner from "../../components/common/banner/EmiCalculatorBanner";
 import InlineEnquiryForm from "../../components/common/form/InlineEnquiryForm";
@@ -54,6 +59,9 @@ const PropertyDetailsPage = () => {
           });
         }
 
+        if (foundProperty && !isPropertyPubliclyAvailable(foundProperty)) {
+          foundProperty = null;
+        }
         setProperty(foundProperty);
 
         // Fast Similar Properties Fetch
@@ -69,13 +77,16 @@ const PropertyDetailsPage = () => {
 
           const simProps = [];
           querySnapshot.forEach((docSnap) => {
-            if (docSnap.id !== foundProperty.id && simProps.length < 4) {
-              simProps.push(
-                normalizePropertyData({
-                  id: docSnap.id,
-                  ...docSnap.data(),
-                }),
-              );
+            const similarProperty = normalizePropertyData({
+              id: docSnap.id,
+              ...docSnap.data(),
+            });
+            if (
+              docSnap.id !== foundProperty.id &&
+              isPropertyPubliclyAvailable(similarProperty) &&
+              simProps.length < 4
+            ) {
+              simProps.push(similarProperty);
             }
           });
 
@@ -92,6 +103,28 @@ const PropertyDetailsPage = () => {
 
     fetchProperty();
   }, [id]);
+
+  useEffect(() => {
+    if (loading) return;
+    if (!property) {
+      updateDocumentMetadata({
+        title: "Property Not Found | Arjun Buildtech",
+        description: "This property listing is no longer available.",
+        canonicalPath: null,
+        robots: "noindex, nofollow",
+      });
+      return;
+    }
+
+    const propertyName = getLocalizedField(property, "name", language);
+    updateDocumentMetadata({
+      title: `${propertyName || "Property Details"} | Arjun Buildtech`,
+      description:
+        property.shortTitle ||
+        `View ${property.type || "property"} details in ${property.location || "Rohtak"} and contact Arjun Buildtech with an enquiry.`,
+      canonicalPath: window.location.pathname,
+    });
+  }, [language, loading, property]);
 
   /* Loading State */
   if (loading) {
@@ -144,6 +177,10 @@ const PropertyDetailsPage = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+        <link
+          rel="canonical"
+          href={`https://arjunbuildtech.com/property/${createSlug(property.location || "rohtak")}/${createSlug(propertyName || property.name || "property")}/${property.id || id}`}
+        />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         {property.images?.length > 0 && (

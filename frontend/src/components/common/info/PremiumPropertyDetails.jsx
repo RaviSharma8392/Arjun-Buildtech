@@ -343,9 +343,11 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                 <FaShareAlt /> Share
               </button>
             </div>
-            <span className="text-gray-400 text-sm">
-              Verified by {settings.companyName}
-            </span>
+            {property.verified === true && (
+              <span className="text-gray-500 text-sm">
+                Verified by {settings.companyName}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -687,11 +689,15 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
             )}
 
             <div className="mt-8 mb-6">
-              <button 
+              <button
                 onClick={() => setShowAllDetails(!showAllDetails)}
                 className="text-[#d92228] font-bold text-sm underline hover:no-underline flex items-center gap-1">
-                {showAllDetails ? t("detail.hideAll", "Hide details") : t("detail.viewAll", "View all details")}{" "}
-                <ChevronRight className={`w-4 h-4 transition-transform ${showAllDetails ? '-rotate-90' : 'rotate-90'}`} />
+                {showAllDetails
+                  ? t("detail.hideAll", "Hide details")
+                  : t("detail.viewAll", "View all details")}{" "}
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform ${showAllDetails ? "-rotate-90" : "rotate-90"}`}
+                />
               </button>
             </div>
 
@@ -705,10 +711,12 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                     ? property.description.substring(0, 200) + "... "
                     : property.description + " "}
                   {property.description.length > 200 && (
-                    <button 
+                    <button
                       onClick={() => setShowFullDesc(!showFullDesc)}
                       className="text-gray-900 font-bold underline hover:text-[#d92228] ml-1">
-                      {showFullDesc ? t("detail.readLess", "Read less") : t("detail.readMore", "Read more")}
+                      {showFullDesc
+                        ? t("detail.readLess", "Read less")
+                        : t("detail.readMore", "Read more")}
                     </button>
                   )}
                 </>

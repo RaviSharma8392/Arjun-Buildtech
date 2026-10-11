@@ -10,7 +10,10 @@ import PropertyCard from "../components/common/card/PropertyCard";
 import HorizontalPropertyCard from "../components/common/card/HorizontalPropertyCard";
 import Breadcrumb from "../components/common/Breadcrumb";
 import { createSlug } from "../utils/slugify";
-import { normalizePropertyData } from "../utils/propertySchema";
+import {
+  isPropertyPubliclyAvailable,
+  normalizePropertyData,
+} from "../utils/propertySchema";
 import { Building2, ShieldCheck, MapPin, PhoneCall } from "lucide-react";
 import PopularLocalities from "../components/common/PopularLocalities";
 import { useLanguage } from "../context/useLanguage";
@@ -64,13 +67,13 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
           getDocs(collection(db, "featuredproperties")),
         ]);
 
-        const propData = propSnapshot.docs.map((doc) =>
-          normalizePropertyData({ id: doc.id, ...doc.data() }),
-        );
+        const propData = propSnapshot.docs
+          .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
+          .filter(isPropertyPubliclyAvailable);
 
-        const featuredData = featuredSnapshot.docs.map((doc) =>
-          normalizePropertyData({ id: doc.id, ...doc.data() }),
-        );
+        const featuredData = featuredSnapshot.docs
+          .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
+          .filter(isPropertyPubliclyAvailable);
 
         // Merge and remove potential duplicates by ID
         const allData = [...propData, ...featuredData];
@@ -303,18 +306,26 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
 
       {/* Property Cards Section with Sidebar Layout */}
       <main className="container mx-auto px-4 md:px-8 max-w-7xl py-8">
-        
         {/* Page Title & Description */}
         <div className="mb-6">
           <h1 className="text-2xl font-normal text-gray-900 mb-2">
-            Properties for Sale in {BannerLocation} <span className="text-gray-400 font-light px-2">|</span> <span className="text-gray-500 font-normal">{filteredProperties.length} Results</span>
+            Properties for Sale in {BannerLocation}{" "}
+            <span className="text-gray-400 font-light px-2">|</span>{" "}
+            <span className="text-gray-500 font-normal">
+              {filteredProperties.length} Results
+            </span>
           </h1>
           <p className="text-sm text-gray-600 mb-4 max-w-4xl leading-relaxed">
-            Find verified properties in {BannerLocation}, you'll find various options to match your needs. Discover the best Residential Land / Plots, Independent Houses, Commercial Shops, and more available with {selectedType !== "All" ? selectedType : "all type of"} furnishing options. <span className="text-blue-600 cursor-pointer">View More ˅</span>
+            Browse current listings in {BannerLocation}. Details and
+            availability vary by property; contact Arjun Buildtech to ask about
+            a listing.
           </p>
-          <div className="bg-[#fff9e6] border border-[#f3e5b5] text-gray-700 py-3 px-4 rounded flex items-center text-sm shadow-sm cursor-pointer hover:bg-[#fff5d4] transition-colors">
-            <span className="mr-2">📍</span> Get to know more about <span className="text-blue-600 font-medium ml-1">{BannerLocation} Locality</span> <span className="ml-1">→</span>
-          </div>
+          <Link
+            to={`/properties/${createSlug(BannerLocation)}`}
+            className="inline-flex items-center gap-2 rounded border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 hover:border-red-300 hover:text-red-700">
+            Browse listings in {BannerLocation}{" "}
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
@@ -346,8 +357,8 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
               <div className="grid grid-cols-1 gap-4">
                 {filteredProperties.map((property) => (
                   <div key={property.id} className="block">
-                    <UserPropertyCard 
-                      property={property} 
+                    <UserPropertyCard
+                      property={property}
                       onContactAgent={(prop) => {
                         setEnquiryProperty(prop);
                         setIsEnquiryPopupOpen(true);
@@ -359,9 +370,9 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
             ) : (
               <div className="flex flex-col gap-4">
                 {filteredProperties.map((property) => (
-                  <HorizontalPropertyCard 
+                  <HorizontalPropertyCard
                     key={property.id}
-                    property={property} 
+                    property={property}
                     onContactAgent={(prop) => {
                       setEnquiryProperty(prop);
                       setIsEnquiryPopupOpen(true);
@@ -393,19 +404,19 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
             <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
               {t(
                 "property.marketDescription",
-                "{location} is one of the most sought-after real estate destinations in Haryana. Known for its well-planned sectors, excellent road connectivity, and robust commercial growth, investing here guarantees high long-term appreciation. Whether you are looking for verified HSVP residential plots, independent builder floors, or commercial spaces, Arjun Buildtech provides complete legal verification and end-to-end guidance.",
+                "Explore current property listings in {location}. Availability, documents, and property details vary by listing; contact Arjun Buildtech to ask about a specific property. Investment outcomes are not guaranteed.",
               ).replace("{location}", BannerLocation)}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-50 border border-gray-200 p-4 rounded">
                 <ShieldCheck className="w-5 h-5 text-red-600 mb-2" />
                 <h4 className="font-semibold text-gray-900 text-sm mb-1">
-                  {t("property.verifiedTitles", "100% Verified Titles")}
+                  Property information
                 </h4>
                 <p className="text-xs text-gray-500">
                   {t(
                     "property.verificationDescription",
-                    "Every property listing undergoes rigorous legal verification.",
+                    "Review the information supplied for each listing and ask us about its documents.",
                   )}
                 </p>
               </div>
@@ -417,7 +428,7 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
                 <p className="text-xs text-gray-500">
                   {t(
                     "property.primeDescription",
-                    "Specialized focus on Sectors 1, 27, and Suncity townships.",
+                    "Availability depends on current listings across Rohtak.",
                   )}
                 </p>
               </div>
@@ -475,8 +486,8 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
       </section>
 
       {/* Enquiry Popup */}
-      <PropertyEnquiryPopup 
-        isOpen={isEnquiryPopupOpen} 
+      <PropertyEnquiryPopup
+        isOpen={isEnquiryPopupOpen}
         onClose={() => {
           setIsEnquiryPopupOpen(false);
           setEnquiryProperty(null);

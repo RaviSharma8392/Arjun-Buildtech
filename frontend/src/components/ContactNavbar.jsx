@@ -1,10 +1,11 @@
 import React from "react";
 import { FaMapMarkerAlt, FaPhone, FaSms, FaEnvelope } from "react-icons/fa";
+import { companyInfo } from "../data/companyInfo";
 
 const ContactNavbar = () => {
-  const location = "Mukteshwar, Nainital, Uttarakhand";
-  const mobile = "+91 76177 11003";
-  const email = "naitikbisht1@gmail.com";
+  const location = companyInfo.address;
+  const mobile = companyInfo.phone.replace(/\s/g, "");
+  const email = companyInfo.email;
 
   const handleCall = () => (window.location.href = `tel:${mobile}`);
   const handleSMS = () => (window.location.href = `sms:${mobile}`);
@@ -24,7 +25,7 @@ const ContactNavbar = () => {
           <button
             onClick={handleCall}
             className="flex items-center gap-1 bg-white text-red-600 px-3 py-1 rounded-full text-sm hover:bg-gray-100 transition">
-            <FaPhone /> View Mobile
+            <FaPhone /> Call Arjun Buildtech
           </button>
           <button
             onClick={handleSMS}

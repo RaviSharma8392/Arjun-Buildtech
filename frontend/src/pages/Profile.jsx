@@ -13,6 +13,7 @@ import {
 import ContactForm from "../components/common/form/ContactForm";
 import Breadcrumb from "../components/common/Breadcrumb";
 import { useLanguage } from "../context/useLanguage";
+import { companyInfo } from "../data/companyInfo";
 
 const Profile = () => {
   const { t } = useLanguage();
@@ -22,23 +23,17 @@ const Profile = () => {
 
   const contactPersons = [
     {
-      name: "Parveen Gehlawat",
-      role: "Managing Director",
-      phones: ["93504-47531", "98994-81428"],
+      name: companyInfo.name,
+      role: "Property enquiries",
+      phones: [companyInfo.phone],
     },
-    { name: "Naveen Gehlawat", role: "Director", phones: ["98121-50126"] },
   ];
 
   const offices = [
     {
-      name: "Head Office",
-      address: "G74P, Sector-27, Rohtak, Haryana",
+      name: "Office",
+      address: companyInfo.address,
       type: "head",
-    },
-    {
-      name: "Branch Office",
-      address: "828, Sector-1, Rohtak, Haryana, 124001",
-      type: "branch",
     },
   ];
 
@@ -291,7 +286,7 @@ const Profile = () => {
                       {person.phones.map((phone) => (
                         <a
                           key={phone}
-                          href={`tel:${phone}`}
+                          href={`tel:${phone.replace(/[^\d+]/g, "")}`}
                           className="text-sm text-gray-700 hover:text-red-600">
                           {phone}
                         </a>

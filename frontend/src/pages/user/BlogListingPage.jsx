@@ -234,10 +234,10 @@ const BlogListingPage = () => {
             {/* Featured Article */}
             {featuredBlog && (
               <article className="mb-8 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300">
-                <Link
-                  to={`/blog/${featuredBlog.slug}`}
-                  className="flex flex-col md:flex-row items-stretch">
-                  <div className="w-full md:w-1/2 bg-gray-100 overflow-hidden relative">
+                <div className="flex flex-col md:flex-row items-stretch">
+                  <Link
+                    to={`/blog/${featuredBlog.slug}`}
+                    className="w-full md:w-1/2 bg-gray-100 overflow-hidden relative">
                     <img
                       src={featuredBlog.image}
                       alt={blogTitle(featuredBlog)}
@@ -246,7 +246,7 @@ const BlogListingPage = () => {
                     <div className="absolute top-4 left-4 bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">
                       {t("blog.featured", "Featured")}
                     </div>
-                  </div>
+                  </Link>
                   <div className="w-full md:w-1/2 flex flex-col justify-center p-6">
                     <div className="flex items-center mb-3">
                       <span className="text-[12px] font-semibold uppercase tracking-wider text-gray-800">
@@ -257,12 +257,14 @@ const BlogListingPage = () => {
                         {featuredBlog.date}
                       </span>
                     </div>
-                    <h2 className="text-2xl font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors">
-                      {blogTitle(featuredBlog)}
-                    </h2>
-                    <p className="text-[14px] text-gray-600 leading-relaxed mb-6 line-clamp-3">
-                      {blogExcerpt(featuredBlog)}
-                    </p>
+                    <Link to={`/blog/${featuredBlog.slug}`}>
+                      <h2 className="text-2xl font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors">
+                        {blogTitle(featuredBlog)}
+                      </h2>
+                      <p className="text-[14px] text-gray-600 leading-relaxed mb-6 line-clamp-3">
+                        {blogExcerpt(featuredBlog)}
+                      </p>
+                    </Link>
 
                     {/* Share & Read More Row */}
                     <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
@@ -283,7 +285,6 @@ const BlogListingPage = () => {
                           href={`https://wa.me/?text=${encodeURIComponent(featuredBlog.title + " https://arjunbuildtech.com/blog/" + featuredBlog.slug)}`}
                           target="_blank"
                           rel="noreferrer"
-                          onClick={(e) => e.stopPropagation()}
                           className="text-gray-400 hover:text-[#25D366] transition-colors"
                           title={t("blog.whatsappShare", "WhatsApp Share")}>
                           <FaWhatsapp className="text-[18px]" />
@@ -295,7 +296,7 @@ const BlogListingPage = () => {
                       </span>
                     </div>
                   </div>
-                </Link>
+                </div>
               </article>
             )}
 
@@ -305,10 +306,10 @@ const BlogListingPage = () => {
                 <article
                   key={blog.id}
                   className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
-                  <Link
-                    to={`/blog/${blog.slug}`}
-                    className="flex flex-col h-full">
-                    <div className="overflow-hidden bg-gray-100 relative">
+                  <div className="flex flex-col h-full">
+                    <Link
+                      to={`/blog/${blog.slug}`}
+                      className="block overflow-hidden bg-gray-100 relative">
                       <img
                         src={blog.image}
                         alt={blogTitle(blog)}
@@ -317,17 +318,19 @@ const BlogListingPage = () => {
                       <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">
                         {blog.category}
                       </div>
-                    </div>
+                    </Link>
                     <div className="p-5 flex flex-col flex-grow">
                       <span className="text-[12px] text-gray-500 mb-2">
                         {blog.date}
                       </span>
-                      <h3 className="text-[18px] font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors line-clamp-2">
-                        {blogTitle(blog)}
-                      </h3>
-                      <p className="text-[14px] text-gray-600 leading-relaxed mb-4 line-clamp-2">
-                        {blogExcerpt(blog)}
-                      </p>
+                      <Link to={`/blog/${blog.slug}`}>
+                        <h3 className="text-[18px] font-normal text-gray-800 mb-3 leading-snug hover:text-red-600 transition-colors line-clamp-2">
+                          {blogTitle(blog)}
+                        </h3>
+                        <p className="text-[14px] text-gray-600 leading-relaxed mb-4 line-clamp-2">
+                          {blogExcerpt(blog)}
+                        </p>
+                      </Link>
 
                       <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
                         <div className="flex items-center gap-3">
@@ -342,7 +345,6 @@ const BlogListingPage = () => {
                             href={`https://wa.me/?text=${encodeURIComponent(blog.title + " https://arjunbuildtech.com/blog/" + blog.slug)}`}
                             target="_blank"
                             rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
                             className="text-gray-400 hover:text-[#25D366] transition-colors">
                             <FaWhatsapp className="text-[17px]" />
                           </a>
@@ -352,7 +354,7 @@ const BlogListingPage = () => {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </article>
               ))}
             </div>

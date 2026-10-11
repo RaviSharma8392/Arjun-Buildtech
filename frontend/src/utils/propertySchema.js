@@ -58,6 +58,23 @@ export const normalizeLocation = (location) => {
   return fallback;
 };
 
+export const isPropertyPubliclyAvailable = (property = {}) => {
+  const status = String(property.status || "").trim().toLowerCase();
+  const unavailableStatuses = new Set([
+    "sold",
+    "rented",
+    "off market",
+    "unpublished",
+    "draft",
+  ]);
+
+  return (
+    property.isPublished !== false &&
+    property.published !== false &&
+    !unavailableStatuses.has(status)
+  );
+};
+
 export const normalizePropertyData = (raw = {}) => {
   const locationInfo = normalizeLocation(
     raw.location && typeof raw.location === "object"

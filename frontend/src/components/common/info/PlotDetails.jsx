@@ -121,12 +121,16 @@ const PlotDetails = ({ property }) => {
         <div className="bg-white rounded-t-xl shadow-sm border border-gray-200 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-3">
-              <span className="bg-green-50 text-green-700 border border-green-200 text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider flex items-center gap-1.5">
-                <FaCheckCircle /> Verified Listing
-              </span>
-              <span className="bg-gray-100 text-gray-700 text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
-                {property.status || "Ready to Move"}
-              </span>
+              {property.verified === true && (
+                <span className="bg-green-50 text-green-700 border border-green-200 text-[11px] font-medium px-2.5 py-1 rounded flex items-center gap-1.5">
+                  <FaCheckCircle /> Verified Listing
+                </span>
+              )}
+              {property.status && (
+                <span className="bg-gray-100 text-gray-700 text-[11px] font-medium px-2.5 py-1 rounded">
+                  {property.status}
+                </span>
+              )}
               {property.transactionType && (
                 <span className="bg-red-50 text-red-600 border border-red-100 text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
                   {property.transactionType}

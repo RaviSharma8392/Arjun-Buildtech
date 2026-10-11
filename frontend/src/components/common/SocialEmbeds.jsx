@@ -53,7 +53,7 @@ const SocialEmbeds = () => {
                 scrolling="no"
                 frameBorder="0"
                 allowFullScreen={true}
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
                 title="Arjun Buildtech Facebook Post"></iframe>
             </div>
           </div>
@@ -89,6 +89,7 @@ const SocialEmbeds = () => {
                 frameBorder="0"
                 scrolling="no"
                 allowtransparency="true"
+                loading="lazy"
                 title="Arjun Buildtech Instagram Reel"></iframe>
             </div>
           </div>
@@ -119,6 +120,7 @@ const SocialEmbeds = () => {
             <div className="flex flex-col gap-4">
               <div className="w-full aspect-video bg-gray-50 border border-gray-200 rounded overflow-hidden">
                 <iframe
+                  loading="lazy"
                   width="100%"
                   height="100%"
                   src="https://www.youtube.com/embed/6N6ruSFXBtM"

@@ -24,14 +24,36 @@ const AdminInquiries = () => {
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const q = query(collection(db, "contacts"), orderBy("createdAt", "desc"));
-      const snapshot = await getDocs(q);
-      setLeads(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+      const [contactsSnapshot, inquiriesSnapshot] = await Promise.all([
+        getDocs(
+          query(collection(db, "contacts"), orderBy("createdAt", "desc")),
+        ),
+        getDocs(
+          query(collection(db, "inquiries"), orderBy("createdAt", "desc")),
+        ),
+      ]);
+      const records = [
+        ...contactsSnapshot.docs.map((leadDoc) => ({
+          id: leadDoc.id,
+          collectionName: "contacts",
+          ...leadDoc.data(),
         })),
-      );
+        ...inquiriesSnapshot.docs.map((leadDoc) => ({
+          id: leadDoc.id,
+          collectionName: "inquiries",
+          ...leadDoc.data(),
+        })),
+      ];
+      records.sort((first, second) => {
+        const firstTime =
+          first.createdAt?.toMillis?.() ??
+          (first.createdAt?.seconds || 0) * 1000;
+        const secondTime =
+          second.createdAt?.toMillis?.() ??
+          (second.createdAt?.seconds || 0) * 1000;
+        return secondTime - firstTime;
+      });
+      setLeads(records);
     } catch (err) {
       console.error(err);
     } finally {
@@ -40,10 +62,20 @@ const AdminInquiries = () => {
   };
 
   // ✅ Manual delete only
-  const deleteLead = async (id) => {
+  const deleteLead = async (lead) => {
     if (!window.confirm("Delete this lead?")) return;
-    await deleteDoc(doc(db, "contacts", id));
-    setLeads((prev) => prev.filter((l) => l.id !== id));
+    try {
+      await deleteDoc(doc(db, lead.collectionName, lead.id));
+      setLeads((prev) =>
+        prev.filter(
+          (record) =>
+            record.id !== lead.id ||
+            record.collectionName !== lead.collectionName,
+        ),
+      );
+    } catch (error) {
+      console.error("Unable to delete enquiry:", error);
+    }
   };
 
   // ✅ Date filters only
@@ -128,22 +160,20 @@ const AdminInquiries = () => {
                 ) : (
                   paginatedLeads.map((lead) => (
                     <tr
-                      key={lead.id}
+                      key={`${lead.collectionName}/${lead.id}`}
                       className="border-b border-slate-200/60 hover:bg-white/40 transition duration-300">
                       <td className="px-6 py-4 font-medium text-slate-800">
                         {lead.name}
                       </td>
                       <td className="px-6 py-4">{lead.phone}</td>
-                      <td className="px-6 py-4 text-red-600">
-                        {lead.email}
-                      </td>
+                      <td className="px-6 py-4 text-red-600">{lead.email}</td>
                       <td className="px-6 py-4">{lead.location || "-"}</td>
                       <td className="px-6 py-4 max-w-xs truncate">
                         {lead.message}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
-                          onClick={() => deleteLead(lead.id)}
+                          onClick={() => deleteLead(lead)}
                           className="inline-flex items-center gap-1 text-xs font-medium text-red-600 hover:text-red-700">
                           Delete
                         </button>
