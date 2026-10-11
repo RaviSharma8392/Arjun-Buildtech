@@ -62,7 +62,7 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-white py-12 md:py-16 border-t border-gray-200">
+    <section id="faq-section" className="bg-white py-12 md:py-16 border-t border-gray-200">
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>

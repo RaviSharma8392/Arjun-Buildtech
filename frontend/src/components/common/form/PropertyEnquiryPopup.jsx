@@ -4,6 +4,7 @@ import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useLanguage } from "../../../context/useLanguage";
 import { getLocalizedField } from "../../../utils/localizedField";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
 
 const PropertyEnquiryPopup = ({ isOpen, onClose, property }) => {
   const { language, t } = useLanguage();
@@ -25,20 +26,30 @@ const PropertyEnquiryPopup = ({ isOpen, onClose, property }) => {
     ? `Looking to purchase/inquire about ${propertyName}${locationText ? ` in ${locationText}` : ''}`
     : "";
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    description: defaultDescription,
+  const [formData, setFormData] = useState(() => {
+    const p = getUserProfile();
+    return {
+      name: p.name || "",
+      email: p.email || "",
+      phone: p.phone || "",
+      description: defaultDescription,
+    };
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Update description if property changes
+  // Auto-fill from localStorage whenever popup opens
   useEffect(() => {
-    if (isOpen && property) {
-      setFormData(prev => ({ ...prev, description: defaultDescription }));
+    if (isOpen) {
+      const p = getUserProfile();
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || p.name || "",
+        phone: prev.phone || p.phone || "",
+        email: prev.email || p.email || "",
+        description: property ? defaultDescription : prev.description,
+      }));
     }
   }, [isOpen, property, defaultDescription]);
 
@@ -81,6 +92,13 @@ const PropertyEnquiryPopup = ({ isOpen, onClose, property }) => {
         read: false,
         source: "property_enquiry",
         createdAt: serverTimestamp(),
+      });
+
+      // Save user details to centralized profile
+      saveUserProfile({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
       });
 
       setSubmitted(true);

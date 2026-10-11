@@ -1,3 +1,5 @@
+import { seoData } from "../data/seoData";
+
 const SITE_URL = "https://arjunbuildtech.com";
 const BRAND = "Arjun Buildtech";
 
@@ -75,6 +77,27 @@ const staticPages = {
     title: "Property Tools | Arjun Buildtech",
     description: "Explore property calculators and tools from Arjun Buildtech.",
   },
+  "/sitemap": {
+    title: "Sitemap | Arjun Buildtech",
+    description: "Explore property listings, guides, and tools directory from Arjun Buildtech.",
+  },
+  "/website-developer": {
+    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    description:
+      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+  },
+  "/who-built-arjun-buildtech": {
+    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    description:
+      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+    canonicalPath: "/website-developer",
+  },
+  "/developer": {
+    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    description:
+      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+    canonicalPath: "/website-developer",
+  },
 };
 
 const knownSeoListings = new Set([
@@ -119,7 +142,10 @@ export const getRouteMetadata = (pathname) => {
   }
 
   if (staticPages[path]) {
-    return { ...staticPages[path], canonicalPath };
+    return {
+      canonicalPath,
+      ...staticPages[path],
+    };
   }
 
   if (path.startsWith("/properties/")) {
@@ -166,6 +192,17 @@ export const getRouteMetadata = (pathname) => {
       title: `${listingName} | ${BRAND}`,
       description: `Browse current ${listingName.toLowerCase()} listings in Rohtak. Availability varies by property.`,
       canonicalPath,
+      robots: "index, follow, max-image-preview:large",
+    };
+  }
+
+  const cleanSlug = path.replace(/^\//, "");
+  if (seoData[cleanSlug]) {
+    return {
+      title: seoData[cleanSlug].title,
+      description: seoData[cleanSlug].description,
+      canonicalPath: path,
+      robots: "index, follow, max-image-preview:large",
     };
   }
 

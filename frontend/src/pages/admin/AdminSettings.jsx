@@ -8,8 +8,8 @@ const DEFAULT_SETTINGS = {
   phoneRaw: "+919350447531",
   whatsapp: "919350447531",
   companyName: "Arjun Buildtech",
-  email: "arjunbuildtech@gmail.com",
-  address: "Rohtak, Haryana, India",
+  email: "arjunbuildtech27@gmail.com",
+  address: "Sector 27 & Sector 1, Rohtak, Haryana 124001",
   tagline: "Building Trust, Building Homes",
 };
 
@@ -106,14 +106,14 @@ const AdminSettings = () => {
       key: "email",
       label: "Contact Email",
       icon: <Mail size={16} />,
-      placeholder: "arjunbuildtech@gmail.com",
+      placeholder: "arjunbuildtech27@gmail.com",
       type: "email",
     },
     {
       key: "address",
       label: "Office Address",
       icon: <MapPin size={16} />,
-      placeholder: "Rohtak, Haryana, India",
+      placeholder: "Sector 27 & Sector 1, Rohtak, Haryana 124001",
       type: "text",
     },
   ];

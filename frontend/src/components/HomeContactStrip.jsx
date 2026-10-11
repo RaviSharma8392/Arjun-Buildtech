@@ -86,6 +86,31 @@ const HomeContactStrip = () => {
             </div>
           </Link>
         </div>
+
+        {/* Quick Callback Banner Strip */}
+        <div className="mt-8 bg-gradient-to-r from-red-50 via-rose-50 to-orange-50 border border-red-200/80 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
+          <div className="flex items-center gap-3.5 text-center sm:text-left">
+            <div className="w-11 h-11 rounded-full bg-[#d8232a] text-white flex items-center justify-center shrink-0 shadow-xs">
+              <FaPhoneAlt size={16} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-900 text-sm sm:text-[15px]">
+                Looking for personalized property advice in Rohtak?
+              </p>
+              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                Our property specialist will call you back with verified listings matching your budget.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("open-callback-modal"))
+            }
+            className="w-full sm:w-auto px-6 py-2.5 bg-[#d8232a] hover:bg-[#b71c1c] active:scale-[0.99] text-white rounded-lg font-bold text-sm shadow-xs transition-all cursor-pointer whitespace-nowrap shrink-0">
+            Request a Callback
+          </button>
+        </div>
       </div>
     </section>
   );

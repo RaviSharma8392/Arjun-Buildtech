@@ -1,8 +1,9 @@
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { companyInfo } from "../../../data/companyInfo";
 
 const WhatsAppButton = ({
-  phone = "1234567890",
+  phone = companyInfo.whatsapp,
   message = "Hello, I’d like to know more!",
   position = "bottom-right", // options: bottom-right, bottom-left, top-right, top-left
 }) => {

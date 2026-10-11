@@ -1,21 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { Send } from "lucide-react";
 import Notification from "../notification/Notification";
 import { useLanguage } from "../../../context/useLanguage";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
 
 const ContactForm = () => {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    location: "",
-    gdprAgreement: false,
+  const [formData, setFormData] = useState(() => {
+    const p = getUserProfile();
+    return {
+      name: p.name || "",
+      email: p.email || "",
+      phone: p.phone || "",
+      message: "",
+      location: "",
+      gdprAgreement: false,
+    };
   });
   const [loading, setLoading] = useState(false);
+
+  // Sync profile when updated anywhere on the site
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      const p = getUserProfile();
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || p.name || "",
+        phone: prev.phone || p.phone || "",
+        email: prev.email || p.email || "",
+      }));
+    };
+    window.addEventListener("arjun-profile-updated", handleProfileUpdate);
+    window.addEventListener("storage", handleProfileUpdate);
+    return () => {
+      window.removeEventListener("arjun-profile-updated", handleProfileUpdate);
+      window.removeEventListener("storage", handleProfileUpdate);
+    };
+  }, []);
 
   // Notification state
   const [notification, setNotification] = useState({
@@ -44,13 +67,11 @@ const ContactForm = () => {
         read: false,
       });
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-        location: "",
-        gdprAgreement: false,
+      // Save to global user profile for future auto-fill
+      saveUserProfile({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
       });
 
       // Show success notification

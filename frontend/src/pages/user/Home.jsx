@@ -16,6 +16,7 @@ import AdviceAndTools from "../../components/common/AdviceAndTools";
 import HomeContactStrip from "../../components/HomeContactStrip";
 import PostPropertyBanner from "../../components/common/banner/PostPropertyBanner";
 import RohtakMarketOverview from "../../components/common/RohtakMarketOverview";
+import SupportHelpWidgets from "../../components/common/banner/SupportHelpWidgets";
 import { useLanguage } from "../../context/useLanguage";
 
 // --- Popup Inquiry Form ---
@@ -179,6 +180,13 @@ const Home = () => {
               {t("nav.contactUs", "Contact Us")}
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* 8.5 Support & Help Callout Widgets */}
+      <div className="bg-[#f8f9fa] py-4 md:py-6 border-t border-gray-100">
+        <div className="site-container">
+          <SupportHelpWidgets />
         </div>
       </div>
 

@@ -178,8 +178,9 @@ const App = () => {
             <Route path="emi-calculator" element={<EmiCalculatorPage />} />
             <Route path="area-converter" element={<AreaConverterPage />} />
             <Route path="tools" element={<ToolsPage />} />
-            <Route path="developer" element={<DeveloperPage />} />
-            <Route path="who-built-arjun-buildtech" element={<DeveloperPage />} />
+            <Route path="website-developer" element={<DeveloperPage />} />
+            <Route path="who-built-arjun-buildtech" element={<Navigate to="/website-developer" replace />} />
+            <Route path="developer" element={<Navigate to="/website-developer" replace />} />
             {/* Programmatic Dynamic Handler for SEO Pages */}
             <Route path=":slug" element={<SeoListingPage />} />
           </Route>

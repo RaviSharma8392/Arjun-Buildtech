@@ -104,9 +104,17 @@ const HelpCenter = () => {
               )}
             </p>
             <div className="flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() =>
+                  window.dispatchEvent(new CustomEvent("open-callback-modal"))
+                }
+                className="px-6 py-2.5 bg-[#d8232a] text-white rounded font-bold hover:bg-[#b71c1c] transition-colors cursor-pointer shadow-xs">
+                Request a Callback
+              </button>
               <Link
                 to="/contact"
-                className="px-6 py-2.5 bg-red-600 text-white rounded font-medium hover:bg-red-700 transition-colors">
+                className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded font-medium hover:text-red-600 hover:border-red-600 transition-colors">
                 {t("help.contactSupport", "Contact Support")}
               </Link>
               <Link

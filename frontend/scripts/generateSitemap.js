@@ -24,6 +24,8 @@ const excludedPaths = new Set([
   "/profile",
   "/residential-plots-rohtak",
   "/reviews",
+  "/who-built-arjun-buildtech",
+  "/developer",
 ]);
 
 const firebaseConfig = {

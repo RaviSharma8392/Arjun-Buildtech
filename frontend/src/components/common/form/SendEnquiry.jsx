@@ -1,15 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
+import { db } from "../../../services/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const SendEnquiry = ({ property }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    mobile: "",
-    message: `I'm interested in property: ${property.name}. Details: ${
-      property.propertyType || property.type
-    }, ${property.builtUpArea || "-"} in ${property.location}. My details are:`,
+  const [formData, setFormData] = useState(() => {
+    const p = getUserProfile();
+    return {
+      name: p.name || "",
+      email: p.email || "",
+      mobile: p.phone || "",
+      message: `I'm interested in property: ${property.name}. Details: ${
+        property.propertyType || property.type
+      }, ${property.builtUpArea || "-"} in ${property.location}. My details are:`,
+    };
   });
+
+  // Sync profile when updated anywhere on the site
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      const p = getUserProfile();
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || p.name || "",
+        mobile: prev.mobile || p.phone || "",
+        email: prev.email || p.email || "",
+      }));
+    };
+    window.addEventListener("arjun-profile-updated", handleProfileUpdate);
+    window.addEventListener("storage", handleProfileUpdate);
+    return () => {
+      window.removeEventListener("arjun-profile-updated", handleProfileUpdate);
+      window.removeEventListener("storage", handleProfileUpdate);
+    };
+  }, []);
 
   const [isSent, setIsSent] = useState(false);
   const [validationError, setValidationError] = useState("");
@@ -30,6 +55,29 @@ const SendEnquiry = ({ property }) => {
         "Please fill in your Name and Mobile Number to proceed.",
       );
       return;
+    }
+
+    // Save profile to storage
+    saveUserProfile({
+      name: formData.name,
+      phone: formData.mobile,
+      email: formData.email,
+    });
+
+    // Also record lead in Firestore inquiries
+    try {
+      addDoc(collection(db, "inquiries"), {
+        name: formData.name,
+        phone: formData.mobile,
+        email: formData.email || "",
+        propertyName: property.name || "",
+        message: `Inquired via WhatsApp Form for ${property.name}`,
+        source: "Property WhatsApp Enquiry Form",
+        status: "new",
+        createdAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.error(err);
     }
 
     const fullMessage =
@@ -107,7 +155,7 @@ const SendEnquiry = ({ property }) => {
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              placeholder="9876543210"
+              placeholder="Enter 10-digit mobile number"
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500"
               required
             />
@@ -122,7 +170,7 @@ const SendEnquiry = ({ property }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="your@email.com"
+              placeholder="Enter your email"
               className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500"
             />
           </div>

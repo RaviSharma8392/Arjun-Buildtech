@@ -3,15 +3,14 @@ import { FaPhoneAlt, FaTimes } from "react-icons/fa";
 import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useLanguage } from "../../../context/useLanguage";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
 
 const SmartLeadPopup = () => {
   const { t } = useLanguage();
   const [isRendered, setIsRendered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(
-    localStorage.getItem("smartLeadPhone") || "",
-  );
-  const [name, setName] = useState(localStorage.getItem("smartLeadName") || "");
+  const [phoneNumber, setPhoneNumber] = useState(() => getUserProfile().phone || "");
+  const [name, setName] = useState(() => getUserProfile().name || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -56,8 +55,10 @@ const SmartLeadPopup = () => {
       });
       setIsSuccess(true);
       localStorage.setItem("hasInquired", "true");
-      localStorage.setItem("smartLeadName", name);
-      localStorage.setItem("smartLeadPhone", phoneNumber);
+      saveUserProfile({
+        name: name.trim(),
+        phone: phoneNumber,
+      });
 
       setTimeout(() => {
         handleClose();

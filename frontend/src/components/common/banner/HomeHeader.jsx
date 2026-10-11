@@ -19,7 +19,7 @@ const HomeHeader = () => {
             Arjun Buildtech <span className="mx-2 text-white/50">/</span>{" "}
             Rohtak, Haryana
           </p>
-          <h1 className="font-display mb-5 max-w-[12ch] text-4xl leading-[1.08] sm:text-5xl md:text-6xl">
+          <h1 className="mb-5 max-w-[14ch] text-4xl sm:text-5xl md:text-6xl font-normal leading-[1.1]">
             {t("home.leadingRealEstate", "Find property in Rohtak")}
           </h1>
           <p className="mb-7 max-w-xl text-base leading-relaxed text-white/85 md:text-lg">
@@ -31,20 +31,22 @@ const HomeHeader = () => {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold">
             <Link
               to="/properties"
-              className="border-b border-white/60 pb-1 hover:border-white">
+              className="border-b border-white/60 pb-1 hover:border-white transition-colors">
               Browse all properties <span aria-hidden="true">→</span>
             </Link>
-            <Link to="/contact" className="text-white/80 hover:text-white">
+            <Link
+              to="/contact"
+              className="text-white/80 hover:text-white transition-colors">
               Talk to our team
             </Link>
           </div>
         </div>
 
-        <div className="w-full rounded-lg bg-white p-4 text-gray-900 shadow-2xl sm:p-6">
-          <h2 className="mb-1 text-xl font-semibold text-gray-900 sm:text-2xl">
+        <div className="w-full rounded-xl bg-white p-5 text-gray-900 shadow-2xl sm:p-7">
+          <h2 className="mb-2 text-2xl font-normal text-gray-900">
             Start with a location
           </h2>
-          <p className="mb-5 text-sm text-gray-600">
+          <p className="mb-6 text-[15px] text-gray-600">
             Search current listings by area, property status and type.
           </p>
           <HomeSearchBar />

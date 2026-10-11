@@ -3,18 +3,35 @@ import { X, CheckCircle } from "lucide-react";
 import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useLanguage } from "../../../context/useLanguage";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
 
 const InquiryPopup = ({ isOpen, onClose }) => {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    message: "",
+  const [formData, setFormData] = useState(() => {
+    const p = getUserProfile();
+    return {
+      name: p.name || "",
+      phone: p.phone || "",
+      email: p.email || "",
+      message: "",
+    };
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-fill from localStorage whenever popup opens
+  useEffect(() => {
+    if (isOpen) {
+      const p = getUserProfile();
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || p.name || "",
+        phone: prev.phone || p.phone || "",
+        email: prev.email || p.email || "",
+      }));
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -53,6 +70,13 @@ const InquiryPopup = ({ isOpen, onClose }) => {
         read: false,
         source: "popup",
         createdAt: serverTimestamp(),
+      });
+
+      // Save user details to centralized storage
+      saveUserProfile({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
       });
 
       setSubmitted(true);
@@ -210,7 +234,7 @@ const InquiryPopup = ({ isOpen, onClose }) => {
                      <div className="flex">
                         <span className="w-32 md:w-40 flex-shrink-0">{t("inquiryPopup.emailLabel", "Email ID")}</span>
                         <span className="mr-2">:</span>
-                        <span className="text-[#d9534f]">{t("inquiryPopup.emailId", "arjun.buildtech27@gmail.com")}</span>
+                        <span className="text-[#d9534f]">{t("inquiryPopup.emailId", "arjunbuildtech27@gmail.com")}</span>
                      </div>
                   </div>
 

@@ -105,7 +105,7 @@ const AdminLocalityForm = () => {
                 name="image"
                 value={formData.image}
                 onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
+                placeholder="Paste image URL (e.g. Unsplash or Cloudinary)"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
               />
               <p className="text-xs text-gray-500 mt-1">Provide a direct link to an image. This will be shown in the circle.</p>

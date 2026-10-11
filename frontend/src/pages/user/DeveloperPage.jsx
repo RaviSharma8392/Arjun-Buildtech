@@ -17,6 +17,8 @@ import {
   DollarSign,
   ArrowRight,
   MapPin,
+  Building2,
+  Info,
 } from "lucide-react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import Breadcrumb from "../../components/common/Breadcrumb";
@@ -52,13 +54,13 @@ const DeveloperPage = () => {
     "@graph": [
       {
         "@type": "ProfilePage",
-        "@id": "https://arjunbuildtech.com/developer/#page",
-        "url": "https://arjunbuildtech.com/developer",
-        "name": "Who Built Arjun Buildtech? | Developer Ravi Sharma",
-        "description": "Meet Ravi Sharma, the Full-Stack MERN & Firebase web developer from Nainital, Uttarakhand who designed, built, and manages Arjun Buildtech.",
+        "@id": "https://arjunbuildtech.com/website-developer/#page",
+        "url": "https://arjunbuildtech.com/website-developer",
+        "name": "Arjun Buildtech Website Developer | Ravi Sharma",
+        "description": "Meet Ravi Sharma, the Full-Stack MERN & Firebase web developer from Nainital, Uttarakhand who designed, coded, and manages the Arjun Buildtech website.",
         "mainEntity": {
           "@type": "Person",
-          "@id": "https://arjunbuildtech.com/developer/#person",
+          "@id": "https://arjunbuildtech.com/website-developer/#person",
           "name": "Ravi Sharma",
           "jobTitle": "Full-Stack Web Developer",
           "email": "sharmaravi8392@gmail.com",
@@ -88,25 +90,25 @@ const DeveloperPage = () => {
   return (
     <>
       <Helmet>
-        <title>Who Built Arjun Buildtech? | Ravi Sharma (MERN & Firebase Developer)</title>
+        <title>Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)</title>
         <meta
           name="description"
-          content="Arjun Buildtech was custom built and is managed by Ravi Sharma, a Full-Stack MERN & Firebase web developer based in Nainital, Uttarakhand. Contact Ravi for affordable custom business websites."
+          content="Official developer credits for Arjun Buildtech. The website was custom-coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand. Contact for affordable custom websites."
         />
         <meta name="author" content="Ravi Sharma" />
         <meta
           name="keywords"
-          content="who built arjun buildtech, arjun buildtech developer, ravi sharma web developer, web developer nainital uttarakhand, mern stack developer uttarakhand, affordable website developer"
+          content="arjun buildtech website developer, who made arjun buildtech website, ravi sharma developer, web developer nainital uttarakhand, mern stack developer uttarakhand, affordable website developer"
         />
-        <link rel="canonical" href="https://arjunbuildtech.com/developer" />
+        <link rel="canonical" href="https://arjunbuildtech.com/website-developer" />
 
         {/* Open Graph */}
-        <meta property="og:title" content="Who Built Arjun Buildtech? | Meet Developer Ravi Sharma" />
+        <meta property="og:title" content="Arjun Buildtech Website Developer | Ravi Sharma" />
         <meta
           property="og:description"
-          content="Arjun Buildtech was designed and engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand."
+          content="The official digital platform of Arjun Buildtech was custom built and is maintained by Ravi Sharma, Full-Stack Web Developer from Nainital, Uttarakhand."
         />
-        <meta property="og:url" content="https://arjunbuildtech.com/developer" />
+        <meta property="og:url" content="https://arjunbuildtech.com/website-developer" />
         <meta property="og:type" content="profile" />
 
         <script type="application/ld+json">
@@ -121,7 +123,7 @@ const DeveloperPage = () => {
             <Breadcrumb
               items={[
                 { name: "Home", path: "/" },
-                { name: "Who Built Arjun Buildtech" },
+                { name: "Website Developer" },
               ]}
             />
 
@@ -129,14 +131,16 @@ const DeveloperPage = () => {
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold mb-3">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Official Developer Information
+                  Official Website Developer &bull; Technical Architect
                 </div>
+
                 <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
-                  Who Built Arjun Buildtech?
+                  Arjun Buildtech Website Developer
                 </h1>
+
                 <p className="text-base text-gray-600 mt-2 max-w-2xl leading-relaxed">
-                  Arjun Buildtech is engineered and managed by{" "}
-                  <strong className="text-gray-900 font-bold">Ravi Sharma</strong>, a Full-Stack Web Developer specializing in the MERN Stack and Google Firebase.
+                  The official digital portal (<strong className="text-gray-900">arjunbuildtech.com</strong>) was custom-designed, coded, and is managed by{" "}
+                  <strong className="text-gray-900 font-bold">Ravi Sharma</strong>, a Full-Stack MERN Stack &amp; Google Firebase Developer.
                 </p>
               </div>
 
@@ -150,12 +154,20 @@ const DeveloperPage = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-base">Ravi Sharma</h3>
-                  <p className="text-xs text-red-600 font-semibold">MERN &amp; Firebase Developer</p>
+                  <p className="text-xs text-red-600 font-semibold">Full-Stack Web Developer</p>
                   <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
                     <MapPin size={12} className="text-gray-400 shrink-0" />
                     <span>Nainital, Uttarakhand, India</span>
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Clear Role Separation Notice */}
+            <div className="mt-6 bg-amber-50/90 border border-amber-300/80 rounded-xl p-4 flex items-start gap-3 text-xs sm:text-sm text-amber-950 leading-relaxed shadow-2xs">
+              <Info size={18} className="text-amber-700 shrink-0 mt-0.5" />
+              <div>
+                <strong>Role &amp; Business Clarification:</strong> <strong>Arjun Buildtech</strong> is a premier real estate advisory &amp; property dealership firm based in Rohtak, Haryana. <strong>Ravi Sharma</strong> is solely the <strong>Independent Website Developer &amp; Software Engineer</strong> (based in Nainital, Uttarakhand) who custom-designed, coded, and maintains this web application. Ravi Sharma is not an owner, partner, or property dealer of Arjun Buildtech.
               </div>
             </div>
           </div>
@@ -167,7 +179,7 @@ const DeveloperPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div className="space-y-4">
               <h2 className="text-2xl font-bold text-gray-900">
-                About the Architecture
+                About the Website Engineering
               </h2>
               <p className="text-sm text-gray-600 leading-relaxed">
                 The Arjun Buildtech portal was custom crafted to offer property buyers and investors in Rohtak a lightning-fast, mobile-first experience. Unlike generic templates or slow WordPress builders, the entire site was coded from scratch for maximum speed, security, and search engine visibility.
@@ -225,7 +237,7 @@ const DeveloperPage = () => {
           <div className="bg-gradient-to-br from-gray-900 to-black text-white rounded-3xl p-6 sm:p-10 shadow-xl">
             <div className="max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-wider text-red-400 block mb-2">
-                Get In Touch with Ravi Sharma
+                Get In Touch with Developer Ravi Sharma
               </span>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 Let's Discuss Your New Website Project
@@ -291,8 +303,22 @@ const DeveloperPage = () => {
             </div>
           </div>
 
+          {/* Property Inquiries vs Web Inquiries */}
+          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+            <div>
+              <span className="font-bold text-gray-900 block mb-0.5">Looking to Buy or Sell Property in Rohtak?</span>
+              <span>Contact the Arjun Buildtech property consultancy team directly for verified plots and site visits.</span>
+            </div>
+            <Link
+              to="/contact"
+              className="px-4 py-2 bg-gray-900 hover:bg-black text-white rounded-lg font-bold transition-colors whitespace-nowrap"
+            >
+              Contact Arjun Buildtech Team &rarr;
+            </Link>
+          </div>
+
           {/* Back to Home Link */}
-          <div className="pt-4 text-center">
+          <div className="pt-2 text-center">
             <Link
               to="/"
               className="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-red-600 transition-colors"

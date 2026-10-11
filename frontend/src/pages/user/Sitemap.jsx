@@ -6,6 +6,8 @@ import {
   FileText,
   Building2,
   ShieldCheck,
+  Calculator,
+  HelpCircle,
   ArrowRight,
 } from "lucide-react";
 import Breadcrumb from "../../components/common/Breadcrumb";
@@ -13,6 +15,7 @@ import { useLanguage } from "../../context/useLanguage";
 
 const SitemapPage = () => {
   const { t } = useLanguage();
+
   const mainPages = [
     { path: "/", name: "Home", key: "common.home" },
     {
@@ -35,6 +38,47 @@ const SitemapPage = () => {
       path: "/services",
       name: "Real Estate Services",
       key: "sitemap.realEstateServices",
+    },
+    {
+      path: "/blog",
+      name: "Real Estate Blog & Articles",
+      key: "nav.blog",
+    },
+  ];
+
+  const toolPages = [
+    {
+      path: "/emi-calculator",
+      name: "Home Loan EMI Calculator",
+      key: "tools.emiCalculator",
+    },
+    {
+      path: "/area-converter",
+      name: "Land Area Converter (Gaj / Sq.Ft / Bigha)",
+      key: "tools.areaConverter",
+    },
+    {
+      path: "/tools",
+      name: "All Real Estate Tools & Calculators",
+      key: "tools.allTools",
+    },
+  ];
+
+  const supportPages = [
+    {
+      path: "/help-center",
+      name: "Help & FAQ Center",
+      key: "footer.helpCenter",
+    },
+    {
+      path: "/sales-enquiry",
+      name: "Sales & Property Enquiry",
+      key: "footer.salesEnquiry",
+    },
+    {
+      path: "/chat-with-us",
+      name: "Chat With Property Specialist",
+      key: "footer.chatWithUs",
     },
   ];
 
@@ -69,7 +113,8 @@ const SitemapPage = () => {
   const legalPages = [
     { path: "/privacy-policy", name: "Privacy Policy", key: "privacy.title" },
     { path: "/terms-of-service", name: "Terms of Service", key: "terms.title" },
-    { path: "/sitemap", name: "Sitemap", key: "footer.sitemap" },
+    { path: "/sitemap", name: "Sitemap Directory", key: "footer.sitemap" },
+    { path: "/website-developer", name: "Website Developer Attribution", key: "developer.title" },
   ];
 
   const renderLinks = (routes) =>
@@ -90,7 +135,7 @@ const SitemapPage = () => {
         <title>Sitemap | Arjun Buildtech</title>
         <meta
           name="description"
-          content="Sitemap for Arjun Buildtech. Find all pages, properties, and resources for real estate in Rohtak."
+          content="Sitemap for Arjun Buildtech. Find all pages, properties, calculators, and resources for real estate in Rohtak."
         />
       </Helmet>
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
@@ -114,43 +159,72 @@ const SitemapPage = () => {
           <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto md:mx-0">
             {t(
               "sitemap.description",
-              "Easily navigate through all available pages, property categories, service channels, and legal policies on our website.",
+              "Easily navigate through all available pages, property categories, tools, service channels, and legal policies on our website.",
             )}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Main Pages */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
               <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
                 <Building2 className="w-4 h-4" />
               </div>
               <h2 className="font-semibold text-gray-900 text-base">
-                {t("sitemap.mainPages", "Main Pages")}
+                {t("sitemap.mainPages", "Main Pages & Blog")}
               </h2>
             </div>
             <ul className="space-y-3 flex-grow">{renderLinks(mainPages)}</ul>
           </div>
 
+          {/* Tools & Calculators */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+              <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
+                <Calculator className="w-4 h-4" />
+              </div>
+              <h2 className="font-semibold text-gray-900 text-base">
+                {t("sitemap.tools", "Tools & Calculators")}
+              </h2>
+            </div>
+            <ul className="space-y-3 flex-grow">{renderLinks(toolPages)}</ul>
+          </div>
+
+          {/* Help & Support */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+              <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+              <h2 className="font-semibold text-gray-900 text-base">
+                {t("sitemap.support", "Help & Support")}
+              </h2>
+            </div>
+            <ul className="space-y-3 flex-grow">{renderLinks(supportPages)}</ul>
+          </div>
+
+          {/* Services */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
               <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
                 <FileText className="w-4 h-4" />
               </div>
               <h2 className="font-semibold text-gray-900 text-base">
-                {t("common.ourServices", "Our Services")}
+                {t("common.ourServices", "Our Real Estate Services")}
               </h2>
             </div>
             <ul className="space-y-3 flex-grow">{renderLinks(servicePages)}</ul>
           </div>
 
+          {/* Legal & Developer */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
               <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <h2 className="font-semibold text-gray-900 text-base">
-                {t("sitemap.legal", "Legal & Policies")}
+                {t("sitemap.legal", "Legal, Directory & Developer")}
               </h2>
             </div>
             <ul className="space-y-3 flex-grow">{renderLinks(legalPages)}</ul>

@@ -276,11 +276,11 @@ const Footer = () => {
             <span>&copy; {new Date().getFullYear()} Arjun Buildtech. All rights reserved.</span>
             <span className="hidden sm:inline text-gray-300">•</span>
             <span>
-              Made &amp; Managed by{" "}
+              Website Designed &amp; Developed by{" "}
               <Link
-                to="/developer"
+                to="/website-developer"
                 className="font-semibold text-gray-700 hover:text-red-600 transition-colors inline-flex items-center gap-1 group"
-                title="Learn about website developer Ravi Sharma"
+                title="Arjun Buildtech Website Developer Ravi Sharma"
               >
                 <span className="underline decoration-gray-300 group-hover:decoration-red-600 underline-offset-2">
                   Ravi Sharma
@@ -302,9 +302,9 @@ const Footer = () => {
               Terms of Service
             </Link>
             <Link
-              to="/developer"
+              to="/website-developer"
               className="hover:text-red-600 transition-colors">
-              Developer
+              Website Developer
             </Link>
             <Link
               to="/sitemap"

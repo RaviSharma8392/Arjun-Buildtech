@@ -4,6 +4,7 @@ import { db } from "../../../services/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useLanguage } from "../../../context/useLanguage";
 import { getLocalizedField } from "../../../utils/localizedField";
+import { getUserProfile, saveUserProfile } from "../../../utils/userProfile";
 
 const InlineEnquiryForm = ({ property }) => {
   const { language, t } = useLanguage();
@@ -24,15 +25,37 @@ const InlineEnquiryForm = ({ property }) => {
     ? `Looking to purchase/inquire about ${propertyName}${locationText ? ` in ${locationText}` : ''}`
     : "";
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    description: defaultDescription,
+  const [formData, setFormData] = useState(() => {
+    const p = getUserProfile();
+    return {
+      name: p.name || "",
+      email: p.email || "",
+      phone: p.phone || "",
+      description: defaultDescription,
+    };
   });
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync profile when updated anywhere on the site
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      const p = getUserProfile();
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || p.name || "",
+        phone: prev.phone || p.phone || "",
+        email: prev.email || p.email || "",
+      }));
+    };
+    window.addEventListener("arjun-profile-updated", handleProfileUpdate);
+    window.addEventListener("storage", handleProfileUpdate);
+    return () => {
+      window.removeEventListener("arjun-profile-updated", handleProfileUpdate);
+      window.removeEventListener("storage", handleProfileUpdate);
+    };
+  }, []);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,6 +79,14 @@ const InlineEnquiryForm = ({ property }) => {
         source: "property_enquiry",
         createdAt: serverTimestamp(),
       });
+
+      // Save user details to centralized storage
+      saveUserProfile({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+      });
+
       setSubmitted(true);
     } catch (error) {
       console.error("Error saving inquiry:", error);

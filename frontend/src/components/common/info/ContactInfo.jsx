@@ -98,14 +98,14 @@ const ContactInfo = () => {
             Website Design &amp; Development
           </span>
           <span className="text-sm font-bold text-gray-900 block mt-0.5">
-            Ravi Sharma &bull; MERN &amp; Firebase
+            Ravi Sharma &bull; MERN &amp; Firebase Developer
           </span>
           <span className="text-xs text-gray-500">
-            Need a website like this for your business?
+            Nainital, Uttarakhand &bull; Need a custom website for your business?
           </span>
         </div>
         <Link
-          to="/developer"
+          to="/website-developer"
           className="self-start sm:self-center px-3.5 py-2 text-xs font-bold text-red-700 hover:text-white bg-red-50 hover:bg-[#d8232a] border border-red-200 hover:border-[#d8232a] rounded-lg transition-all duration-150 shadow-2xs whitespace-nowrap"
         >
           View Developer Profile ↗

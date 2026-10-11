@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import ChatBot from "../components/ChatBot";
 import InquiryPopup from "../components/common/form/InquiryPopup";
 import SmartLeadPopup from "../components/common/form/SmartLeadPopup";
+import CallbackModal from "../components/common/form/CallbackModal";
 import ScrollButtons from "../components/common/ScrollButtons";
 import { Outlet } from "react-router-dom";
 
@@ -27,6 +28,7 @@ const UserLayout = () => {
       {/* Navbar always visible */}
       <Navbar />
       <ChatBot />
+      <CallbackModal />
       <ScrollButtons />
 
       {/* Global Popups */}
