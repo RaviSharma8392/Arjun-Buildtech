@@ -4,6 +4,9 @@ import {
   FaMapMarkerAlt,
   FaFacebook,
   FaInstagram,
+  FaWhatsapp,
+  FaEnvelope,
+  FaArrowRight,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../context/useLanguage";
@@ -11,6 +14,13 @@ import { companyInfo } from "../data/companyInfo";
 
 const Footer = () => {
   const { t } = useLanguage();
+  const developerPhone = "+918392856993";
+  const developerPhoneFormatted = "+91 83928 56993";
+  const developerEmail = "sharmaravi8392@gmail.com";
+  const developerInstagram = "https://www.instagram.com/raviiiiii._0/";
+  const developerWhatsapp = `https://wa.me/${developerPhone.slice(1)}?text=${encodeURIComponent(
+    "Hi Ravi, I would like to discuss a website project.",
+  )}`;
   const navLinks = [
     { name: "Home", key: "nav.home", path: "/" },
     { name: "Services", key: "nav.services", path: "/services" },
@@ -32,8 +42,83 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-white text-gray-800 border-t border-gray-200 pt-12 pb-8">
-      <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+    <footer className="bg-white text-gray-800 border-t border-gray-200">
+      <section className="bg-[#a91f27] text-white">
+        <div className="container mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">
+          <div className="mx-auto max-w-4xl">
+            <div className="text-center">
+              <Link
+                to="/website-developer"
+                className="inline-block text-lg font-semibold underline decoration-white/70 underline-offset-4 hover:decoration-white sm:text-2xl"
+              >
+                Want a Website Like This? Hire Website Developer Ravi Sharma (RSDEV)
+              </Link>
+              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-white/85 sm:text-base">
+                Designed &amp; Developed by{" "}
+                <Link to="/website-developer" className="font-bold text-white hover:underline">
+                  Website Developer Ravi Sharma (RSDEV) – Nainital, Uttarakhand
+                </Link>
+                . Get a custom business website. Call or WhatsApp:{" "}
+                <a href={`tel:${developerPhone}`} className="font-semibold text-white hover:underline">
+                  {developerPhoneFormatted}
+                </a>
+              </p>
+            </div>
+
+            <div className="mt-6 flex flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8">
+              <a
+                href={developerWhatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex w-full max-w-xl items-center justify-between border border-white/50 px-5 py-3.5 text-left text-sm transition-colors hover:bg-white/10 sm:text-base"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <FaWhatsapp className="h-5 w-5" />
+                  Connect directly on WhatsApp ({developerPhoneFormatted})
+                </span>
+                <FaArrowRight className="ml-3 h-4 w-4 shrink-0" />
+              </a>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={developerInstagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram for Ravi Sharma"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:bg-white/10"
+                >
+                  <FaInstagram className="h-4 w-4" />
+                </a>
+                <a
+                  href={developerWhatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp Ravi Sharma"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:bg-white/10"
+                >
+                  <FaWhatsapp className="h-4 w-4" />
+                </a>
+                <a
+                  href={`tel:${developerPhone}`}
+                  aria-label={`Call ${developerPhoneFormatted}`}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:bg-white/10"
+                >
+                  <FaPhone className="h-4 w-4" />
+                </a>
+                <a
+                  href={`mailto:${developerEmail}`}
+                  aria-label="Email Ravi Sharma"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:bg-white/10"
+                >
+                  <FaEnvelope className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto max-w-7xl px-4 pt-12 pb-8 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-gray-200">
           {/* Company Info & Logo */}
           <div className="lg:col-span-1">
@@ -283,7 +368,7 @@ const Footer = () => {
                 title="Arjun Buildtech Website Developer Ravi Sharma"
               >
                 <span className="underline decoration-gray-300 group-hover:decoration-red-600 underline-offset-2">
-                  Ravi Sharma
+                  Ravi Sharma (RSDEV)
                 </span>
                 <span className="text-[10px] text-gray-400 group-hover:text-red-600">↗</span>
               </Link>

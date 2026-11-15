@@ -82,20 +82,20 @@ const staticPages = {
     description: "Explore property listings, guides, and tools directory from Arjun Buildtech.",
   },
   "/website-developer": {
-    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
     description:
-      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+      "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
   },
   "/who-built-arjun-buildtech": {
-    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
     description:
-      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+      "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
     canonicalPath: "/website-developer",
   },
   "/developer": {
-    title: "Arjun Buildtech Website Developer | Ravi Sharma (MERN & Firebase)",
+    title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
     description:
-      "Official website developer information for Arjun Buildtech. Coded & engineered by Ravi Sharma, Full-Stack MERN & Firebase developer based in Nainital, Uttarakhand.",
+      "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
     canonicalPath: "/website-developer",
   },
 };

@@ -348,7 +348,7 @@ export default function Navbar() {
                 Website Developer
               </span>
               <span className="font-semibold text-gray-700 hover:text-red-600">
-                Ravi Sharma ↗
+                Ravi Sharma (RSDEV) ↗
               </span>
             </Link>
           </div>

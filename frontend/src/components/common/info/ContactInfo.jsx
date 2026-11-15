@@ -98,7 +98,7 @@ const ContactInfo = () => {
             Website Design &amp; Development
           </span>
           <span className="text-sm font-bold text-gray-900 block mt-0.5">
-            Ravi Sharma &bull; MERN &amp; Firebase Developer
+            Ravi Sharma (RSDEV) &bull; MERN &amp; Firebase Developer
           </span>
           <span className="text-xs text-gray-500">
             Nainital, Uttarakhand &bull; Need a custom website for your business?
