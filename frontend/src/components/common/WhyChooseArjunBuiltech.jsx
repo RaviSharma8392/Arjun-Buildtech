@@ -42,7 +42,7 @@ const WhyChooseArjunBuiltech = () => {
           <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto md:mx-0">
             {t(
               "home.whyIntro",
-              "We’re Rohtak’s trusted real estate experts — helping clients sell and invest in premium residential plots and homes. Here’s why people choose us:",
+              "We help people compare Rohtak property information, ask questions about listings, and plan the next step:",
             )}
           </p>
         </div>

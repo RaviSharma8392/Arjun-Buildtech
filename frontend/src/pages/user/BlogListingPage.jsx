@@ -117,7 +117,7 @@ const BlogListingPage = () => {
   const pageTitle = "Real Estate News & Market Updates | Arjun Buildtech";
   const pageDescription =
     "Stay updated with the latest Rohtak real estate news, property investment tips, infrastructure updates, and market insights by Arjun Buildtech.";
-  const ogImage = "https://arjunbuildtech.com/og-banner.jpg";
+  const ogImage = "https://arjunbuildtech.com/arjunBuildTechLogo.png";
 
   const blogSchema = {
     "@context": "https://schema.org",
@@ -125,14 +125,7 @@ const BlogListingPage = () => {
     name: pageTitle,
     description: pageDescription,
     url: pageUrl,
-    publisher: {
-      "@type": "RealEstateAgent",
-      name: "Arjun Buildtech",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://arjunbuildtech.com/arjunBuildTechLogo.png",
-      },
-    },
+    publisher: { "@id": "https://arjunbuildtech.com/#organization" },
   };
 
   return (
@@ -235,19 +228,21 @@ const BlogListingPage = () => {
             {featuredBlog && (
               <article className="mb-8 bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <div className="flex flex-col md:flex-row items-stretch">
-                  <Link
-                    to={`/blog/${featuredBlog.slug}`}
-                    className="w-full md:w-1/2 bg-gray-100 overflow-hidden relative">
-                    <img
-                      src={featuredBlog.image}
-                      alt={blogTitle(featuredBlog)}
-                      className="w-full h-full aspect-[16/10] md:aspect-auto object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
-                    />
-                    <div className="absolute top-4 left-4 bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">
-                      {t("blog.featured", "Featured")}
-                    </div>
-                  </Link>
-                  <div className="w-full md:w-1/2 flex flex-col justify-center p-6">
+                  {featuredBlog.image && (
+                    <Link
+                      to={`/blog/${featuredBlog.slug}`}
+                      className="w-full md:w-1/2 bg-gray-100 overflow-hidden relative">
+                      <img
+                        src={featuredBlog.image}
+                        alt={blogTitle(featuredBlog)}
+                        className="w-full h-full aspect-[16/10] md:aspect-auto object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute top-4 left-4 bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">
+                        {t("blog.featured", "Featured")}
+                      </div>
+                    </Link>
+                  )}
+                  <div className={`w-full ${featuredBlog.image ? "md:w-1/2" : ""} flex flex-col justify-center p-6`}>
                     <div className="flex items-center mb-3">
                       <span className="text-[12px] font-semibold uppercase tracking-wider text-gray-800">
                         {featuredBlog.category}
@@ -307,18 +302,20 @@ const BlogListingPage = () => {
                   key={blog.id}
                   className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col">
                   <div className="flex flex-col h-full">
-                    <Link
-                      to={`/blog/${blog.slug}`}
-                      className="block overflow-hidden bg-gray-100 relative">
-                      <img
-                        src={blog.image}
-                        alt={blogTitle(blog)}
-                        className="w-full aspect-[16/10] object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                      <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">
-                        {blog.category}
-                      </div>
-                    </Link>
+                    {blog.image && (
+                      <Link
+                        to={`/blog/${blog.slug}`}
+                        className="block overflow-hidden bg-gray-100 relative">
+                        <img
+                          src={blog.image}
+                          alt={blogTitle(blog)}
+                          className="w-full aspect-[16/10] object-cover transform hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wide">
+                          {blog.category}
+                        </div>
+                      </Link>
+                    )}
                     <div className="p-5 flex flex-col flex-grow">
                       <span className="text-[12px] text-gray-500 mb-2">
                         {blog.date}
@@ -379,12 +376,12 @@ const BlogListingPage = () => {
                 <FaHome className="text-xl" />
               </div>
               <h3 className="font-normal text-xl text-gray-800 mb-2">
-                {t("blog.buyPremium", "Buy Premium Properties")}
+                {t("blog.buyPremium", "Browse Property Listings")}
               </h3>
               <p className="text-[13px] text-gray-500 mb-5 leading-relaxed">
                 {t(
                   "blog.buyCopy",
-                  "Explore exclusive residential plots and commercial lands in Rohtak from the city's most trusted property dealer.",
+                  "Browse current residential and commercial property enquiries in Rohtak and confirm details before proceeding.",
                 )}
               </p>
               <Link

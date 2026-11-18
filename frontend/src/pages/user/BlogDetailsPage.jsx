@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { blogs } from "../../data/blogs";
@@ -13,7 +13,6 @@ import {
   FaWhatsapp,
   FaShareAlt,
   FaHome,
-  FaEye,
   FaClock,
   FaBuilding,
   FaMapMarkerAlt,
@@ -53,16 +52,6 @@ const formatDate = (value) => {
   });
 };
 
-// Generates views based on string length and increases over time
-const getViews = (title) => {
-  const baseViews = ((title.length * 47) % 2000) + 850;
-  const launchTimestamp = 1704067200000; // Jan 1, 2024
-  const daysSinceLaunch = Math.floor(
-    Math.max(0, Date.now() - launchTimestamp) / (1000 * 60 * 60 * 24),
-  );
-  return baseViews + daysSinceLaunch * ((title.length % 3) + 1);
-};
-
 // Estimates reading time based on word count
 const getReadTime = (content) => {
   if (!content) return 2;
@@ -74,23 +63,8 @@ const BlogDetailsPage = () => {
   const { slug } = useParams();
   const { language, t } = useLanguage();
 
-  const [liveReaders, setLiveReaders] = useState(
-    Math.floor(Math.random() * 12) + 4,
-  );
-
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [slug]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveReaders((prev) => {
-        const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
-        const next = prev + change;
-        return next < 2 ? 2 : next > 35 ? 35 : next;
-      });
-    }, 4500);
-    return () => clearInterval(interval);
   }, [slug]);
 
   const blog = blogs.find((b) => b.slug === slug);
@@ -145,21 +119,21 @@ const BlogDetailsPage = () => {
   }
 
   const pageUrl = `${SITE_URL}/blog/${blog.slug}`;
-  const imageUrl = toAbsoluteUrl(blog.image);
+  const imageUrl = blog.image ? toAbsoluteUrl(blog.image) : undefined;
   const publishedISO = toISO(blog.date);
   const modifiedISO = toISO(blog.updatedAt) || publishedISO;
   const pageTitle = `${blog.title} | ${SITE_NAME}`;
 
   const author = blog.author
     ? { "@type": "Person", name: blog.author }
-    : { "@type": "Organization", name: SITE_NAME, url: SITE_URL };
+    : { "@id": `${SITE_URL}/#organization` };
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: blog.title,
     description: blog.excerpt,
-    image: [imageUrl],
+    ...(imageUrl ? { image: [imageUrl] } : {}),
     datePublished: publishedISO,
     dateModified: modifiedISO,
     mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
@@ -167,25 +141,8 @@ const BlogDetailsPage = () => {
     inLanguage: "en-IN",
     author,
     publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      logo: { "@type": "ImageObject", url: LOGO_URL },
+      "@id": `${SITE_URL}/#organization`,
     },
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Blog",
-        item: `${SITE_URL}/blog`,
-      },
-      { "@type": "ListItem", position: 3, name: blog.title, item: pageUrl },
-    ],
   };
 
   // Functional Share via Web API
@@ -233,7 +190,7 @@ const BlogDetailsPage = () => {
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:title" content={blog.title} />
         <meta property="og:description" content={blogExcerpt} />
-        <meta property="og:image" content={imageUrl} />
+        {imageUrl && <meta property="og:image" content={imageUrl} />}
         <meta property="og:url" content={pageUrl} />
         <meta property="og:locale" content="en_IN" />
         {publishedISO && (
@@ -248,13 +205,10 @@ const BlogDetailsPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={blog.title} />
         <meta name="twitter:description" content={blogExcerpt} />
-        <meta name="twitter:image" content={imageUrl} />
+        {imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
         <script type="application/ld+json">
           {JSON.stringify(articleSchema)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
         </script>
       </Helmet>
 
@@ -298,22 +252,6 @@ const BlogDetailsPage = () => {
                   <time dateTime={publishedISO}>{formatDate(blog.date)}</time>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <FaEye className="w-4 h-4 text-gray-400" />
-                  <span>
-                    {getViews(blog.title).toLocaleString()}{" "}
-                    {t("blog.views", "Reads")}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                  </span>
-                  <span className="text-green-600 font-semibold text-xs uppercase tracking-wider">
-                    {liveReaders} {t("blog.liveReaders", "reading now")}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
                   <FaClock className="w-3.5 h-3.5 text-gray-400" />
                   <span>
                     {getReadTime(blogContent)} {t("blog.readTime", "min read")}
@@ -338,21 +276,23 @@ const BlogDetailsPage = () => {
             </a>
           </div>
           {/* Featured Image */}
-          <div className="w-full aspect-[16/9] mb-8 bg-gray-100 rounded border border-gray-200 overflow-hidden relative">
-            <img
-              src={blog.image}
-              alt={blogTitle}
-              width="1200"
-              height="675"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur text-white text-[10px] uppercase tracking-widest px-2.5 py-1 rounded">
-              {t("blog.rohtakData", "Rohtak Market Data")}
+          {blog.image && (
+            <div className="w-full aspect-[16/9] mb-8 bg-gray-100 rounded border border-gray-200 overflow-hidden relative">
+              <img
+                src={blog.image}
+                alt={blogTitle}
+                width="1200"
+                height="675"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur text-white text-[10px] uppercase tracking-widest px-2.5 py-1 rounded">
+                {t("blog.rohtakData", "Rohtak Market Data")}
+              </div>
             </div>
-          </div>
+          )}
           {/* Markdown / HTML Content */}
           <div
             className="prose prose-lg max-w-none prose-headings:font-normal prose-headings:text-gray-800 prose-h2:text-3xl prose-h2:mt-10 prose-h3:text-2xl prose-p:text-gray-600 prose-p:text-[16px] prose-p:leading-relaxed prose-a:text-red-600 hover:prose-a:text-red-700 prose-img:rounded-lg prose-img:border prose-img:border-gray-200 border-b border-gray-200 pb-10"
@@ -386,13 +326,13 @@ const BlogDetailsPage = () => {
               <p className="text-sm font-semibold text-red-600 uppercase tracking-widest mb-3">
                 {t(
                   "blog.premierConsultant",
-                  "Rohtak's Premier Real Estate Consultant",
+                  "Rohtak property information and enquiries",
                 )}
               </p>
               <p className="text-sm text-gray-600 leading-relaxed mb-4">
                 {t(
                   "blog.agencyCopy",
-                  "We specialize in exclusive residential plots and commercial properties in Sector 27 & Sector 1, Rohtak. 100% independent and verified.",
+                  "We share available residential and commercial property information for Rohtak. Verify listing details, ownership, approvals, and availability independently.",
                 )}
               </p>
               <Link
@@ -413,12 +353,12 @@ const BlogDetailsPage = () => {
               <FaKey className="text-xl" />
             </div>
             <h3 className="font-normal text-2xl text-gray-800 mb-2">
-              {t("blog.buyPlots", "Buy Premium Plots")}
+              {t("blog.buyPlots", "Browse Plot Listings")}
             </h3>
             <p className="text-[14px] text-gray-500 mb-6 leading-relaxed px-2">
               {t(
                 "blog.noMiddlemen",
-                "Explore exclusive residential plots and commercial lands in Rohtak directly from the city's most trusted dealer. No middlemen.",
+                "Browse current residential and commercial property enquiries in Rohtak and ask about the published details.",
               )}
             </p>
             <Link
@@ -443,7 +383,7 @@ const BlogDetailsPage = () => {
                   {t("blog.sectorDemand", "Sector 27 Demand")}
                 </span>
                 <span className="font-bold text-green-600">
-                  {t("blog.high", "High")}
+                  {t("blog.high", "Check current listings")}
                 </span>
               </li>
               <li className="flex justify-between items-center border-b border-gray-100 pb-3">
@@ -458,7 +398,7 @@ const BlogDetailsPage = () => {
               <li className="flex justify-between items-center pt-1">
                 <span className="text-gray-600 flex items-center gap-2">
                   <FaCheckCircle className="text-gray-400" />{" "}
-                  {t("blog.verifiedSeller", "Verified Seller")}
+                  {t("blog.verifiedSeller", "Listing contact")}
                 </span>
                 <span className="font-bold text-gray-900 text-right">
                   Arjun Buildtech
@@ -494,9 +434,6 @@ const BlogDetailsPage = () => {
                     <div className="flex justify-between items-center text-[11px] text-gray-500">
                       <span className="uppercase tracking-wider font-semibold">
                         {translateCategory(tb.category)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FaEye /> {getViews(tb.title)}
                       </span>
                     </div>
                   </div>

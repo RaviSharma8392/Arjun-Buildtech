@@ -3,7 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import PropertyCard from "../common/card/PropertyCard";
-import { normalizePropertyData } from "../../utils/propertySchema";
+import {
+  isPropertyPubliclyAvailable,
+  normalizePropertyData,
+} from "../../utils/propertySchema";
 
 export default function RelatedProperties() {
   const { location } = useParams(); //
@@ -29,8 +32,10 @@ export default function RelatedProperties() {
               ...propertyDoc.data(),
             }),
           )
-          .filter((property) =>
-            property.location.toLowerCase().includes(searchLocation),
+          .filter(
+            (property) =>
+              isPropertyPubliclyAvailable(property) &&
+              property.location.toLowerCase().includes(searchLocation),
           );
 
         setRelatedProperties(data);
@@ -62,8 +67,8 @@ export default function RelatedProperties() {
             Related Properties in {formattedLocation}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore more premium properties in {formattedLocation}, curated just
-            for you.
+            Explore more property listings in {formattedLocation} and compare
+            the details currently published.
           </p>
         </div>
 

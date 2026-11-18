@@ -7,7 +7,7 @@ import { useLanguage } from "../context/useLanguage";
 
 const MarketInsights = () => {
   const { language, t } = useLanguage();
-  // Using dummy slice based on your original code
+  // Use the curated published articles for these two guide lists.
   const industryArticles = blogs.slice(0, 5);
   const legalArticles = blogs.slice(0, 2);
 

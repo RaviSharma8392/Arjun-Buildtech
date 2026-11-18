@@ -98,7 +98,7 @@ const HomeContactStrip = () => {
                 Looking for personalized property advice in Rohtak?
               </p>
               <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
-                Our property specialist will call you back with verified listings matching your budget.
+                Our property specialist will call you back to discuss current listings that fit your budget.
               </p>
             </div>
           </div>

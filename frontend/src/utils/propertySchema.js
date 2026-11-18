@@ -64,6 +64,12 @@ export const isPropertyPubliclyAvailable = (property = {}) => {
     "sold",
     "rented",
     "off market",
+    "expired",
+    "withdrawn",
+    "unavailable",
+    "inactive",
+    "archived",
+    "removed",
     "unpublished",
     "draft",
   ]);

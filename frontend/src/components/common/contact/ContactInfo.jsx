@@ -7,7 +7,7 @@ const ContactInfo = () => {
   const contactDetails = [
     {
       icon: <FaMapMarkerAlt className="text-red-500 w-5 h-5" />,
-      label: "Address",
+      label: "Service area",
       value: companyInfo.address,
     },
     {
@@ -29,7 +29,7 @@ const ContactInfo = () => {
     <section className="py-12 bg-transparent">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-2xl font-[Montserrat] text-gray-900  text-center mb-6">
-          How to Find Us{" "}
+          Contact Arjun Buildtech{" "}
         </h2>
 
         {/* Single Contact Card */}
@@ -54,7 +54,7 @@ const ContactInfo = () => {
         {!isHome && (
           <div className="mt-8">
             <iframe
-              title="Google Map"
+              title="Rohtak service area map"
               src={`https://www.google.com/maps?q=${encodeURIComponent(companyInfo.address)}&output=embed`}
               width="100%"
               height="250"

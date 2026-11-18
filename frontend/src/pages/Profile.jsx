@@ -17,6 +17,17 @@ import { companyInfo } from "../data/companyInfo";
 
 const Profile = () => {
   const { t } = useLanguage();
+  const pageUrl = "https://arjunbuildtech.com/profile";
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${pageUrl}#about-page`,
+    url: pageUrl,
+    name: "Arjun Buildtech Profile",
+    description:
+      "Profile and property guidance information for Arjun Buildtech in Rohtak, Haryana.",
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -44,35 +55,6 @@ const Profile = () => {
     "/ARJUN%20ROHTAK%20BROCHURE%20(2)_page-0004.jpg",
   ];
 
-  const businessSchema = {
-    "@context": "https://schema.org",
-    "@type": "RealEstateAgent",
-    name: "Arjun Buildtech",
-    url: "https://arjunbuildtech.com/profile",
-    image: "https://arjunbuildtech.com/arjunBuildTechLogo.png",
-    telephone: "+91-9350447531",
-    email: "arjunbuildtech27@gmail.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "G74P, Sector-27",
-      addressLocality: "Rohtak",
-      addressRegion: "Haryana",
-      postalCode: "124001",
-      addressCountry: "IN",
-    },
-    areaServed: ["Rohtak", "Haryana"],
-    sameAs: [
-      "https://www.facebook.com/NewRohtak/",
-      "https://www.instagram.com/arjun.buildtech",
-      "https://www.youtube.com/@arjunbuildtech3465",
-    ],
-    knowsAbout: [
-      "Residential plots in Rohtak",
-      "Commercial property in Rohtak",
-      "Real estate investment advisory",
-    ],
-  };
-
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
       <Helmet>
@@ -87,10 +69,12 @@ const Profile = () => {
           name="keywords"
           content="Arjun Buildtech, real estate consultant Rohtak, property dealer Rohtak, plots in Rohtak, villas in Rohtak, commercial property Rohtak, HSVP plots, Suncity Rohtak"
         />
-        <link rel="canonical" href="https://arjunbuildtech.com/profile" />
-        <script type="application/ld+json">
-          {JSON.stringify(businessSchema)}
-        </script>
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Arjun Buildtech Profile | Property Guidance in Rohtak" />
+        <meta property="og:description" content="Profile and property guidance information for Arjun Buildtech in Rohtak, Haryana." />
+        <meta property="og:url" content={pageUrl} />
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
       <main className="container mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-10">

@@ -4,7 +4,10 @@ import { Search, MapPin, Home, ChevronDown, Tag } from "lucide-react";
 import { createSlug } from "../../../utils/slugify";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase";
-import { normalizePropertyData } from "../../../utils/propertySchema";
+import {
+  isPropertyPubliclyAvailable,
+  normalizePropertyData,
+} from "../../../utils/propertySchema";
 import { useLanguage } from "../../../context/useLanguage";
 
 const HomeSearchBar = () => {
@@ -21,6 +24,7 @@ const HomeSearchBar = () => {
     "Sector-27, Rohtak",
     "Huda Sector-27, Rohtak",
     "Suncity, Rohtak",
+    "Sector 36, Suncity, Rohtak",
   ]);
 
   const [types, setTypes] = useState([
@@ -32,7 +36,7 @@ const HomeSearchBar = () => {
     "Commercial",
   ]);
 
-  const statuses = ["Any", "For Sale", "Investment"];
+  const statuses = ["Any", "For Sale", "For Rent", "Investment"];
 
   const translateType = (type) => {
     const keys = {
@@ -51,9 +55,9 @@ const HomeSearchBar = () => {
     const fetchDropdownData = async () => {
       try {
         const snapshot = await getDocs(collection(db, "properties"));
-        const data = snapshot.docs.map((doc) =>
-          normalizePropertyData(doc.data()),
-        );
+        const data = snapshot.docs
+          .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
+          .filter(isPropertyPubliclyAvailable);
 
         const dynamicLocations = [
           "All Locations",
@@ -73,11 +77,13 @@ const HomeSearchBar = () => {
         ];
 
         if (dynamicLocations.length > 1) {
-          setLocations(dynamicLocations);
+          setLocations((previous) =>
+            Array.from(new Set([...previous, ...dynamicLocations])),
+          );
         }
 
         if (dynamicTypes.length > 1) {
-          setTypes(dynamicTypes);
+          setTypes((previous) => Array.from(new Set([...previous, ...dynamicTypes])));
         }
       } catch (error) {
         console.error("Error fetching properties for search bar:", error);
@@ -155,7 +161,9 @@ const HomeSearchBar = () => {
                         ? t("homeSearch.any", "Any")
                         : st === "For Sale"
                           ? t("homeSearch.forSale", "For Sale")
-                          : t("homeSearch.investment", "Investment")}
+                          : st === "For Rent"
+                            ? t("homeSearch.forRent", "For Rent")
+                            : t("homeSearch.investment", "Investment")}
                     </option>
                   ))}
                 </select>

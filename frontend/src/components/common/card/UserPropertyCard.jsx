@@ -11,12 +11,14 @@ const UserPropertyCard = ({ property: propertyData, onContactAgent }) => {
   const propertyName =
     getLocalizedField(property, "name", language) ||
     getLocalizedField(property, "title", language) ||
-    t("card.premiumProperty", "Premium Property");
+    t("card.property", "Property");
   const propertySlugSource =
     getLocalizedField(property, "name", "en") ||
     getLocalizedField(property, "title", "en") ||
     "property";
-  const propertyLink = `/property/${property.location?.toLowerCase().replace(/\s+/g, "-") || "rohtak"}/${propertySlugSource.toLowerCase().replace(/\s+/g, "-")}/${property.id}`;
+  const propertyLink =
+    property.url ||
+    `/property/${property.location?.toLowerCase().replace(/\s+/g, "-") || "rohtak"}/${propertySlugSource.toLowerCase().replace(/\s+/g, "-")}/${property.id}`;
 
   const handleShare = (e) => {
     e.preventDefault();

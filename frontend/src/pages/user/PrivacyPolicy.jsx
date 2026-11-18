@@ -113,8 +113,8 @@ const PrivacyPolicy = () => {
                 <strong>{t("privacy.phone", "Phone:")}</strong> +91-9350447531
               </p>
               <p>
-                <strong>{t("privacy.office", "Office:")}</strong> G74P,
-                Sector-27, Rohtak, Haryana
+                <strong>{t("privacy.office", "Service area:")}</strong>{" "}
+                Rohtak, Haryana. Contact us to confirm any meeting location.
               </p>
             </div>
           </section>

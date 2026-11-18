@@ -33,6 +33,8 @@ const PropertyCard = ({
     getLocalizedField(property, "name", "en") ||
     "property";
   const nameSlug = createSlug(propertySlugSource) || "property";
+  const propertyUrl =
+    property.url || `/property/${locationSlug}/${nameSlug}/${property.id}`;
   const normalizedFeatures = Array.isArray(property?.features)
     ? property.features
     : typeof property?.features === "string"
@@ -177,7 +179,7 @@ const PropertyCard = ({
                 {t("card.sendEnquiry", "Send Enquiry")}
               </button>
               <Link
-                to={`/property/${locationSlug}/${nameSlug}/${property.id}`}
+                to={propertyUrl}
                 className="flex-1 bg-[#d9534f] hover:bg-[#c9302c] text-white py-1.5 rounded text-[13px] font-medium flex items-center justify-center transition-colors">
                 {t("card.viewDetails", "View Details")}
               </Link>

@@ -1,8 +1,115 @@
 import React from "react";
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { seoData } from "../data/seoData";
 import PropertiesPage from "./PropertiesPage";
+import Breadcrumb from "../components/common/Breadcrumb";
+
+const SITE_URL = "https://arjunbuildtech.com";
+
+const suggestedSearches = [
+  { label: "All Rohtak properties", href: "/properties" },
+  { label: "Suncity listings", href: "/properties?search=Suncity" },
+  { label: "HSVP Sector 27", href: "/properties?search=HSVP%20Sector%2027" },
+  { label: "Sector 36 listings", href: "/properties?search=Sector%2036" },
+];
+
+const formatLocation = (value = "Rohtak") => {
+  let decoded = value;
+  try {
+    decoded = decodeURIComponent(value);
+  } catch {
+    // Keep the route value readable even if a malformed escape is supplied.
+  }
+  return decoded
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+};
+
+const LocationNotFound = () => (
+  <div className="min-h-screen bg-[#F9F9F9] px-4 py-12 font-sans sm:px-6 lg:px-8">
+    <Helmet>
+      <title>Page Not Found | Arjun Buildtech</title>
+      <meta
+        name="description"
+        content="The requested Arjun Buildtech property page could not be found. Browse current Rohtak property listings or contact the team."
+      />
+      <meta name="robots" content="noindex, follow" />
+    </Helmet>
+
+    <main className="mx-auto flex min-h-[70vh] max-w-5xl items-center justify-center">
+      <section className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div className="bg-gradient-to-br from-red-700 via-red-600 to-orange-500 px-6 py-10 text-white sm:px-12 sm:py-14">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-red-100">
+            Property page unavailable
+          </p>
+          <h1 className="max-w-2xl text-3xl font-bold leading-tight sm:text-5xl">
+            Let&apos;s find a Rohtak property that is available to view.
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-red-50 sm:text-lg">
+            This link may have moved or the listing may no longer be published.
+            Use the current listings below or contact Arjun Buildtech about a
+            specific area.
+          </p>
+        </div>
+
+        <div className="px-6 py-8 sm:px-12 sm:py-10">
+          <div className="mb-8 flex flex-wrap gap-3">
+            {suggestedSearches.map((search) => (
+              <Link
+                key={search.href}
+                to={search.href}
+                className="rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 transition hover:border-red-600 hover:text-red-600">
+                {search.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-3">
+            <Link
+              to="/properties"
+              className="rounded-xl border border-gray-200 bg-gray-50 p-5 transition hover:border-red-300 hover:bg-red-50">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Browse listings
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                Search current plots, homes, rentals, and commercial listings in
+                Rohtak.
+              </p>
+            </Link>
+            <Link
+              to="/contact"
+              className="rounded-xl border border-gray-200 bg-gray-50 p-5 transition hover:border-red-300 hover:bg-red-50">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Ask the team
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                Tell us the location, property type, and details you need.
+              </p>
+            </Link>
+            <Link
+              to="/blog"
+              className="rounded-xl border border-gray-200 bg-gray-50 p-5 transition hover:border-red-300 hover:bg-red-50">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Read local guides
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-600">
+                Explore property guidance and local market information for
+                Rohtak.
+              </p>
+            </Link>
+          </div>
+
+          <div className="mt-8 border-t border-gray-200 pt-6 text-sm text-gray-600">
+            <Link to="/" className="font-semibold text-red-600 hover:text-red-700">
+              Return to the Arjun Buildtech homepage
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+);
 
 const SeoListingPage = () => {
   const { slug } = useParams();
@@ -37,60 +144,49 @@ const SeoListingPage = () => {
     if (housesMatch) type = "house";
     if (plotsMatch || residentialPlotsMatch) type = "plot";
     if (commercialMatch) type = "Commercial";
+    const status = rentalMatch ? "For Rent" : "For Sale";
+    const locationName = formatLocation(city);
+    const listingLabel = commercialMatch
+      ? "Commercial Property"
+      : rentalMatch
+        ? "Rental Property"
+        : housesMatch
+          ? "Houses"
+          : plotsMatch || residentialPlotsMatch
+            ? "Plots"
+            : "Properties";
+    const transactionLabel = rentalMatch ? "for Rent" : "for Sale";
 
-    return <PropertiesPage cityProp={city} typeProp={type} />;
+    return (
+      <PropertiesPage
+        cityProp={city}
+        typeProp={type}
+        statusProp={status}
+        canonicalPath={`/${slug}`}
+        seoTitle={`${listingLabel} ${transactionLabel} in ${locationName} | Arjun Buildtech`}
+        seoDescription={`Browse current ${listingLabel.toLowerCase()} ${transactionLabel.toLowerCase()} in ${locationName}. Listing details and availability vary; contact Arjun Buildtech to confirm the current information.`}
+      />
+    );
   }
 
   const data = seoData[slug];
 
   if (!data) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans">
-        <Helmet>
-          <title>Location Not Found | Arjun Buildtech</title>
-          <meta name="robots" content="noindex, follow" />
-        </Helmet>
-
-        <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl overflow-hidden text-center p-10">
-          <div className="w-24 h-24 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
-            📍
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Location Not Found
-          </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            We couldn't find specific details for the location or page you are
-            searching for. However, <strong>Arjun Buildtech</strong> is a
-            premier real estate consultant with massive opportunities available
-            right now.
-          </p>
-
-          <div className="bg-red-50 border-l-4 border-red-600 p-8 rounded-r-lg mb-8 text-left max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-red-900 mb-3">
-              Explore Prime Properties in Rohtak
-            </h3>
-            <p className="text-gray-700 mb-6 text-lg">
-              Discover our exclusive, high-ROI listings in top sectors including{" "}
-              <strong>HSVP Sectors 1, 2, 3, 25, 27</strong>, and{" "}
-              <strong>Suncity Sectors 34, 35, 36, and 36A</strong>.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/properties"
-                className="inline-block bg-red-600 hover:bg-red-700 text-white text-center font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 transform hover:-translate-y-1">
-                View Rohtak Properties
-              </Link>
-              <Link
-                to="/"
-                className="inline-block bg-white text-red-600 border border-red-600 hover:bg-red-50 text-center font-semibold py-3 px-8 rounded-lg transition duration-300">
-                Go to Homepage
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LocationNotFound />;
   }
+
+  const pageUrl = `${SITE_URL}/${slug}`;
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: data.title,
+    description: data.description,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#organization` },
+    ...(data.imageUrl ? { primaryImageOfPage: data.imageUrl } : {}),
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
@@ -101,10 +197,24 @@ const SeoListingPage = () => {
           name="keywords"
           content={`${slug.replace(/-/g, " ")}, rohtak real estate, property in rohtak`}
         />
-        <link rel="canonical" href={`https://arjunbuildtech.com/${slug}`} />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={data.title} />
+        <meta property="og:description" content={data.description} />
+        <meta property="og:url" content={pageUrl} />
+        {data.imageUrl && <meta property="og:image" content={data.imageUrl} />}
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="px-6 pt-6 md:px-10">
+          <Breadcrumb
+            items={[
+              { name: "Home", path: "/" },
+              { name: "Rohtak property guides" },
+            ]}
+          />
+        </div>
         <div className="h-64 sm:h-80 md:h-96 w-full relative">
           <img
             src={data.imageUrl}
@@ -135,12 +245,12 @@ const SeoListingPage = () => {
 
             <div className="bg-red-50 border-l-4 border-red-600 p-6 rounded-r-lg mb-8">
               <h3 className="text-xl font-bold text-red-900 mb-2">
-                Interested in this property?
+                Ask about this listing
               </h3>
               <p className="text-gray-700 mb-4">
-                Don't miss out on this incredible real estate opportunity. Click
-                below to view the complete property details, pricing, and
-                contact our expert agents at Arjun Buildtech.
+                Open the property detail page to review the information currently
+                published and contact Arjun Buildtech. Price and availability
+                should be confirmed before making a decision.
               </p>
               <Link
                 to={data.propertyLink}
@@ -165,28 +275,23 @@ const SeoListingPage = () => {
                 About Arjun Buildtech
               </h3>
               <p className="text-gray-700 mb-4">
-                Arjun Buildtech is a premier real estate and property consulting
-                firm based in Rohtak, Haryana. We specialize in selling and
-                investment consulting for residential and commercial properties.
-                While we cater to property buyers all over India, our core
-                expertise lies in prime zones in Rohtak, specifically{" "}
+                Arjun Buildtech provides property consulting and listing support
+                in Rohtak, Haryana. The business works with residential and
+                commercial property enquiries, including locations such as{" "}
                 <strong>HSVP Sectors 1, 2, 3, 25, 27</strong> and{" "}
-                <strong>Suncity Sectors 34, 35, 36, and 36A</strong>.
+                <strong>Suncity Sectors 34, 35, 36, and 36A</strong>, subject to
+                current listing availability.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2">
-                    Office Locations
+                    <h4 className="font-semibold text-gray-900 mb-2">
+                    Rohtak service area
                   </h4>
                   <ul className="text-sm text-gray-600 space-y-2">
                     <li className="flex items-start">
-                      <span className="mr-2">📍</span> G74P, Sector-27, Rohtak,
-                      Haryana
-                    </li>
-                    <li className="flex items-start">
-                      <span className="mr-2">📍</span> 828, Sector-1, Rohtak,
-                      124001, Haryana
+                      <span className="mr-2">📍</span> HSVP and Suncity sectors,
+                      Rohtak, Haryana
                     </li>
                   </ul>
                 </div>

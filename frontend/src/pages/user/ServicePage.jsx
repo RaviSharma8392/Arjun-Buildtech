@@ -9,7 +9,6 @@ import { useLanguage } from "../../context/useLanguage";
 
 const SITE_URL = "https://arjunbuildtech.com";
 const SITE_NAME = "Arjun Buildtech";
-const LOGO_URL = `${SITE_URL}/arjunBuildTechLogo.png`;
 
 const ServicePage = () => {
   const { slug } = useParams();
@@ -40,42 +39,21 @@ const ServicePage = () => {
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${pageUrl}#service`,
     name: service.title,
-    provider: {
-      "@type": "RealEstateAgent",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: LOGO_URL,
-      image: `${SITE_URL}/og-banner.jpg`,
-      telephone: "+91-9350447531",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Rohtak",
-        addressRegion: "Haryana",
-        addressCountry: "IN",
-      },
-    },
+    provider: { "@id": `${SITE_URL}/#organization` },
     description: pageDescription,
-    areaServed: ["Rohtak", "Haryana", "Sector 27", "Sector 1"],
+    serviceType: service.title,
+    areaServed: {
+      "@type": "City",
+      name: "Rohtak",
+      containedInPlace: { "@type": "State", name: "Haryana" },
+    },
+    url: pageUrl,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": pageUrl,
     },
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Services",
-        item: `${SITE_URL}/services`,
-      },
-      { "@type": "ListItem", position: 3, name: service.title, item: pageUrl },
-    ],
   };
 
   return (
@@ -95,9 +73,6 @@ const ServicePage = () => {
 
         <script type="application/ld+json">
           {JSON.stringify(serviceSchema)}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
         </script>
       </Helmet>
 
@@ -123,7 +98,7 @@ const ServicePage = () => {
             onClick={() => setIsPopupOpen(true)}
             className="bg-red-600 hover:bg-red-700 text-white px-8 py-3.5 rounded font-bold text-sm tracking-wide transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 flex items-center gap-2 mx-auto uppercase">
             <PhoneCall className="w-4 h-4" />
-            {t("service.getConsultation", "Get Free Consultation")}
+            {t("service.getConsultation", "Start an Enquiry")}
           </button>
         </div>
       </div>

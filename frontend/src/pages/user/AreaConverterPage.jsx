@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
 import { useLanguage } from "../../context/useLanguage";
-import { blogs } from "../../data/blogs";
 import SidebarWidgets from "../../components/common/info/SidebarWidgets";
+import Breadcrumb from "../../components/common/Breadcrumb";
 
 const AreaConverterPage = () => {
   const { t } = useLanguage();
+  const pageUrl = "https://arjunbuildtech.com/area-converter";
+  const pageTitle = t("areaCalc.pageTitle", "Area Converter | Arjun Buildtech");
+  const pageDescription = "Convert common property area units to square feet with the Arjun Buildtech area converter.";
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: pageTitle,
+    description: pageDescription,
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
   
   const [inputValue, setInputValue] = useState("");
   const [fromUnit, setFromUnit] = useState("Square Meters");
@@ -39,24 +50,23 @@ const AreaConverterPage = () => {
     setResult("");
   };
 
-  const hotProperties = [
-    "Factory / Industrial Building for Sale in M.I.E., Bahadurgarh",
-    "Industrial Land / Plot for Sale in Bahadurgarh Bypass, Bahadurgarh",
-    "Industrial Land / Plot for Sale in Bahadurgarh Bypass, Bahadurgarh",
-    "Industrial Land / Plot for Sale in Bahadurgarh Bypass, Bahadurgarh",
-    "2500 Sq. Yards Commercial Lands /Inst. Land for Sale in Bahadurgarh, Jhajjar",
-    "Industrial Land / Plot for Sale in Bahadurgarh Bypass, Bahadurgarh",
-    "Industrial Land / Plot for Sale in Bahadurgarh Bypass, Bahadurgarh",
-    "Industrial Land / Plot for Sale in Kharkhoda, Sonipat",
-  ];
-
   return (
     <div className="min-h-screen bg-white py-10">
       <Helmet>
-        <title>{t("areaCalc.pageTitle", "Area Converter | Arjun Buildtech")}</title>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageUrl} />
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="md:col-span-4">
+          <Breadcrumb items={[{ name: "Home", path: "/" }, { name: "Area Converter" }]} />
+        </div>
         
         {/* Main Calculator Content */}
         <div className="md:col-span-3">

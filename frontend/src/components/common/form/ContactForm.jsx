@@ -78,7 +78,7 @@ const ContactForm = () => {
       setNotification({
         message: t(
           "contact.success",
-          "Message sent successfully! We'll get back to you within 24 hours.",
+          "Message sent successfully! The Arjun Buildtech team will review your enquiry and respond when available.",
         ),
         type: "success",
         visible: true,
@@ -113,13 +113,13 @@ const ContactForm = () => {
       {/* Standard Portal Heading Design */}
       <div className="mb-6 md:mb-8 text-center md:text-left">
         <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-4">
-          {t("contact.formTitle", "Get Expert Property Advice")}
+          {t("contact.formTitle", "Get Property Information")}
         </h2>
         <div className="w-16 h-1 bg-red-600 mb-4 mx-auto md:mx-0"></div>
         <p className="text-sm md:text-[15px] text-gray-600">
           {t(
             "contact.formDescription",
-            "Speak with Rohtak's top real estate consultants today. We'll help you secure the best deal on your dream property.",
+            "Speak with our Rohtak property team about current listings, questions, and next steps for your enquiry.",
           )}
         </p>
       </div>
@@ -205,7 +205,7 @@ const ContactForm = () => {
               <>
                 <Send size={18} />
                 <span>
-                  {t("contact.getConsultation", "Get Free Consultation")}
+                  {t("contact.getConsultation", "Start an Enquiry")}
                 </span>
               </>
             )}

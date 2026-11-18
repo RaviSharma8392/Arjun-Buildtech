@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { createSlug } from "../../utils/slugify";
 import { db } from "../../services/firebase";
 import {
   doc,
@@ -23,18 +22,31 @@ import { updateDocumentMetadata } from "../../utils/seoMetadata";
 import { useLanguage } from "../../context/useLanguage";
 import EmiCalculatorBanner from "../../components/common/banner/EmiCalculatorBanner";
 import InlineEnquiryForm from "../../components/common/form/InlineEnquiryForm";
+import { FALLBACK_FEATURED_PROPERTY } from "../../data/fallbackFeaturedProperty";
+
+const SITE_URL = "https://arjunbuildtech.com";
 
 const PropertyDetailsPage = () => {
   const { language, t } = useLanguage();
   const { id } = useParams(); // Firestore document ID
-  const [property, setProperty] = useState(null);
+  const fallbackForRoute = id === FALLBACK_FEATURED_PROPERTY.id;
+  const [property, setProperty] = useState(() =>
+    fallbackForRoute ? normalizePropertyData(FALLBACK_FEATURED_PROPERTY) : null,
+  );
   const [similarProperties, setSimilarProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!fallbackForRoute);
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        setLoading(true);
+        // Keep the supplied fallback visible while Firestore is being checked.
+        setProperty(
+          fallbackForRoute
+            ? normalizePropertyData(FALLBACK_FEATURED_PROPERTY)
+            : null,
+        );
+        setSimilarProperties([]);
+        setLoading(!fallbackForRoute);
 
         // Fetch from both properties and featuredproperties in parallel for speed
         const [mainSnap, featuredSnap] = await Promise.allSettled([
@@ -44,19 +56,27 @@ const PropertyDetailsPage = () => {
 
         let foundProperty = null;
 
-        if (mainSnap.status === "fulfilled" && mainSnap.value.exists()) {
+        const mainPropertyExists =
+          mainSnap.status === "fulfilled" && mainSnap.value.exists();
+        const featuredPropertyExists =
+          featuredSnap.status === "fulfilled" && featuredSnap.value.exists();
+
+        if (mainPropertyExists) {
           foundProperty = normalizePropertyData({
             id: mainSnap.value.id,
             ...mainSnap.value.data(),
           });
-        } else if (
-          featuredSnap.status === "fulfilled" &&
-          featuredSnap.value.exists()
-        ) {
+        } else if (featuredPropertyExists) {
           foundProperty = normalizePropertyData({
             id: featuredSnap.value.id,
             ...featuredSnap.value.data(),
           });
+        } else if (
+          id === FALLBACK_FEATURED_PROPERTY.id &&
+          !mainPropertyExists &&
+          !featuredPropertyExists
+        ) {
+          foundProperty = normalizePropertyData(FALLBACK_FEATURED_PROPERTY);
         }
 
         if (foundProperty && !isPropertyPubliclyAvailable(foundProperty)) {
@@ -64,45 +84,54 @@ const PropertyDetailsPage = () => {
         }
         setProperty(foundProperty);
 
-        // Fast Similar Properties Fetch
-        if (foundProperty && foundProperty.location) {
-          const propertiesRef = collection(db, "properties");
-          // Use direct equality query to limit returned docs instantly instead of fetching 15
-          const q = query(
-            propertiesRef,
-            where("location", "==", foundProperty.location),
-            limit(5),
-          );
-          const querySnapshot = await getDocs(q);
+        // Similar listings are optional. A permissions/index/network issue here
+        // must not hide a valid primary property page.
+        if (
+          foundProperty?.location &&
+          foundProperty.id !== FALLBACK_FEATURED_PROPERTY.id
+        ) {
+          try {
+            const propertiesRef = collection(db, "properties");
+            // Use direct equality query to limit returned docs instantly instead of fetching 15.
+            const q = query(
+              propertiesRef,
+              where("location", "==", foundProperty.location),
+              limit(5),
+            );
+            const querySnapshot = await getDocs(q);
 
-          const simProps = [];
-          querySnapshot.forEach((docSnap) => {
-            const similarProperty = normalizePropertyData({
-              id: docSnap.id,
-              ...docSnap.data(),
+            const simProps = [];
+            querySnapshot.forEach((docSnap) => {
+              const similarProperty = normalizePropertyData({
+                id: docSnap.id,
+                ...docSnap.data(),
+              });
+              if (
+                docSnap.id !== foundProperty.id &&
+                isPropertyPubliclyAvailable(similarProperty) &&
+                simProps.length < 4
+              ) {
+                simProps.push(similarProperty);
+              }
             });
-            if (
-              docSnap.id !== foundProperty.id &&
-              isPropertyPubliclyAvailable(similarProperty) &&
-              simProps.length < 4
-            ) {
-              simProps.push(similarProperty);
-            }
-          });
-
-          // If exact match yields nothing, we could fetch fallback, but keeping it simple/fast
-          setSimilarProperties(simProps);
+            setSimilarProperties(simProps);
+          } catch (similarError) {
+            console.warn("Unable to load similar properties:", similarError);
+            setSimilarProperties([]);
+          }
+        } else {
+          setSimilarProperties([]);
         }
       } catch (error) {
         console.error("Error fetching property:", error);
-        setProperty(null);
+        if (!fallbackForRoute) setProperty(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProperty();
-  }, [id]);
+  }, [fallbackForRoute, id]);
 
   useEffect(() => {
     if (loading) return;
@@ -169,7 +198,37 @@ const PropertyDetailsPage = () => {
 
   const pageDescription =
     property.shortTitle ||
-    `Explore ${property.type || "property"} details for sale in ${property.location || "Rohtak"} with Arjun Buildtech.`;
+    `Explore ${property.type || "property"} details in ${property.location || "Rohtak"} with Arjun Buildtech.`;
+  const canonicalUrl = `${SITE_URL}${window.location.pathname}`;
+  const propertyEntityType = {
+    plot: "LandParcel",
+    house: "House",
+    villa: "House",
+    flat: "Apartment",
+    commercial: "Place",
+  }[String(property.type || "").toLowerCase()] || "Place";
+  const propertyEntity = {
+    "@type": propertyEntityType,
+    "@id": `${canonicalUrl}#property`,
+    name: propertyName || property.name || "Property in Rohtak",
+    identifier: property.id || id,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: property.location || "Rohtak",
+      addressRegion: "Haryana",
+      addressCountry: "IN",
+    },
+    ...(property.description ? { description: property.description } : {}),
+    ...(property.images?.length ? { image: property.images } : {}),
+  };
+  const propertyPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: pageTitle,
+    mainEntity: propertyEntity,
+  };
 
   return (
     <div className="min-h-screen bg-[#F9F9F9] py-8 md:py-12">
@@ -177,16 +236,24 @@ const PropertyDetailsPage = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <link
-          rel="canonical"
-          href={`https://arjunbuildtech.com/property/${createSlug(property.location || "rohtak")}/${createSlug(propertyName || property.name || "property")}/${property.id || id}`}
-        />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content="Arjun Buildtech" />
         {property.images?.length > 0 && (
           <meta property="og:image" content={property.images[0]} />
         )}
         <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+        {property.images?.length > 0 && (
+          <meta name="twitter:image" content={property.images[0]} />
+        )}
+        <script type="application/ld+json">
+          {JSON.stringify(propertyPageSchema)}
+        </script>
       </Helmet>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">

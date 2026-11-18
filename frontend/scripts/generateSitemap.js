@@ -7,6 +7,8 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { isPropertyPubliclyAvailable, normalizePropertyData } from "../src/utils/propertySchema.js";
 import { createSlug } from "../src/utils/slugify.js";
+import { FALLBACK_FEATURED_PROPERTY } from "../src/data/fallbackFeaturedProperty.js";
+import { blogs } from "../src/data/blogs.js";
 
 const siteUrl = "https://arjunbuildtech.com";
 const sourcePath = resolve("public/sitemap.xml");
@@ -21,7 +23,6 @@ const excludedPaths = new Set([
   "/plots-in-rohtak-sector-2",
   "/plots-in-rohtak-sector-3",
   "/plots-in-rohtak-sector-4",
-  "/profile",
   "/residential-plots-rohtak",
   "/reviews",
   "/who-built-arjun-buildtech",
@@ -36,6 +37,10 @@ const firebaseConfig = {
   messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.VITE_FIREBASE_APP_ID,
 };
+
+const publishedBlogPaths = new Set(
+  blogs.map((blog) => `/blog/${blog.slug}`),
+);
 
 if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.appId) {
   throw new Error("Firebase web configuration is required to generate the property sitemap.");
@@ -65,6 +70,8 @@ for (const sourceEntry of Array.isArray(sourceUrls) ? sourceUrls : [sourceUrls])
     parsedUrl.hash ||
     parsedUrl.pathname.startsWith("/admin") ||
     parsedUrl.pathname.startsWith("/property/") ||
+    (parsedUrl.pathname.startsWith("/blog/") &&
+      !publishedBlogPaths.has(parsedUrl.pathname)) ||
     excludedPaths.has(parsedUrl.pathname)
   ) {
     continue;
@@ -76,12 +83,27 @@ for (const sourceEntry of Array.isArray(sourceUrls) ? sourceUrls : [sourceUrls])
   });
 }
 
+// Keep the sitemap resilient when a new published article is added to the
+// content source. The visible source sitemap is still the editorial allowlist
+// for static pages, while every published blog gets a discoverable URL here.
+for (const blog of blogs) {
+  const pathname = `/blog/${blog.slug}`;
+  urls.set(`${siteUrl}${pathname}`, {
+    loc: `${siteUrl}${pathname}`,
+    ...(blog.updatedAt ? { lastmod: blog.updatedAt } : {}),
+  });
+}
+
 const propertiesById = new Map();
+let fallbackPropertyExistsInFirestore = false;
 for (const propertyDoc of [
   ...propertiesSnapshot.docs,
   ...featuredSnapshot.docs,
 ]) {
   const rawProperty = { id: propertyDoc.id, ...propertyDoc.data() };
+  if (propertyDoc.id === FALLBACK_FEATURED_PROPERTY.id) {
+    fallbackPropertyExistsInFirestore = true;
+  }
   if (!isPropertyPubliclyAvailable(rawProperty)) continue;
 
   const property = normalizePropertyData(rawProperty);
@@ -89,7 +111,7 @@ for (const propertyDoc of [
   const nameSlug = createSlug(property.name || property.title);
   if (!locationSlug || !nameSlug) continue;
 
-  const lastModified = rawProperty.updatedAt || rawProperty.createdAt;
+  const lastModified = rawProperty.updatedAt;
   const lastmod = lastModified?.toDate
     ? lastModified.toDate().toISOString().slice(0, 10)
     : lastModified instanceof Date
@@ -99,6 +121,15 @@ for (const propertyDoc of [
   propertiesById.set(propertyDoc.id, {
     loc: `${siteUrl}/property/${locationSlug}/${nameSlug}/${encodeURIComponent(propertyDoc.id)}`,
     ...(lastmod ? { lastmod } : {}),
+  });
+}
+
+if (
+  !fallbackPropertyExistsInFirestore &&
+  !propertiesById.has(FALLBACK_FEATURED_PROPERTY.id)
+) {
+  propertiesById.set(FALLBACK_FEATURED_PROPERTY.id, {
+    loc: `${siteUrl}${FALLBACK_FEATURED_PROPERTY.url}`,
   });
 }
 
@@ -120,3 +151,6 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n${xmlBuilder.build({
 
 await writeFile(outputPath, sitemapXml, "utf8");
 console.log(`Generated sitemap with ${urls.size} public URLs.`);
+// Firestore may keep a gRPC channel open after the one-shot reads above. Exit
+// explicitly so `npm run build` cannot hang after the sitemap is written.
+process.exit(0);

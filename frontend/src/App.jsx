@@ -181,6 +181,39 @@ const App = () => {
             <Route path="website-developer" element={<DeveloperPage />} />
             <Route path="who-built-arjun-buildtech" element={<Navigate to="/website-developer" replace />} />
             <Route path="developer" element={<Navigate to="/website-developer" replace />} />
+            {/* Retire thin legacy SEO pages without leaving broken indexed URLs. */}
+            <Route
+              path="plot-for-sale-in-huda-sector-27-rohtak"
+              element={<Navigate to="/properties?search=Sector%2027" replace />}
+            />
+            <Route
+              path="hsvp-1-kanal-plot-rohtak"
+              element={<Navigate to="/properties?search=Sector%2027" replace />}
+            />
+            <Route
+              path="huda-plot-sector-27-rohtak"
+              element={<Navigate to="/properties?search=Sector%2027" replace />}
+            />
+            <Route
+              path="double-story-house-in-suncity-rohtak"
+              element={<Navigate to="/properties?search=Suncity" replace />}
+            />
+            <Route
+              path="property-in-rohtak"
+              element={<Navigate to="/properties" replace />}
+            />
+            <Route
+              path="best-sector-in-rohtak-to-live"
+              element={<Navigate to="/properties" replace />}
+            />
+            <Route
+              path="plot-prices-in-rohtak"
+              element={<Navigate to="/blog/compare-plot-asking-prices-rohtak" replace />}
+            />
+            <Route
+              path="is-rohtak-an-expensive-city"
+              element={<Navigate to="/blog/buying-vs-renting-rohtak" replace />}
+            />
             {/* Programmatic Dynamic Handler for SEO Pages */}
             <Route path=":slug" element={<SeoListingPage />} />
           </Route>

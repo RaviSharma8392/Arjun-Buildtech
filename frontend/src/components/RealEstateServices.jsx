@@ -59,25 +59,51 @@ const RealEstateServices = () => {
   const isServicesRoute =
     location.pathname === "/services" ||
     location.pathname === "/real-estate-services";
+  const pagePath = location.pathname === "/services" ? "/services" : "/real-estate-services";
+  const pageUrl = `https://arjunbuildtech.com${pagePath}`;
+  const pageTitle = "Real Estate Services | Arjun Buildtech Rohtak";
+  const pageDescription =
+    "Explore property listing, consultation, and enquiry support in Rohtak from Arjun Buildtech. Details and availability vary by property.";
+  const servicesSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#collection-page`,
+    url: pageUrl,
+    name: pageTitle,
+    description: pageDescription,
+    isPartOf: { "@id": "https://arjunbuildtech.com/#website" },
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
 
   return (
     <section
       className={`py-12 md:py-16 bg-[#F9F9F9] border-t border-gray-200 ${isServicesRoute ? "mt-[70px] min-h-screen" : ""}`}>
       {isServicesRoute && (
         <Helmet>
-          <title>Real Estate Services | Arjun Buildtech Rohtak</title>
-          <meta
-            name="description"
-            content="Explore top-tier real estate services in Rohtak with Arjun Buildtech. We offer property consultation, investment advice, and dedicated support for buying and selling plots and villas."
-          />
+          <title>{pageTitle}</title>
+          <meta name="description" content={pageDescription} />
+          <link rel="canonical" href={pageUrl} />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={pageTitle} />
+          <meta property="og:description" content={pageDescription} />
+          <meta property="og:url" content={pageUrl} />
+          <script type="application/ld+json">
+            {JSON.stringify(servicesSchema)}
+          </script>
         </Helmet>
       )}
       <div className="site-container">
         {/* Standard Portal Heading Design */}
         <div className="mb-8 md:mb-10">
-          <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
-            {t("services.heading", "Explore Our Real Estate Services")}
-          </h2>
+          {isServicesRoute ? (
+            <h1 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
+              {t("services.heading", "Explore Our Real Estate Services")}
+            </h1>
+          ) : (
+            <h2 className="text-3xl md:text-4xl font-normal text-gray-800 mb-4">
+              {t("services.heading", "Explore Our Real Estate Services")}
+            </h2>
+          )}
           <div className="w-16 h-1 bg-red-600 mb-4"></div>
           <p className="text-sm md:text-base text-gray-600 max-w-2xl">
             {t(

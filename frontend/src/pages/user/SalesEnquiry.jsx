@@ -1,13 +1,24 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import ContactForm from "../../components/common/form/ContactForm";
+import Breadcrumb from "../../components/common/Breadcrumb";
 import { useLanguage } from "../../context/useLanguage";
 import { companyInfo } from "../../data/companyInfo";
 
 const SalesEnquiry = () => {
   const { t } = useLanguage();
+  const pageUrl = "https://arjunbuildtech.com/sales-enquiry";
+  const pageDescription =
+    "Submit a property enquiry for buying, selling, or comparing real estate information with Arjun Buildtech in Rohtak.";
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${pageUrl}#contact-page`,
+    url: pageUrl,
+    name: "Sales Enquiry | Arjun Buildtech",
+    description: pageDescription,
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,25 +29,26 @@ const SalesEnquiry = () => {
         <title>Sales Enquiry | Arjun Buildtech</title>
         <meta
           name="description"
-          content="Submit a sales enquiry for buying, selling, or investing in real estate with Arjun Buildtech in Rohtak."
+          content={pageDescription}
         />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Sales Enquiry | Arjun Buildtech" />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageUrl} />
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         {/* Breadcrumbs */}
-        <nav
-          aria-label={t("common.breadcrumb", "Breadcrumb")}
-          className="flex items-center text-xs text-gray-500 mb-6">
-          <Link
-            to="/"
-            className="hover:text-red-600 transition-colors duration-200">
-            {t("common.home", "Home")}
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 mx-1" />
-          <span className="text-gray-900">
-            {t("sales.title", "Sales Enquiry")}
-          </span>
-        </nav>
+        <div className="mb-6">
+          <Breadcrumb
+            items={[
+              { name: t("common.home", "Home"), path: "/" },
+              { name: t("sales.title", "Sales Enquiry") },
+            ]}
+          />
+        </div>
 
         {/* Page Header */}
         <div className="mb-10 max-w-3xl">

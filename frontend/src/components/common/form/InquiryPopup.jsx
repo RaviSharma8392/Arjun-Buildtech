@@ -224,7 +224,7 @@ const InquiryPopup = ({ isOpen, onClose }) => {
                      <div className="flex">
                         <span className="w-32 md:w-40 flex-shrink-0">{t("inquiryPopup.addressLabel", "Address")}</span>
                         <span className="mr-2">:</span>
-                        <span className="text-gray-700">{t("inquiryPopup.address", "G74P, Sector-27, Rohtak, Haryana")}</span>
+                        <span className="text-gray-700">{t("inquiryPopup.address", "Rohtak, Haryana — contact us to confirm the meeting location")}</span>
                      </div>
                      <div className="flex">
                         <span className="w-32 md:w-40 flex-shrink-0">{t("inquiryPopup.mobileLabel", "Mobile No.")}</span>

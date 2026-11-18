@@ -22,7 +22,7 @@ const SellPropertyCTA = () => {
           </h2>
           
           <p className="text-lg md:text-xl text-red-100 mb-8 max-w-2xl font-light">
-            Get the best market value for your residential plot, commercial space, or home in HSVP & Suncity sectors. Our expert agents ensure a fast and profitable sale.
+            Discuss the asking price, listing information, and buyer enquiries for your residential plot, commercial space, or home in Rohtak.
           </p>
           
           <button

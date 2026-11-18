@@ -33,7 +33,7 @@ const Breadcrumb = ({ items = [] }) => {
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      name: item.name,
+      name: translateName(item.name),
       item: item.path ? `https://arjunbuildtech.com${item.path}` : undefined,
     })),
   };

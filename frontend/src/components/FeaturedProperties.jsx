@@ -14,6 +14,7 @@ import PropertyCard from "../components/common/card/PropertyCard";
 import UserPropertyCard from "./common/card/UserPropertyCard";
 import PropertyEnquiryPopup from "./common/form/PropertyEnquiryPopup";
 import { useLanguage } from "../context/useLanguage";
+import { FALLBACK_FEATURED_PROPERTY } from "../data/fallbackFeaturedProperty";
 
 // --- Sub-Component: Clean Skeleton Loader ---
 const PropertySkeleton = () => (
@@ -32,9 +33,9 @@ const PropertySkeleton = () => (
 
 const FeaturedProperties = () => {
   const { t } = useLanguage();
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState([FALLBACK_FEATURED_PROPERTY]);
   const [recentProperties, setRecentProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [isEnquiryPopupOpen, setIsEnquiryPopupOpen] = useState(false);
   const [enquiryProperty, setEnquiryProperty] = useState(null);
@@ -51,31 +52,57 @@ const FeaturedProperties = () => {
     const fetchFeaturedProperties = async () => {
       try {
         setLoading(true);
-        const q = query(collection(db, "featuredproperties"));
-        const snapshot = await getDocs(q);
+        const [snapshot, recentSnapshot] = await Promise.all([
+          getDocs(query(collection(db, "featuredproperties"))),
+          getDocs(collection(db, "properties")),
+        ]);
         const data = snapshot.docs
           .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
           .filter(isPropertyPubliclyAvailable);
-        setProperties(data);
-
-        const recentSnapshot = await getDocs(collection(db, "properties"));
         const recentData = recentSnapshot.docs
           .map((doc) => normalizePropertyData({ id: doc.id, ...doc.data() }))
           .filter(isPropertyPubliclyAvailable);
 
-        const sortedRecent = [...recentData].sort((a, b) => {
-          const aTime = a.createdAt?.seconds
-            ? a.createdAt.seconds * 1000
-            : a.createdAt?.toDate
-              ? a.createdAt.toDate().getTime()
-              : 0;
-          const bTime = b.createdAt?.seconds
-            ? b.createdAt.seconds * 1000
-            : b.createdAt?.toDate
-              ? b.createdAt.toDate().getTime()
-              : 0;
-          return bTime - aTime;
-        });
+        const requestedRecord = [...snapshot.docs, ...recentSnapshot.docs].find(
+          (propertyDoc) => propertyDoc.id === FALLBACK_FEATURED_PROPERTY.id,
+        );
+        const requestedListing = requestedRecord
+          ? normalizePropertyData({
+              id: requestedRecord.id,
+              ...requestedRecord.data(),
+            })
+          : null;
+        const allowRequestedListing =
+          !requestedRecord || isPropertyPubliclyAvailable(requestedListing);
+        const requestedProperty = allowRequestedListing
+          ? requestedListing || FALLBACK_FEATURED_PROPERTY
+          : null;
+        const hasRequestedListing = data.some(
+          (property) => property.id === FALLBACK_FEATURED_PROPERTY.id,
+        );
+        setProperties(
+          hasRequestedListing
+            ? data
+            : requestedProperty
+              ? [...data, requestedProperty]
+              : data,
+        );
+
+        const sortedRecent = recentData
+          .filter((property) => property.id !== FALLBACK_FEATURED_PROPERTY.id)
+          .sort((a, b) => {
+            const aTime = a.createdAt?.seconds
+              ? a.createdAt.seconds * 1000
+              : a.createdAt?.toDate
+                ? a.createdAt.toDate().getTime()
+                : 0;
+            const bTime = b.createdAt?.seconds
+              ? b.createdAt.seconds * 1000
+              : b.createdAt?.toDate
+                ? b.createdAt.toDate().getTime()
+                : 0;
+            return bTime - aTime;
+          });
 
         setRecentProperties(sortedRecent.slice(0, 4));
       } catch (error) {
@@ -100,7 +127,7 @@ const FeaturedProperties = () => {
             <p className="text-sm md:text-base text-gray-600 max-w-2xl">
               {t(
                 "home.featuredDescription",
-                "Explore our handpicked selection of premium HSVP plots, luxury villas, and investment-ready commercial spaces.",
+                "Browse selected HSVP plots, homes, and commercial listings. Confirm each property's details and availability.",
               )}
             </p>
           </div>
@@ -116,7 +143,7 @@ const FeaturedProperties = () => {
 
         {/* --- Content Section --- */}
         <main>
-          {loading ? (
+          {loading && properties.length === 0 ? (
             // Loading State
             <div
               className={`grid gap-5 ${isMobile ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}`}>
@@ -136,7 +163,7 @@ const FeaturedProperties = () => {
               <p className="text-gray-500 text-[14px] max-w-sm">
                 {t(
                   "home.updatingListings",
-                  "We are currently updating our premium listings. Please check back later.",
+                  "We are currently updating the listing feed. Please check back later.",
                 )}
               </p>
             </div>
@@ -197,7 +224,7 @@ const FeaturedProperties = () => {
                 <p className="text-sm md:text-base text-gray-600 max-w-2xl">
                   {t(
                     "home.newPropertiesDescription",
-                    "Discover our most recently added property listings and exclusive real estate opportunities.",
+                    "Review recently added property listings and ask about the details currently published.",
                   )}
                 </p>
               </div>

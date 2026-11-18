@@ -1,11 +1,22 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../context/useLanguage";
+import Breadcrumb from "../../components/common/Breadcrumb";
 
 const HelpCenter = () => {
   const { t } = useLanguage();
+  const pageUrl = "https://arjunbuildtech.com/help-center";
+  const pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: "Help Center | Arjun Buildtech",
+    description:
+      "Find help with property listings, enquiries, and buying or selling processes in Rohtak.",
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -24,12 +35,12 @@ const HelpCenter = () => {
     {
       question: "Do you offer assistance with home loans?",
       answer:
-        "Yes, we partner with leading banks and financial institutions to help our clients secure home loans with favorable interest rates and quick processing.",
+        "We can explain the information available for a listing and point you to the questions to ask a lender. Confirm eligibility, rates, and loan terms directly with the bank.",
     },
     {
       question: "How can I list my property for sale?",
       answer:
-        "You can reach out to our team through the 'Contact Us' page or by calling our support line. We will evaluate your property and list it across our premium channels.",
+        "You can reach out to our team through the 'Contact Us' page or by calling our support line. We can discuss the property information and listing process.",
     },
   ];
 
@@ -41,23 +52,17 @@ const HelpCenter = () => {
           name="description"
           content="Find answers to frequently asked questions and get support for buying, selling, or renting properties with Arjun Buildtech."
         />
+        <link rel="canonical" href={pageUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Help Center | Arjun Buildtech" />
+        <meta property="og:description" content="Find help with property listings, enquiries, and buying or selling processes in Rohtak." />
+        <meta property="og:url" content={pageUrl} />
+        <script type="application/ld+json">{JSON.stringify(pageSchema)}</script>
       </Helmet>
 
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         {/* Breadcrumbs */}
-        <nav
-          aria-label={t("common.breadcrumb", "Breadcrumb")}
-          className="flex items-center text-xs text-gray-500 mb-6">
-          <Link
-            to="/"
-            className="hover:text-red-600 transition-colors duration-200">
-            {t("common.home", "Home")}
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 mx-1" />
-          <span className="text-gray-900">
-            {t("help.title", "Help Center")}
-          </span>
-        </nav>
+        <Breadcrumb items={[{ name: "Home", path: "/" }, { name: "Help Center" }]} />
 
         {/* Page Header */}
         <div className="mb-10 max-w-3xl">

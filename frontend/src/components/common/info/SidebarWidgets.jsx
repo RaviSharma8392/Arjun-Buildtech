@@ -13,7 +13,7 @@ const SidebarWidgets = () => {
           </h3>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          Get access to verified property deals & connect with our experts
+          Ask about current property listings & connect with our team
         </p>
         <Link to="/contact" className="w-full bg-[#c9302c] hover:bg-red-800 text-white font-medium py-2.5 rounded transition-colors shadow-sm text-sm">
           Contact Us <span className="text-yellow-400 font-bold ml-1 text-xs">NOW</span>

@@ -27,13 +27,6 @@ const formatPrice = (price) => {
   return `₹ ${n.toLocaleString("en-IN")}`;
 };
 
-const formatPricePerSqft = (price, area) => {
-  const p = Number(price);
-  const a = parseFloat(area);
-  if (!p || !a || isNaN(p) || isNaN(a) || a === 0) return null;
-  return `₹${Math.floor(p / a).toLocaleString("en-IN")}/sqft`;
-};
-
 const parseCommaList = (value) => {
   if (!value) return [];
   if (Array.isArray(value)) return value;
@@ -80,7 +73,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
             <span className="text-gray-500 text-sm hidden md:inline-block border-l border-gray-300 pl-4">
               {t(
                 "detail.emi",
-                "EMI - Calculate | Get Loan offers from 34+ banks",
+                "Estimate EMI; confirm loan terms directly with the lender",
               )}
             </span>
             {property.pricePerSqft && (
@@ -115,7 +108,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
           <div className="w-full h-3/4 rounded-lg overflow-hidden relative cursor-pointer group">
             <img
               src={images[activeImage]}
-              alt={`${property.name} for sale in ${property.location} - Premium Real Estate`}
+              alt={`${property.name || property.type || "Property"} in ${property.location || "Rohtak"}, photo ${activeImage + 1}`}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-all"></div>
@@ -128,12 +121,6 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                   : t("detail.forSale", "For Sale")}
               </span>
             </div>
-            {/* Fake Play Button */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                <div className="w-0 h-0 border-t-8 border-b-8 border-l-[12px] border-t-transparent border-b-transparent border-l-red-600 ml-1"></div>
-              </div>
-            </div>
           </div>
           <div className="flex h-1/4 gap-2 overflow-x-auto hidden-scrollbar">
             {images.slice(0, 3).map((img, idx) => (
@@ -143,7 +130,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                 className={`flex-1 rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${activeImage === idx ? "border-red-600 opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
                 <img
                   src={img}
-                  alt={`${property.name} in ${property.location} - View ${idx + 1}`}
+                  alt={`${property.name || property.type || "Property"} in ${property.location || "Rohtak"}, photo ${idx + 1}`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -154,6 +141,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
                 className="flex-1 rounded-lg overflow-hidden cursor-pointer bg-black relative">
                 <img
                   src={images[3]}
+                  alt={`${property.name || property.type || "Property"} in ${property.location || "Rohtak"}, photo 4`}
                   className="w-full h-full object-cover opacity-40"
                 />
                 <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
@@ -723,7 +711,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
               ) : (
                 t(
                   "detail.defaultDescription",
-                  "A premium property available for you.",
+                  "Property details are available in the listing above.",
                 )
               )}
             </div>
@@ -804,77 +792,6 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
           </div>
         </div>
       )}
-
-      {/* Price Trends */}
-      {(() => {
-        const pricePerSqft = formatPricePerSqft(
-          property.price,
-          property.area || property.builtUpArea || property.landArea,
-        );
-        if (!pricePerSqft) return null;
-        const nearbyRate = (() => {
-          const p = Number(property.price);
-          const a = parseFloat(
-            property.area || property.builtUpArea || property.landArea,
-          );
-          if (!p || !a || isNaN(p) || isNaN(a)) return null;
-          return `₹${Math.floor((p * 1.1) / a).toLocaleString("en-IN")}/sqft`;
-        })();
-        return (
-          <div className="mt-8 bg-white rounded-xl border border-gray-200 p-5 md:p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">
-              {t("detail.priceTrends", "Price Trends in {location}", {
-                location: property.location.split(",")[0],
-              })}
-            </h2>
-            <p className="text-gray-500 text-sm mb-6">
-              {t(
-                "detail.comparableRate",
-                "Comparable rate analysis for this area",
-              )}
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[500px]">
-                <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      {t("detail.projectName", "Project Name")}
-                    </th>
-                    <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      {t("detail.avgRate", "Avg Rate per sqft")}
-                    </th>
-                    <th className="py-3 font-semibold text-gray-700 text-sm w-1/3">
-                      {t("detail.rentalYield", "Rental Yield")}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-50">
-                    <td className="py-4 text-gray-800 text-sm font-medium">
-                      {property.name || "Current Project"}
-                    </td>
-                    <td className="py-4 text-gray-600 text-sm">
-                      {pricePerSqft}
-                    </td>
-                    <td className="py-4 text-gray-600 text-sm">4.2%</td>
-                  </tr>
-                  {nearbyRate && (
-                    <tr className="border-b border-gray-50">
-                      <td className="py-4 text-gray-800 text-sm font-medium">
-                        {t("detail.nearbyResidential", "Nearby Residential")}
-                      </td>
-                      <td className="py-4 text-gray-600 text-sm">
-                        {nearbyRate}
-                      </td>
-                      <td className="py-4 text-gray-600 text-sm">4.5%</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-      })()}
 
       {/* Closer to Your Search */}
       <div className="mt-8 bg-white rounded-xl border border-gray-200 p-5 md:p-6 mb-12">
@@ -1025,7 +942,7 @@ const PremiumPropertyDetails = ({ property, similarProperties = [] }) => {
           </strong>{" "}
           {t(
             "detail.disclaimerCopy",
-            "Arjun Buildtech has endeavoured to ascertain the requirement of RERA registration. However, the advertiser claims that there is no requirement for such registration. Users are cautioned accordingly...",
+            "Confirm the listing's price, availability, title, approvals, and legal status independently. Ask a qualified adviser or the relevant authority about RERA and other applicable rules.",
           )}{" "}
           <Link
             to="/terms-of-service"

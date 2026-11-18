@@ -13,8 +13,21 @@ import {
 import Breadcrumb from "../../components/common/Breadcrumb";
 import { useLanguage } from "../../context/useLanguage";
 
+const SITE_URL = "https://arjunbuildtech.com";
+
 const SitemapPage = () => {
   const { t } = useLanguage();
+  const sitemapSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/sitemap#collection-page`,
+    url: `${SITE_URL}/sitemap`,
+    name: "Arjun Buildtech Sitemap",
+    description:
+      "Navigation directory for Arjun Buildtech property listings, services, research guides and tools in Rohtak.",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#organization` },
+  };
 
   const mainPages = [
     { path: "/", name: "Home", key: "common.home" },
@@ -22,6 +35,16 @@ const SitemapPage = () => {
       path: "/properties",
       name: "Explore Properties",
       key: "sitemap.exploreProperties",
+    },
+    {
+      path: "/property-dealer-in-rohtak",
+      name: "Property Dealer in Rohtak",
+      key: "sitemap.propertyDealerRohtak",
+    },
+    {
+      path: "/property-dealer-in-haryana",
+      name: "Property Dealer in Haryana (Rohtak Focus)",
+      key: "sitemap.propertyDealerHaryana",
     },
     {
       path: "/testimonials",
@@ -110,11 +133,38 @@ const SitemapPage = () => {
     },
   ];
 
+  const researchGuides = [
+    {
+      path: "/blog/property-due-diligence-checklist-haryana",
+      name: "Haryana Property Due Diligence Checklist",
+      key: "sitemap.dueDiligenceGuide",
+    },
+    {
+      path: "/blog/compare-plot-asking-prices-rohtak",
+      name: "How to Compare Plot Prices in Rohtak",
+      key: "sitemap.comparePricesGuide",
+    },
+    {
+      path: "/blog/haryana-property-registration-questions",
+      name: "Haryana Property Registration Questions",
+      key: "sitemap.registrationGuide",
+    },
+    {
+      path: "/blog/hsvp-suncity-rohtak-property-checks",
+      name: "HSVP and Suncity Rohtak Property Checks",
+      key: "sitemap.hsvpSuncityGuide",
+    },
+    {
+      path: "/blog/buying-vs-renting-rohtak",
+      name: "Buying vs Renting in Rohtak",
+      key: "sitemap.buyRentGuide",
+    },
+  ];
+
   const legalPages = [
     { path: "/privacy-policy", name: "Privacy Policy", key: "privacy.title" },
     { path: "/terms-of-service", name: "Terms of Service", key: "terms.title" },
     { path: "/sitemap", name: "Sitemap Directory", key: "footer.sitemap" },
-    { path: "/website-developer", name: "Website Developer Attribution", key: "developer.title" },
   ];
 
   const renderLinks = (routes) =>
@@ -137,6 +187,10 @@ const SitemapPage = () => {
           name="description"
           content="Sitemap for Arjun Buildtech. Find all pages, properties, calculators, and resources for real estate in Rohtak."
         />
+        <link rel="canonical" href={`${SITE_URL}/sitemap`} />
+        <script type="application/ld+json">
+          {JSON.stringify(sitemapSchema)}
+        </script>
       </Helmet>
       <div className="container mx-auto px-4 md:px-8 max-w-6xl">
         <Breadcrumb
@@ -215,6 +269,19 @@ const SitemapPage = () => {
               </h2>
             </div>
             <ul className="space-y-3 flex-grow">{renderLinks(servicePages)}</ul>
+          </div>
+
+          {/* Research & Buying Guides */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+              <div className="w-9 h-9 bg-red-50 text-red-600 rounded-full flex items-center justify-center border border-red-100 shrink-0">
+                <FileText className="w-4 h-4" />
+              </div>
+              <h2 className="font-semibold text-gray-900 text-base">
+                Research & Buying Guides
+              </h2>
+            </div>
+            <ul className="space-y-3 flex-grow">{renderLinks(researchGuides)}</ul>
           </div>
 
           {/* Legal & Developer */}

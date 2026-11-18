@@ -77,7 +77,7 @@ const SupportHelpWidgets = () => {
               <strong className="text-gray-900 font-bold">
                 Property Specialist will help
               </strong>{" "}
-              you with the best choice
+                you compare the available information
             </p>
           </div>
         </div>

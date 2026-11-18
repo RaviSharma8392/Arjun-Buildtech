@@ -10,14 +10,19 @@ const staticPages = {
       "Explore residential plots, homes and commercial property listings in Rohtak, Haryana, with local guidance from Arjun Buildtech.",
   },
   "/properties": {
-    title: "Property for Sale in Rohtak | Arjun Buildtech",
+    title: "Property Listings in Rohtak | Arjun Buildtech",
     description:
-      "Browse current property listings for sale in Rohtak. Ask Arjun Buildtech about property details and availability.",
+      "Browse current property listings in Rohtak, including residential plots, homes, and commercial options. Contact Arjun Buildtech to confirm details and availability.",
   },
   "/testimonials": {
     title: "Client Reviews | Arjun Buildtech",
     description:
       "Read reviews shared with Arjun Buildtech about property and local area experiences in Rohtak.",
+  },
+  "/profile": {
+    title: "Arjun Buildtech Profile | Property Guidance in Rohtak",
+    description:
+      "Learn about Arjun Buildtech, a Rohtak property advisory business. Explore its property services, service areas, and contact information.",
   },
   "/reviews": {
     title: "Client Reviews | Arjun Buildtech",
@@ -82,21 +87,23 @@ const staticPages = {
     description: "Explore property listings, guides, and tools directory from Arjun Buildtech.",
   },
   "/website-developer": {
-    title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
+    title: "Arjun Buildtech Website Developer | Ravi Sharma (RSDEV)",
     description:
-      "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
+      "Ravi Sharma (RSDEV) is the website developer behind Arjun Buildtech. Based in Nainital and Bhimtal, he builds business websites, ecommerce and React/Firebase apps.",
   },
   "/who-built-arjun-buildtech": {
     title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
     description:
       "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
     canonicalPath: "/website-developer",
+    robots: "noindex, nofollow",
   },
   "/developer": {
     title: "Ravi Sharma (RSDEV) | Website Developer for Arjun Buildtech",
     description:
       "Ravi Sharma (RSDEV) designed and developed the Arjun Buildtech website. Learn about the project and contact him for website development.",
     canonicalPath: "/website-developer",
+    robots: "noindex, nofollow",
   },
 };
 
@@ -119,16 +126,6 @@ const titleCaseSlug = (value) => {
 export const getRouteMetadata = (pathname) => {
   const path = pathname.replace(/\/+$/, "") || "/";
   const canonicalPath = path === "/reviews" ? "/testimonials" : path;
-
-  if (path === "/profile") {
-    return {
-      title: `Arjun Buildtech Profile | Real Estate Consultant in Rohtak`,
-      description:
-        "Company contact and property enquiry information for Arjun Buildtech in Rohtak.",
-      canonicalPath: null,
-      robots: "noindex, nofollow",
-    };
-  }
 
   if (path.startsWith("/admin")) {
     return {

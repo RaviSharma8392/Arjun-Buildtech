@@ -45,8 +45,8 @@ const TrustedBrands = () => {
                 Local Property Experts
               </h3>
               <p className="text-[14px] text-gray-600 leading-relaxed">
-                Navigate the Rohtak real estate market safely with our verified
-                listings and transparent documentation support.
+                Compare Rohtak property information with current listing details
+                and document-review support.
               </p>
             </div>
           </div>

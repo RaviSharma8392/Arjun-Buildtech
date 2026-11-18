@@ -7,11 +7,11 @@ export const servicesData = {
       heroSubtitle: "रोहतक में उपलब्ध मौजूदा प्लॉट, घर और कमर्शियल लिस्टिंग देखें और विवरण के लिए पूछताछ करें।",
       content: [
         "Arjun Buildtech रोहतक में रिहायशी और कमर्शियल प्रॉपर्टी लिस्ट करता है। हर लिस्टिंग का विवरण और उपलब्धता अलग हो सकती है।",
-        "हम HSVP सेक्टर 1, 2, 3, 25, 27 और Suncity सेक्टर 34, 35, 36 तथा 36A में विशेषज्ञता रखते हैं। इन प्रमुख क्षेत्रों में तेज़ बुनियादी विकास हो रहा है, इसलिए ये समझदारी से निवेश करने वालों के लिए उपयुक्त विकल्प हैं।",
+        "हम HSVP सेक्टर 1, 2, 3, 25, 27 और Suncity सेक्टर 34, 35, 36 तथा 36A से जुड़ी पूछताछ लेते हैं। किसी क्षेत्र या लिस्टिंग की वर्तमान उपलब्धता पहले पुष्टि करें।",
         "हम प्रॉपर्टी और निवेश संबंधी पूछताछ का जवाब देते हैं। आगे बढ़ने से पहले उपलब्ध दस्तावेज़ों और विवरणों की स्वतंत्र जाँच करें; निवेश के नतीजों की गारंटी नहीं होती।",
       ],
       benefits: [
-        "प्रीमियम विला और प्लॉट तक विशेष पहुँच",
+        "मौजूदा विला और प्लॉट लिस्टिंग की जानकारी",
         "मौजूदा लिस्टिंग के बारे में जानकारी",
         "प्रॉपर्टी और निवेश संबंधी पूछताछ",
         "उपलब्ध विवरण और दस्तावेज़ों पर चर्चा",
@@ -26,11 +26,11 @@ export const servicesData = {
     image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200",
     content: [
       "Arjun Buildtech lists residential and commercial properties in Rohtak. Details and availability vary by listing; contact us to ask about a specific property.",
-      "We specialize in HSVP Sectors 1, 2, 3, 25, 27 and Suncity Sectors 34, 35, 36, and 36A. These prime locations are experiencing rapid infrastructural development, making them the perfect choice for smart investors.",
+      "Some enquiries concern HSVP Sectors 1, 2, 3, 25, 27 and Suncity Sectors 34, 35, 36, and 36A. Confirm current services, listing details, and availability for the specific property.",
       "We respond to property and investment-related enquiries. Review the available property information and documents independently; investment outcomes are not guaranteed."
     ],
     benefits: [
-      "Exclusive access to premium villas and plots",
+      "Current villa and plot listing information",
       "Current listing information",
       "Property and investment enquiry support",
       "Discuss listing details and documents"
@@ -50,8 +50,8 @@ export const servicesData = {
     title: "Sell Property in Rohtak",
     hi: {
       title: "रोहतक में प्रॉपर्टी बेचें",
-      heroTitle: "अपनी प्रॉपर्टी जल्दी और बेहतर बाज़ार मूल्य पर बेचें",
-      heroSubtitle: "रोहतक की प्रॉपर्टी को लाभकारी तरीके से बेचने के लिए हमारे बड़े खरीदार नेटवर्क और विशेषज्ञ मार्केटिंग का लाभ लें।",
+      heroTitle: "रोहतक में अपनी प्रॉपर्टी बेचने की जानकारी",
+      heroSubtitle: "अपनी प्रॉपर्टी के विवरण, asking price और संभावित खरीदार पूछताछ पर चर्चा करें।",
       content: [
         "प्रॉपर्टी बेचने के लिए बाज़ार की गहरी जानकारी और सही मार्केटिंग ज़रूरी है। Arjun Buildtech आपकी प्रॉपर्टी को योग्य खरीदारों और निवेशकों तक पहुँचाने में मदद करता है।",
         "पेशेवर मूल्यांकन से लेकर बातचीत और अंतिम कागज़ी कार्रवाई तक, हम पूरी प्रक्रिया में साथ देते हैं। हमारा लक्ष्य प्रॉपर्टी बेचने से जुड़ा सामान्य तनाव कम करते हुए आपको बेहतर संभव मूल्य दिलाना है।",
@@ -68,19 +68,19 @@ export const servicesData = {
         { question: "प्रॉपर्टी बेचने में कितना समय लगता है?", answer: "हमारे व्यापक नेटवर्क के कारण प्रमुख क्षेत्रों की प्रीमियम प्रॉपर्टी को आमतौर पर कुछ हफ्तों में योग्य खरीदारों से प्रस्ताव मिल सकते हैं।" },
       ],
     },
-    heroTitle: "Sell Your Property Faster & For Top Market Value",
-    heroSubtitle: "Leverage our massive buyer network and expert marketing to sell your Rohtak property profitably.",
+    heroTitle: "Sell Your Property in Rohtak",
+    heroSubtitle: "Discuss your asking price, listing information, and buyer enquiries for a Rohtak property.",
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1200",
     content: [
-      "Selling a property requires deep market knowledge and targeted marketing. At Arjun Buildtech, we ensure your property gets maximum exposure to qualified buyers and investors.",
-      "We handle everything from professional property valuation to negotiation and final paperwork. Our goal is to get you the highest possible return without the typical stress associated with selling real estate.",
-      "Whether you are selling a plot in HSVP Sector 27, a commercial space, or a luxury villa in Suncity, our dedicated agents will craft a custom sales strategy tailored to your asset."
+      "Selling a property involves pricing, marketing, buyer enquiries, and document questions. Arjun Buildtech can discuss the information needed to publish a Rohtak listing.",
+      "We can discuss valuation, negotiation, and paperwork steps. The final price, timing, and legal work depend on the property and the parties involved.",
+      "Whether you are selling a plot in HSVP Sector 27, a commercial space, or a villa in Suncity, the listing approach depends on the property, documents, asking price, and buyer demand."
     ],
     benefits: [
-      "Accurate property valuation for maximum profit",
-      "Access to a vast network of ready-to-invest buyers",
+      "Discuss an asking-price range using available local information",
+      "Publish property details for interested buyer enquiries",
       "Targeted digital and offline marketing",
-      "Hassle-free legal and documentation support"
+      "Questions to take to an independent legal and documentation review"
     ],
     faqs: [
       {
@@ -89,7 +89,7 @@ export const servicesData = {
       },
       {
         question: "How long does it take to sell?",
-        answer: "With our extensive network, premium properties in prime sectors typically receive qualified offers within weeks."
+        answer: "There is no fixed sale timeline. It depends on the property, asking price, documents, demand, and buyer decisions."
       }
     ]
   },
@@ -100,43 +100,43 @@ export const servicesData = {
       heroTitle: "रणनीतिक रियल एस्टेट निवेश परामर्श",
       heroSubtitle: "रोहतक में डेटा पर आधारित रियल एस्टेट निवेश रणनीतियों से अपनी संपत्ति बढ़ाएँ।",
       content: [
-        "रियल एस्टेट एक सुरक्षित और लाभकारी निवेश विकल्प हो सकता है, बशर्ते फ़ैसले पूरी जानकारी के साथ लिए जाएँ। हमारी निवेश परामर्श सेवा उन व्यक्तियों और कंपनियों के लिए है जो लाभकारी प्रॉपर्टी पोर्टफोलियो बनाना चाहते हैं।",
-        "हम बाज़ार के रुझान, आने वाली बुनियादी परियोजनाओं और पुराने मूल्य आँकड़ों का विश्लेषण करके रोहतक के विकासशील सेक्टर सुझाते हैं।",
-        "HSVP के उभरते सेक्टरों में कम अवधि के अवसरों से लेकर कमर्शियल किराये के ज़रिए लंबे समय में संपत्ति बढ़ाने तक, हम आपके वित्तीय लक्ष्यों के अनुसार सलाह देते हैं।",
+        "रियल एस्टेट में जोखिम होता है। हमारी निवेश परामर्श सेवा उपलब्ध लिस्टिंग, स्थान, लागत और जाँच से जुड़े सामान्य प्रश्नों पर केंद्रित है। स्वतंत्र वित्तीय, कानूनी और कर सलाह लें।",
+        "हम उपलब्ध listing information, location factors, asking price और दस्तावेज़ों पर चर्चा कर सकते हैं। भविष्य की परियोजनाओं या कीमत की गारंटी नहीं दी जाती।",
+        "किसी भी residential या commercial property decision के लिए वर्तमान दस्तावेज़ और स्वतंत्र वित्तीय, कानूनी व कर सलाह ज़रूरी है।",
       ],
       benefits: [
-        "डेटा पर आधारित बाज़ार विश्लेषण और अनुमान",
+        "उपलब्ध listing information की समीक्षा",
         "निवेश पोर्टफोलियो में विविधता की रणनीति",
         "जोखिम का आकलन और उसे कम करने के उपाय",
-        "बाज़ार में सार्वजनिक न हुई निवेश प्रॉपर्टी तक विशेष पहुँच",
+        "उपलब्ध लिस्टिंग और पूछताछ पर चर्चा",
       ],
       faqs: [
-        { question: "निवेश के लिए कमर्शियल या रिहायशी प्रॉपर्टी बेहतर है?", answer: "यह आपके लक्ष्यों पर निर्भर करता है। कमर्शियल प्रॉपर्टी से किराये की आय अधिक हो सकती है, जबकि विकसित हो रहे सेक्टरों के रिहायशी प्लॉट में मूल्य बढ़ने की अच्छी संभावना रहती है।" },
+        { question: "निवेश के लिए कमर्शियल या रिहायशी प्रॉपर्टी बेहतर है?", answer: "यह आपके उपयोग, बजट, दस्तावेज़, लागत और जोखिम पर निर्भर करता है। किराये की आय या भविष्य के मूल्य की गारंटी नहीं होती।" },
         { question: "क्या आप NRI ग्राहकों को परामर्श देते हैं?", answer: "हाँ, भारत में निवेश करने वाले NRI ग्राहकों को हम निवेश परामर्श और प्रॉपर्टी प्रबंधन में शुरू से अंत तक सहायता देते हैं।" },
       ],
     },
     heroTitle: "Strategic Real Estate Investment Consulting",
-    heroSubtitle: "Maximize your wealth with data-driven real estate investment strategies in Rohtak.",
+    heroSubtitle: "Compare available Rohtak property information and due-diligence questions.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
     content: [
-      "Real estate is one of the safest and most rewarding asset classes, but only if you make informed decisions. Our investment consulting services are designed for individuals and corporations looking to build a profitable real estate portfolio.",
-      "We analyze market trends, upcoming infrastructure projects, and historical price data to recommend sectors in Rohtak that are poised for explosive growth.",
-      "From short-term flipping opportunities in upcoming HSVP sectors to long-term wealth generation through commercial rentals, we provide tailored advice that aligns with your financial goals."
+      "Real estate decisions involve risk. Our investment consulting service provides general discussion of available listings, location factors, and due-diligence questions.",
+      "We can review information supplied for a property, but future infrastructure, prices, rental income, and returns are not guaranteed.",
+      "We can discuss intended use, costs, documents, and questions to take to independent financial, legal, and tax advisers."
     ],
     benefits: [
-      "Data-driven market analysis and forecasting",
+      "Review of available listing information",
       "Portfolio diversification strategies",
       "Risk assessment and mitigation",
-      "Exclusive off-market investment opportunities"
+      "Discussion of available property enquiries"
     ],
     faqs: [
       {
         question: "Is commercial or residential better for investment?",
-        answer: "It depends on your goals. Commercial offers higher rental yields, while residential plots in developing sectors offer excellent capital appreciation."
+        answer: "It depends on your intended use, budget, documents, costs, and risk tolerance. Rental income and future appreciation are not guaranteed."
       },
       {
         question: "Do you offer consultation for NRIs?",
-        answer: "Yes, we provide end-to-end investment consulting and property management services for NRIs looking to invest in India."
+        answer: "Yes, we can discuss current property enquiries and general questions. NRI legal, tax, and FEMA advice should come from qualified advisers."
       }
     ]
   },
@@ -147,43 +147,43 @@ export const servicesData = {
       heroTitle: "विशेषज्ञ प्रॉपर्टी परामर्श सेवाएँ",
       heroSubtitle: "उद्योग के विशेषज्ञों से अपनी ज़रूरत के अनुसार मार्गदर्शन लेकर आत्मविश्वास से रियल एस्टेट के फ़ैसले लें।",
       content: [
-        "प्रॉपर्टी खरीदना या बेचना जीवन का एक बड़ा फ़ैसला है। हमारा परामर्श आपको हर कदम पर भरोसेमंद सलाहकार का साथ देता है।",
+        "प्रॉपर्टी खरीदना या बेचना बड़ा फ़ैसला है। हमारा परामर्श उपलब्ध जानकारी की तुलना और अगले कदमों के प्रश्न व्यवस्थित करने में मदद करता है।",
         "हम आपकी ज़रूरत समझते हैं, चाहे आपको अच्छे स्कूलों के पास परिवार के लिए विला चाहिए या वास्तु के अनुकूल प्लॉट।",
-        "महँगी गलतियों और कानूनी जोखिमों से बचें। दस्तावेज़ों पर हस्ताक्षर करने से पहले हमारे विशेषज्ञ प्रॉपर्टी की जाँच करते हैं और पूरी जानकारी साझा करते हैं।",
+        "दस्तावेज़ों पर हस्ताक्षर करने से पहले प्रश्नों की सूची और उपलब्ध जानकारी की समीक्षा करें। कानूनी जाँच स्वतंत्र योग्य सलाहकार से कराएँ।",
       ],
       benefits: [
         "जीवनशैली के अनुसार व्यक्तिगत प्रॉपर्टी सुझाव",
-        "कानूनी और स्वामित्व दस्तावेज़ों की पूरी जाँच",
+        "स्वतंत्र कानूनी और स्वामित्व जाँच के लिए प्रश्न",
         "वास्तु और वास्तुशिल्प संबंधी मार्गदर्शन",
-        "बेहतर सौदे के लिए बातचीत में सहायता",
+        "दिए गए terms पर बातचीत में सहायता",
       ],
       faqs: [
         { question: "क्या शुरुआती परामर्श के लिए शुल्क लगता है?", answer: "आपकी ज़रूरत समझने और सहायता के तरीके बताने के लिए शुरुआती परामर्श निःशुल्क है।" },
         { question: "क्या आप होम लोन में मदद कर सकते हैं?", answer: "हाँ, हमारे प्रमुख बैंकों से संपर्क हैं और हम प्रॉपर्टी के लिए वित्त जुटाने की प्रक्रिया में मार्गदर्शन दे सकते हैं।" },
       ],
     },
-    heroTitle: "Expert Property Consultation Services",
-    heroSubtitle: "Make confident real estate decisions with personalized guidance from industry experts.",
+    heroTitle: "Property Consultation Services",
+    heroSubtitle: "Compare available property information and organise questions for your next step.",
     image: "https://images.unsplash.com/photo-1556761175-5973dc0f32b7?auto=format&fit=crop&q=80&w=1200",
     content: [
-      "Buying or selling a property is a major life decision. Our property consultation service ensures you have a trusted advisor by your side every step of the way.",
-      "We sit down with you to understand your specific needs—whether it's finding a family-friendly villa near top schools, or securing a plot with the best vastu compliance.",
-      "Avoid costly mistakes and legal pitfalls. Our experts thoroughly vet every property, ensuring complete transparency and peace of mind before you sign any documents."
+      "Buying or selling a property is a major decision. Our consultation service helps you organise questions, compare available information, and plan next steps.",
+      "We can discuss your needs—such as a family home near services or a plot with particular access, use, or design requirements.",
+      "Reduce avoidable mistakes by asking for current documents and property details. Have legal and title questions reviewed independently before signing anything."
     ],
     benefits: [
       "Personalized property matching based on lifestyle",
-      "Thorough legal and title verification",
+      "Questions to take to an independent legal and title review",
       "Vastu and architectural guidance",
-      "Negotiation support to secure the best deal"
+      "Negotiation support around the stated terms"
     ],
     faqs: [
       {
         question: "Do you charge for an initial consultation?",
-        answer: "We offer a free initial consultation to understand your requirements and outline how we can assist you."
+        answer: "Contact us to discuss your requirements, available information, and any applicable terms before proceeding."
       },
       {
         question: "Can you help with home loans?",
-        answer: "Yes, we have tie-ups with leading banks and can guide you through the property financing process."
+        answer: "We can discuss general property-finance questions. Confirm eligibility, rates, and terms directly with the lender and a qualified adviser."
       }
     ]
   },
@@ -192,45 +192,45 @@ export const servicesData = {
     hi: {
       title: "हमारे प्रमुख क्षेत्र",
       heroTitle: "रोहतक के सबसे प्रमुख रियल एस्टेट सेक्टर",
-      heroSubtitle: "रोहतक के लोकप्रिय और तेज़ी से मूल्यवान होते मोहल्लों को देखें।",
+      heroSubtitle: "रोहतक के उन क्षेत्रों को देखें जो मौजूदा property enquiries में दिखाई देते हैं।",
       content: [
-        "रियल एस्टेट में स्थान सबसे अहम होता है। Arjun Buildtech रोहतक के प्रीमियम और तेज़ी से विकसित हो रहे क्षेत्रों पर ध्यान देता है, ताकि ग्राहक बेहतर जगहों में निवेश कर सकें।",
-        "हमारी मुख्य विशेषज्ञता HSVP सेक्टर 1, 2, 3, 25 और 27 में है। इन सरकारी स्वीकृत सेक्टरों में चौड़ी सड़कें, हरे-भरे पार्क और प्रमुख शैक्षणिक तथा चिकित्सा संस्थानों तक अच्छी पहुँच है।",
-        "हम Suncity (सेक्टर 34, 35, 36 और 36A) में भी काम करते हैं, जो आधुनिक बुनियादी सुविधाओं, सुरक्षित गेटेड समुदायों और लग्ज़री विला के लिए जाना जाता है। इन क्षेत्रों में निवेश से जीवनशैली और भविष्य के मूल्य, दोनों को लाभ मिल सकता है।",
+        "स्थान प्रॉपर्टी का एक महत्वपूर्ण पहलू है। Arjun Buildtech कुछ चुने हुए Rohtak sectors से जुड़ी enquiries लेता है; current coverage और availability listing पर निर्भर करती है।",
+        "कुछ enquiries HSVP सेक्टर 1, 2, 3, 25 और 27 से जुड़ी हैं। हर property के लिए exact location, services, approvals और nearby facilities की पुष्टि करें।",
+        "Suncity (सेक्टर 34, 35, 36 और 36A) की property enquiries भी आ सकती हैं। किसी निर्णय से पहले actual property, documents, price और current status की जाँच करें।",
       ],
       benefits: [
         "HSVP और Suncity के लेआउट की विस्तृत जानकारी",
         "आने वाले सेक्टर विकास की जानकारी",
-        "प्रीमियम कॉर्नर और पार्क के सामने वाले प्लॉट तक पहुँच",
+        "उपलब्ध कॉर्नर और पार्क-फेसिंग प्लॉट की जानकारी",
         "स्थानीय ज़ोनिंग नियमों की गहरी समझ",
       ],
       faqs: [
-        { question: "लग्ज़री विला बनाने के लिए कौन-सा सेक्टर अच्छा है?", answer: "बुनियादी सुविधाओं के कारण Suncity सेक्टर 34–36A और HSVP सेक्टर 27 इस समय प्रीमियम विला के लिए लोकप्रिय विकल्प हैं।" },
-        { question: "क्या इन क्षेत्रों को सरकार की मंज़ूरी मिली है?", answer: "हाँ, HSVP के सभी सेक्टर और Suncity पूरी तरह स्वीकृत और विकसित क्षेत्र हैं।" },
+        { question: "लग्ज़री विला बनाने के लिए कौन-सा सेक्टर अच्छा है?", answer: "Suncity सेक्टर 34–36A और HSVP सेक्टर 27 कुछ enquiries में दिखाई देते हैं। Actual property, services, documents और price की तुलना करें।" },
+        { question: "क्या इन क्षेत्रों को सरकार की मंज़ूरी मिली है?", answer: "Specific sector, colony और property की approval तथा development status संबंधित authority और documents से confirm करें।" },
       ],
     },
-    heroTitle: "Rohtak's Most Premium Real Estate Sectors",
-    heroSubtitle: "Explore the most sought-after and rapidly appreciating neighborhoods in Rohtak.",
+    heroTitle: "Rohtak Property Sectors and Enquiries",
+    heroSubtitle: "Explore Rohtak locations that appear in current property enquiries.",
     image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&q=80&w=1200",
     content: [
-      "Location is the golden rule of real estate. Arjun Buildtech focuses exclusively on Rohtak's most premium and high-growth areas, ensuring our clients invest only in the best.",
-      "Our core expertise lies in HSVP Sectors 1, 2, 3, 25, and 27. These government-approved sectors boast excellent wide roads, lush green parks, and proximity to major educational and medical institutions.",
+      "Location is an important property factor. Arjun Buildtech handles enquiries for selected Rohtak sectors; current coverage and availability depend on the listing.",
+      "Some enquiries concern HSVP Sectors 1, 2, 3, 25, and 27. Confirm the exact sector, services, approvals, and nearby facilities for each property.",
       "Some listings may be in Suncity sectors. Check each property's details and current availability; future value and investment outcomes are not guaranteed."
     ],
     benefits: [
       "Detailed knowledge of HSVP and Suncity layouts",
       "Insights into upcoming sector developments",
-      "Access to premium corner and park-facing plots",
+      "Information about available corner and park-facing plots",
       "Deep understanding of local zoning laws"
     ],
     faqs: [
       {
         question: "Which sector is best for building a luxury villa?",
-        answer: "Suncity Sectors (34-36A) and HSVP Sector 27 are currently the top choices for premium luxury villas due to their infrastructure."
+        answer: "Suncity Sectors 34–36A and HSVP Sector 27 are among the locations covered by some enquiries. Compare the actual property, services, documents, and price before deciding."
       },
       {
         question: "Are these areas approved by the government?",
-        answer: "Yes, all HSVP (Haryana Shahari Vikas Pradhikaran) sectors and Suncity are fully approved and developed areas."
+        answer: "Approval and development status must be confirmed for the specific sector, colony, and property with the relevant authority and documents."
       }
     ]
   }

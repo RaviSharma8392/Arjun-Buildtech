@@ -1,5 +1,3 @@
-import { moreBlogs } from "./moreBlogs";
-
 /**
  * Blog data for Arjun Buildtech
  *
@@ -18,7 +16,7 @@ import { moreBlogs } from "./moreBlogs";
 
 const INVEST_NOTE = `<p><em>Note: This article is for general information and is not investment, legal or tax advice. Past price growth does not guarantee future returns. Verify documents and current rules before you buy.</em></p>`;
 
-const CTA = `<p>Need help with a property in Rohtak? <a href="/contact">Talk to the Arjun Buildtech team</a> for verified listings and end-to-end documentation support.</p>`;
+const CTA = `<p>Need help with a property in Rohtak? <a href="/contact">Talk to the Arjun Buildtech team</a> about current listing information and the next steps for document review.</p>`;
 
 const allBlogs = [
   {
@@ -45,21 +43,18 @@ const allBlogs = [
       <p>Project timelines can change, so check official announcements for status before making a decision. For background on the market, read our <a href="/blog/why-invest-in-rohtak-real-estate">5 reasons Rohtak is the next real estate hub</a> and the <a href="/blog/top-sectors-for-investment-rohtak">top sectors to invest in</a>.</p>
       ${CTA}
     `,
-    // TODO: replace this image with a Rohtak photo; this Wikimedia image shows a location in Mathura, UP
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/8/8b/Kusum_Sarovar_-Mathura_-Uttar_Pradesh_-PXL_20210217111946742.jpg",
   },
   {
     id: 2,
     slug: "suncity-sector-appreciation",
-    title: "Suncity Rohtak Sectors 34–36A: 15% Price Growth",
+    title: "Suncity Rohtak Sectors 34–36A: Property Information",
     date: "2026-09-28",
     category: "Investment Guide",
     excerpt:
-      "Plots and villas in Suncity Sectors 34, 35, 36 and 36A saw about 15% appreciation last quarter, based on Arjun Buildtech's transaction data.",
+      "Review current plot and villa enquiries in Suncity Sectors 34, 35, 36 and 36A. Asking prices and availability vary by listing.",
     content: `
       <h2>Why Suncity is drawing buyers in Rohtak</h2>
-      <p>Over the last quarter, Suncity's Sectors 34, 35, 36 and 36A recorded roughly 15% appreciation in property values, based on Arjun Buildtech's own tracking of deals and enquiries.</p>
+      <p>This guide explains questions to ask about a Suncity property. A single growth figure does not describe every plot or villa, so compare current listings and recent registry information for the exact location.</p>
 
       <h3>What is driving demand</h3>
       <p>Families and investors want secure, modern and well-planned living environments. Suncity offers:</p>
@@ -70,7 +65,7 @@ const allBlogs = [
       </ul>
 
       <h3>Investment outlook</h3>
-      <p>Limited premium plots and steady interest from buyers leaving congested metro areas support demand. Even so, prices can move both ways, so compare recent registry values, check plot facing and size, and verify all documents before buying. If you are weighing a villa against a plot here, read our <a href="/blog/luxury-villas-vs-plots">villa vs plot comparison</a>.</p>
+      <p>Current plot enquiries and buyer interest can vary by location and listing. Prices can move both ways, so compare recent registry values, check plot facing and size, and verify all documents before buying. If you are weighing a villa against a plot here, read our <a href="/blog/luxury-villas-vs-plots">villa vs plot comparison</a>.</p>
       ${INVEST_NOTE}
       ${CTA}
     `,
@@ -98,7 +93,7 @@ const allBlogs = [
       </ul>
 
       <p>Rules and portal steps change from time to time, so confirm the current process with the sub-registrar's office. To estimate your costs first, see our guide to <a href="/blog/understanding-property-taxes-haryana">stamp duty and registration charges in Haryana</a>.</p>
-      <p>Arjun Buildtech's team helps clients with end-to-end documentation so the registry is completed smoothly.</p>
+      <p>Arjun Buildtech can discuss the general documentation steps. Confirm the current registry process with the relevant office and have documents reviewed independently.</p>
       ${CTA}
     `,
     image:
@@ -152,7 +147,7 @@ const allBlogs = [
         <li><strong>Register the deed:</strong> Pay stamp duty and registration charges and register at the Tehsil. See our <a href="/blog/understanding-property-taxes-haryana">cost breakdown</a>.</li>
       </ol>
 
-      <p>Sectors 1, 2, 3, 25 and 27 are among the more active HSVP sectors in Rohtak. Arjun Buildtech handles verified HSVP plot transactions with transparent documentation.</p>
+      <p>Sectors 1, 2, 3, 25 and 27 appear in some Rohtak property enquiries. Ask for the current listing information and review title, dues, approvals, and boundaries independently.</p>
       ${CTA}
     `,
     image:
@@ -266,7 +261,7 @@ const allBlogs = [
       <strong>Cons:</strong> Higher upfront capital and limited scope to change the core structure.</p>
 
       <h3>Which one fits you?</h3>
-      <p>If you want long-term land appreciation and are willing to build, a plot in an HSVP sector such as Sector 27 may suit you. If you want a ready premium home, a villa in <a href="/blog/suncity-sector-appreciation">Suncity</a> is worth considering.</p>
+      <p>If you want land and are willing to build, a plot in an HSVP sector such as Sector 27 may suit you. If you want a ready home, compare current villa listings in <a href="/blog/suncity-sector-appreciation">Suncity</a>.</p>
       ${INVEST_NOTE}
       ${CTA}
     `,
@@ -298,7 +293,7 @@ const allBlogs = [
         <li>Check tax and repatriation rules with a chartered accountant, since they depend on your situation.</li>
       </ul>
 
-      <p>Arjun Buildtech offers property consulting and management support for NRIs so that purchases are verified and well looked after while you are abroad.</p>
+      <p>Arjun Buildtech can discuss property enquiries and practical questions for NRIs. Independent legal, tax, and document review remains important before a purchase.</p>
       ${CTA}
     `,
     image:
@@ -441,7 +436,7 @@ const allBlogs = [
         <li><strong>Track record:</strong> Ask for references from recent clients.</li>
       </ol>
 
-      <p>At <strong>Arjun Buildtech</strong> we focus on transparent dealings and verified listings. Read about the <a href="/blog/top-5-mistakes-first-time-buyers">mistakes first-time buyers make</a> before you start your search.</p>
+      <p>At <strong>Arjun Buildtech</strong> we focus on clear property information and document questions. Read about the <a href="/blog/top-5-mistakes-first-time-buyers">mistakes first-time buyers make</a> before you start your search.</p>
       ${CTA}
     `,
     image:
@@ -641,7 +636,7 @@ const allBlogs = [
 
       <ol>
         <li><strong>Sector 27:</strong> Benefits from highway connectivity. Prices are rising but still offer entry points for mid-sized budgets.</li>
-        <li><strong>Suncity Township (Sectors 34–36A):</strong> One of Rohtak's most premium addresses, suited to villas and high-end plots. See the <a href="/blog/suncity-sector-appreciation">latest price update</a>.</li>
+        <li><strong>Suncity Township (Sectors 34–36A):</strong> A location that appears in some Rohtak villa and plot enquiries. Review the current listing and verify the details before deciding. See the <a href="/blog/suncity-sector-appreciation">latest price update</a>.</li>
         <li><strong>Sector 2:</strong> A fully developed, affluent sector with active resale demand.</li>
         <li><strong>Sector 25:</strong> A growing mix of residential and commercial use near institutional development.</li>
         <li><strong>IMT surroundings:</strong> Villages and new sectors near the Industrial Model Township, better for long-term land holding.</li>
@@ -654,7 +649,162 @@ const allBlogs = [
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
   },
-  ...moreBlogs,
+  {
+    id: 23,
+    slug: "property-due-diligence-checklist-haryana",
+    title: "Haryana Property Due Diligence Checklist",
+    date: "2026-11-15",
+    category: "Buying Guide",
+    excerpt:
+      "Use this practical Rohtak property checklist to review title, land records, approvals, dues and the sale agreement before you pay a token.",
+    content: `
+      <h2>A document-first property checklist</h2>
+      <p>A well-presented listing is only the beginning. Before paying a token or signing an agreement for a plot, house or shop in Rohtak, collect the documents below and ask an independent property lawyer to review them.</p>
+
+      <h3>1. Confirm ownership and land records</h3>
+      <ul>
+        <li>Match the seller's identity with the title deed and the chain of earlier deeds.</li>
+        <li>Check the latest ownership, mutation and land-record entries on the official <a href="https://jamabandi.nic.in/" rel="noopener noreferrer">Haryana Jamabandi portal</a>.</li>
+        <li>Ask whether there is a mortgage, court case, acquisition notice or family claim.</li>
+      </ul>
+
+      <h3>2. Confirm the property can be used as advertised</h3>
+      <ul>
+        <li>For a plotted colony or building project, request the licence, approved layout and sanctioned plan.</li>
+        <li>For an under-construction project, search the project and promoter on <a href="https://haryanarera.gov.in/" rel="noopener noreferrer">HRERA Haryana</a>.</li>
+        <li>For agricultural land, do not assume it can be used for a home or shop; ask about the applicable land-use permission.</li>
+      </ul>
+
+      <h3>3. Check money, possession and the contract</h3>
+      <p>Request the latest tax or maintenance receipts, a written list of inclusions, possession terms, refund conditions and the proposed sale agreement. Pay only through a traceable channel after the paperwork has been reviewed.</p>
+      <p>Documents and rules vary by property type and location. Use this as a conversation starter, not as legal advice.</p>
+      ${CTA}
+    `,
+    image:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+  },
+  {
+    id: 24,
+    slug: "compare-plot-asking-prices-rohtak",
+    title: "How to Compare Plot Prices in Rohtak",
+    date: "2026-11-10",
+    category: "Market Insights",
+    excerpt:
+      "Asking prices are not registered sale prices. Learn how to compare Rohtak plots by sector, road width, size, title and recent evidence.",
+    content: `
+      <h2>Compare like with like</h2>
+      <p>Two plots in the same broad area can have very different values. Instead of copying the highest online asking price, create a short comparison for the exact sector and plot type.</p>
+
+      <h3>Record these details for every comparable</h3>
+      <ul>
+        <li>Sector, colony or village, plot size and whether it is corner, park-facing or on a main road.</li>
+        <li>Approved use, title status, possession, dues and the name of the recorded owner.</li>
+        <li>Quoted price, price per square yard and whether brokerage, taxes or other charges are included.</li>
+      </ul>
+
+      <h3>Separate evidence from marketing</h3>
+      <p>Online listings show what a seller hopes to receive, not necessarily what a buyer paid. Ask for recent registry evidence or a valuation from a qualified professional, then compare it with the current collector-rate information used for registration.</p>
+      <p>Adjust for road width, frontage, construction, access to services and any approval or possession risk. Keep a dated note because availability and asking prices change.</p>
+      <p>See current <a href="/properties">Rohtak property enquiries</a>, then verify the exact listing documents before making an offer.</p>
+      ${INVEST_NOTE}
+      ${CTA}
+    `,
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+  },
+  {
+    id: 25,
+    slug: "haryana-property-registration-questions",
+    title: "Haryana Property Registration: Questions to Ask",
+    date: "2026-11-05",
+    category: "Policy Update",
+    excerpt:
+      "Before signing a Rohtak property deed, confirm valuation, stamp duty, identity, appointments, dues and the documents your sub-registrar needs.",
+    content: `
+      <h2>Questions to resolve before registration</h2>
+      <p>Registration is a legal step, not just a payment appointment. Ask these questions early so a missing document or incorrect value does not delay completion.</p>
+
+      <ol>
+        <li><strong>Which value applies?</strong> Confirm how the transaction value and the applicable collector rate affect stamp duty.</li>
+        <li><strong>What must be paid and where?</strong> Check the current charges and payment process on the official <a href="https://egrashry.nic.in/" rel="noopener noreferrer">Haryana e-GRAS portal</a>.</li>
+        <li><strong>Are the parties and witnesses ready?</strong> Confirm identity documents, photographs, signatures and any power-of-attorney requirements.</li>
+        <li><strong>Are dues and permissions clear?</strong> Ask for municipal, society or HSVP dues, NDCs and any approval needed for the property type.</li>
+        <li><strong>Who checks the draft?</strong> Have the deed, boundaries, consideration, possession and indemnities reviewed independently before signing.</li>
+      </ol>
+
+      <p>Portal steps, rates and office requirements can change. Confirm the current process with the relevant sub-registrar and a qualified lawyer; this guide is general information only.</p>
+      <p>For a broader preparation list, read our <a href="/blog/property-due-diligence-checklist-haryana">Haryana due-diligence checklist</a>.</p>
+      ${CTA}
+    `,
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1311&q=80",
+  },
+  {
+    id: 26,
+    slug: "hsvp-suncity-rohtak-property-checks",
+    title: "HSVP and Suncity Rohtak Property Checks",
+    date: "2026-10-28",
+    category: "Buying Guide",
+    excerpt:
+      "Comparing HSVP sectors and Suncity Rohtak? Use this location checklist for approvals, maintenance, access, possession and resale questions.",
+    content: `
+      <h2>Different projects need different checks</h2>
+      <p>HSVP sectors and private townships can both be attractive, but the documents, services and transfer process are not identical. Compare the specific plot or home rather than relying on a sector label.</p>
+
+      <h3>Questions for an HSVP plot</h3>
+      <ul>
+        <li>Can the seller show the allotment or transfer record and the latest dues position?</li>
+        <li>Does the plot number, area, possession and boundary match the official record and the site visit?</li>
+        <li>Which transfer, NDC and registry steps apply to this resale?</li>
+      </ul>
+
+      <h3>Questions for a Suncity or private-township property</h3>
+      <ul>
+        <li>Who owns the land and what approvals, completion documents or maintenance obligations apply?</li>
+        <li>What is included in the quoted price: parking, club rights, utility connections or pending charges?</li>
+        <li>Can you inspect the exact unit, access road, services and possession status?</li>
+      </ul>
+
+      <p>Use the <a href="https://www.hsvphry.org.in/" rel="noopener noreferrer">official HSVP website</a> for HSVP-specific information and ask for project documents for any private development. Our current <a href="/property/sector-36-suncity-rohtak/sunctity-sector-36-rohtak/Lff3rwenwwBH0aMEq5ea">Suncity Sector 36 listing</a> is an enquiry starting point, not a substitute for independent verification.</p>
+      ${INVEST_NOTE}
+      ${CTA}
+    `,
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+  },
+  {
+    id: 27,
+    slug: "buying-vs-renting-rohtak",
+    title: "Buying vs Renting in Rohtak: A Practical Guide",
+    date: "2026-10-20",
+    category: "Market Insights",
+    excerpt:
+      "Should you buy or rent in Rohtak? Compare time horizon, upfront costs, flexibility, maintenance and the risk of changing plans.",
+    content: `
+      <h2>Start with your time horizon</h2>
+      <p>Buying is not automatically better than renting. A simple comparison of your expected stay, cash available and monthly budget is more useful than a generic promise of appreciation.</p>
+
+      <h3>Buying may fit when</h3>
+      <ul>
+        <li>You expect to stay in the same area for several years and can afford the down payment and transaction costs.</li>
+        <li>The property passes title, approval, service and condition checks.</li>
+        <li>Your emergency fund remains intact after the purchase.</li>
+      </ul>
+
+      <h3>Renting may fit when</h3>
+      <ul>
+        <li>Your job, family or study plans may change, or you are still comparing Rohtak neighbourhoods.</li>
+        <li>You want to keep capital available instead of paying stamp duty, registration and maintenance.</li>
+        <li>You prefer the flexibility to move if commute, services or building quality disappoint.</li>
+      </ul>
+
+      <p>Compare the all-in monthly ownership cost with rent: loan interest, maintenance, taxes, repairs, insurance and the opportunity cost of the deposit. Revisit the calculation with current rates and a property you can actually inspect.</p>
+      ${INVEST_NOTE}
+      ${CTA}
+    `,
+    image:
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+  },
 ];
 
 // Newest first. Works best when every date is ISO ("YYYY-MM-DD").

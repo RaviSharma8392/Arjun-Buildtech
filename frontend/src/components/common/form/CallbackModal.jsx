@@ -158,7 +158,7 @@ const CallbackModal = () => {
               className="space-y-5 h-full flex flex-col">
               <p className="text-[14px] text-gray-600 leading-relaxed mb-2">
                 Leave your mobile number and our senior real estate advisor will
-                call you directly with verified listings and site visit details.
+                call you directly to discuss current listings and site-visit details.
               </p>
 
               <div>

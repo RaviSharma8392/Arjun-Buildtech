@@ -49,7 +49,7 @@ const NewsletterSubscribe = () => {
       <p className="text-[13px] text-gray-400 mb-6 leading-relaxed">
         {t(
           "newsletter.copy",
-          "Don't miss out on real estate trends, price drops, and exclusive land opportunities in Rohtak.",
+          "Receive property news and listing updates for Rohtak. Prices and availability can change.",
         )}
       </p>
 

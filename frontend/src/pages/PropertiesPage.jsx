@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
@@ -20,20 +26,63 @@ import { useLanguage } from "../context/useLanguage";
 import EmiCalculatorBanner from "../components/common/banner/EmiCalculatorBanner";
 import PropertyEnquiryPopup from "../components/common/form/PropertyEnquiryPopup";
 import SidebarWidgets from "../components/common/info/SidebarWidgets";
+import { FALLBACK_FEATURED_PROPERTY } from "../data/fallbackFeaturedProperty";
 
-const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
+const PropertiesPage = ({
+  typeProp = "All",
+  cityProp = null,
+  statusProp = null,
+  canonicalPath = null,
+  seoTitle = null,
+  seoDescription = null,
+}) => {
   const { t } = useLanguage();
   const { city: paramCity } = useParams();
-  const locationState = useLocation().state || {};
+  const routeLocation = useLocation();
+  const locationState = routeLocation.state || {};
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const searchParamsKey = searchParams.toString();
+  const locationQuery = searchParams.get("location")?.trim() || "";
+  const searchQuery = searchParams.get("search")?.trim().toLowerCase() || "";
+  const searchTerms = searchQuery
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((term) =>
+      term.endsWith("ies")
+        ? `${term.slice(0, -3)}y`
+        : term.endsWith("s") && !term.endsWith("ss")
+          ? term.slice(0, -1)
+          : term,
+    );
+  const requestedType =
+    locationState.type || searchParams.get("type") || typeProp || "All";
+  const normalizedRequestedType = String(requestedType).trim().toLowerCase();
+  const propertyTypeOptions = ["house", "villa", "plot", "flat", "commercial"];
+  const requestedPropertyType = propertyTypeOptions.includes(
+    normalizedRequestedType,
+  )
+    ? normalizedRequestedType
+    : "All";
+  const typeStatus = {
+    buy: "For Sale",
+    sale: "For Sale",
+    "for sale": "For Sale",
+    rent: "For Rent",
+    lease: "For Rent",
+    investment: "Investment",
+  }[normalizedRequestedType];
+  const requestedStatus =
+    locationState.status ||
+    searchParams.get("status") ||
+    typeStatus ||
+    statusProp ||
+    "Any";
 
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState([FALLBACK_FEATURED_PROPERTY]);
   const [selectedLocation, setSelectedLocation] = useState("All");
-  const [selectedType, setSelectedType] = useState(
-    locationState.type && locationState.type !== "All Types"
-      ? locationState.type.toLowerCase()
-      : typeProp,
-  );
+  const [selectedType, setSelectedType] = useState(requestedPropertyType);
+  const [selectedStatus, setSelectedStatus] = useState(requestedStatus);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [enquiryProperty, setEnquiryProperty] = useState(null);
   const [isEnquiryPopupOpen, setIsEnquiryPopupOpen] = useState(false);
@@ -80,10 +129,29 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
         const uniqueData = Array.from(
           new Map(allData.map((item) => [item.id, item])).values(),
         );
+        const requestedRecord = [...propSnapshot.docs, ...featuredSnapshot.docs].find(
+          (propertyDoc) => propertyDoc.id === FALLBACK_FEATURED_PROPERTY.id,
+        );
+        const allowFallback =
+          !requestedRecord ||
+          isPropertyPubliclyAvailable(
+            normalizePropertyData({
+              id: requestedRecord.id,
+              ...requestedRecord.data(),
+            }),
+          );
 
-        setProperties(uniqueData);
+        setProperties(
+          !allowFallback ||
+          uniqueData.some(
+            (property) => property.id === FALLBACK_FEATURED_PROPERTY.id,
+          )
+            ? uniqueData
+            : [...uniqueData, FALLBACK_FEATURED_PROPERTY],
+        );
       } catch (error) {
         console.error("Error fetching properties:", error);
+        setProperties([FALLBACK_FEATURED_PROPERTY]);
       }
     };
     fetchProperties();
@@ -96,6 +164,9 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
       locationState.exactLocation !== "All Locations"
     ) {
       setSelectedLocation(locationState.exactLocation);
+    } else if (locationQuery) {
+      // Keep partial location searches broad; the filter below matches the query.
+      setSelectedLocation("All");
     } else if (city && properties.length > 0) {
       const formattedCity = city
         .split("-")
@@ -110,8 +181,15 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
             city.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(),
       );
       setSelectedLocation(matchedLocation ? matchedLocation.location : "All");
+    } else {
+      setSelectedLocation("All");
     }
-  }, [city, properties, locationState.exactLocation]);
+  }, [city, properties, locationQuery, locationState.exactLocation]);
+
+  useEffect(() => {
+    setSelectedType(requestedPropertyType);
+    setSelectedStatus(requestedStatus);
+  }, [requestedPropertyType, requestedStatus, searchParamsKey, typeProp, statusProp]);
 
   // Extract unique locations dynamically
   const locations = [
@@ -133,34 +211,89 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
   // Filtered properties
   const filteredProperties = properties.filter((property) => {
     const locationMatch =
-      selectedLocation === "All" || property.location === selectedLocation;
-    const typeMatch = selectedType === "All" || property.type === selectedType;
-    return locationMatch && typeMatch;
+      (selectedLocation === "All" || property.location === selectedLocation) &&
+      (!locationQuery ||
+        property.location.toLowerCase().includes(locationQuery.toLowerCase()));
+    const typeMatch =
+      selectedType === "All" ||
+      String(property.type || "").toLowerCase() === selectedType.toLowerCase();
+    const searchableText = [
+      property.name,
+      property.title,
+      property.location,
+      property.locality,
+      property.city,
+      property.type,
+      property.type === "plot" ? "plots" : "",
+      property.societyName,
+      property.bedrooms,
+      property.bathrooms,
+      ...property.features,
+      ...property.amenities,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    const searchMatch =
+      searchTerms.length === 0 ||
+      searchTerms.every((term) => searchableText.includes(term));
+    const transactionText = `${property.transactionType} ${property.status}`.toLowerCase();
+    const statusMatch =
+      selectedStatus === "Any" ||
+      (selectedStatus === "For Sale" && !/rent|lease/.test(transactionText)) ||
+      (selectedStatus === "For Rent" && /rent|lease/.test(transactionText)) ||
+      (selectedStatus === "Investment" &&
+        transactionText.includes("investment"));
+    return locationMatch && typeMatch && searchMatch && statusMatch;
   });
 
   const BannerLocation =
     selectedLocation === "All" ? "Rohtak" : selectedLocation;
+  const resolvedCanonicalPath = canonicalPath ||
+    `/properties${city ? `/${city}` : ""}`;
+  const resolvedTitle =
+    seoTitle || `Property Listings in ${BannerLocation} | Arjun Buildtech`;
+  const resolvedDescription =
+    seoDescription ||
+    `Browse ${selectedType !== "All" ? selectedType : "residential and commercial"} property listings in ${BannerLocation}. Listing details and availability vary; contact Arjun Buildtech to confirm current information.`;
+  const listingsSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `https://arjunbuildtech.com${resolvedCanonicalPath}#collection-page`,
+    url: `https://arjunbuildtech.com${resolvedCanonicalPath}`,
+    name: resolvedTitle,
+    description: resolvedDescription,
+    isPartOf: { "@id": "https://arjunbuildtech.com/#website" },
+    about: { "@id": "https://arjunbuildtech.com/#organization" },
+  };
 
   return (
     <div className="min-h-screen bg-[#F9F9F9]">
       <Helmet>
-        <title>Property for Sale in {BannerLocation} | Arjun Buildtech</title>
-        <meta
-          name="description"
-          content={`Explore the best ${selectedType !== "All" ? selectedType : "residential and commercial"} properties, luxury villas, and plots for sale in ${BannerLocation}. Get the best deals with Arjun Buildtech. ${BannerLocation} में बेस्ट प्रॉपर्टी खरीदें।`}
-        />
+        <title>{resolvedTitle}</title>
+        <meta name="description" content={resolvedDescription} />
         <meta
           name="keywords"
           content={`property in ${BannerLocation}, real estate Rohtak, plots in ${BannerLocation}, buy villa Rohtak, commercial property ${BannerLocation}, ${BannerLocation} प्रॉपर्टी, रोहतक में घर`}
         />
         <link
           rel="canonical"
-          href={`https://arjunbuildtech.com/properties${city ? `/${city}` : ""}`}
+          href={`https://arjunbuildtech.com${resolvedCanonicalPath}`}
         />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={resolvedTitle} />
+        <meta property="og:description" content={resolvedDescription} />
+        <meta
+          property="og:url"
+          content={`https://arjunbuildtech.com${resolvedCanonicalPath}`}
+        />
+        <script type="application/ld+json">
+          {JSON.stringify(listingsSchema)}
+        </script>
       </Helmet>
 
       <CommonBanner
-        image="https://upload.wikimedia.org/wikipedia/commons/8/8b/Kusum_Sarovar_-Mathura_-Uttar_Pradesh_-PXL_20210217111946742.jpg"
+        image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2075&q=80"
         title={t(
           "property.findDream",
           `Find Your Dream Property in ${BannerLocation}`,
@@ -201,13 +334,18 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
                       navigate("/properties", {
                         state: {
                           type: selectedType,
+                          status: selectedStatus,
                           exactLocation: "All Locations",
                         },
                         replace: true,
                       });
                     } else {
                       navigate(`/properties/${createSlug(newLoc)}`, {
-                        state: { type: selectedType, exactLocation: newLoc },
+                        state: {
+                          type: selectedType,
+                          status: selectedStatus,
+                          exactLocation: newLoc,
+                        },
                         replace: true,
                       });
                     }
@@ -248,13 +386,18 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
                       navigate("/properties", {
                         state: {
                           type: newType,
+                          status: selectedStatus,
                           exactLocation: "All Locations",
                         },
                         replace: true,
                       });
                     } else {
                       navigate(`/properties/${createSlug(currentLoc)}`, {
-                        state: { type: newType, exactLocation: currentLoc },
+                        state: {
+                          type: newType,
+                          status: selectedStatus,
+                          exactLocation: currentLoc,
+                        },
                         replace: true,
                       });
                     }
@@ -287,11 +430,18 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
             </div>
 
             <div className="text-sm text-gray-600 font-medium">
-              {t(
-                "property.showing",
-                "Showing {count} {type} for Sale in {location}",
+              {(selectedStatus === "Any"
+                ? t(
+                    "property.showingAll",
+                    "Showing {count} {type} in {location}",
+                  )
+                : t(
+                    "property.showingStatus",
+                    "Showing {count} {type} {status} in {location}",
+                  )
               )
                 .replace("{count}", filteredProperties.length)
+                .replace("{status}", selectedStatus)
                 .replace(
                   "{type}",
                   selectedType === "All"
@@ -309,7 +459,7 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
         {/* Page Title & Description */}
         <div className="mb-6">
           <h1 className="text-2xl font-normal text-gray-900 mb-2">
-            Properties for Sale in {BannerLocation}{" "}
+            Property Listings in {BannerLocation}{" "}
             <span className="text-gray-400 font-light px-2">|</span>{" "}
             <span className="text-gray-500 font-normal">
               {filteredProperties.length} Results
@@ -473,7 +623,7 @@ const PropertiesPage = ({ typeProp = "All", cityProp = null }) => {
           <p className="text-gray-600 text-sm md:text-base mb-6 max-w-xl mx-auto">
             {t(
               "property.contactDescription",
-              "Contact our real estate experts to get personalized property recommendations and secure the best deals in Rohtak.",
+              "Contact our Rohtak property team to discuss current listings and the details that matter for your enquiry.",
             )}
           </p>
           <div className="flex justify-center">

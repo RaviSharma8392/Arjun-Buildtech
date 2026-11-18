@@ -224,8 +224,7 @@ const PlotDetails = ({ property }) => {
                     .map((line, idx) => <p key={idx}>{line.trim()}</p>)
                 ) : (
                   <p className="italic text-gray-500">
-                    A premium plot listed exclusively by Arjun Buildtech in
-                    Rohtak.
+                    A plot listing associated with Arjun Buildtech in Rohtak.
                   </p>
                 )}
               </div>
@@ -269,7 +268,7 @@ const PlotDetails = ({ property }) => {
                       Arjun Buildtech
                     </p>
                     <p className="text-green-600 text-xs font-semibold flex items-center gap-1">
-                      <FaCheckCircle /> Verified Local Consultant
+                      <FaCheckCircle /> Property enquiry support
                     </p>
                   </div>
                 </div>

@@ -22,7 +22,8 @@ const HorizontalPropertyCard = ({ property: propertyData, onContactAgent }) => {
       ? property.features.split(",").map((feature) => feature.trim()).filter(Boolean)
       : [];
 
-  const propertyLink = `/property/${locationSlug}/${nameSlug}/${property.id}`;
+  const propertyLink =
+    property.url || `/property/${locationSlug}/${nameSlug}/${property.id}`;
 
   const formatPrice = (price) => {
     if (!price) return t("common.contactForPrice", "Price on Request");
@@ -72,8 +73,8 @@ const HorizontalPropertyCard = ({ property: propertyData, onContactAgent }) => {
 
         {/* Right: Details Block */}
         <div className="p-4 flex flex-col flex-grow w-full md:w-[65%]">
-          <div className="text-gray-500 text-xs font-medium mb-1 truncate">
-            {property.projectName || "Arjun Buildtech Assured"}
+            <div className="text-gray-500 text-xs font-medium mb-1 truncate">
+            {property.projectName || "Arjun Buildtech listing"}
           </div>
           <Link to={propertyLink} className="hover:text-red-600 transition-colors">
             <h3 className="text-[17px] font-bold text-gray-900 leading-tight mb-4">
@@ -127,7 +128,7 @@ const HorizontalPropertyCard = ({ property: propertyData, onContactAgent }) => {
           </div>
 
           <p className="text-[13px] text-gray-600 line-clamp-1 mb-3">
-            {property.description || "Beautiful property located in a prime area with all basic amenities."} 
+            {property.description || "Review the published property information and ask about current details."}
             <Link to={propertyLink} className="text-blue-600 hover:underline">..more</Link>
           </p>
 

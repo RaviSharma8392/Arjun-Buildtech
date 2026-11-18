@@ -14,7 +14,7 @@ const SocialEmbeds = () => {
           <div className="w-16 h-1 bg-red-600 mb-4"></div>
           <p className="text-sm md:text-base text-gray-600 max-w-2xl">
             Stay updated with the latest property listings, real estate trends,
-            and exclusive offers by following our official social media
+            and listing updates by following our official social media
             channels.
           </p>
         </div>

@@ -18,8 +18,8 @@ const AdviceAndTools = () => {
     {
       id: "homeloan",
       icon: <Landmark className="w-7 h-7 text-gray-800" />,
-      title: t("tools.homeLoanTitle", "Best Home Loan Offers"),
-      desc: t("tools.homeLoanDesc", "Get the best bank offers curated just for your profile"),
+      title: t("tools.homeLoanTitle", "Home Loan Information"),
+      desc: t("tools.homeLoanDesc", "Compare lender terms and confirm eligibility directly with the bank"),
       link: "/contact", // Placeholder link
     },
     {

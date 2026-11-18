@@ -1,5 +1,6 @@
 import React from "react";
 import { MapPin, Home, Building2, Star, ArrowRight } from "lucide-react";
+import { companyInfo } from "../data/companyInfo";
 
 const PopularAreas = () => {
   const areas = [
@@ -7,9 +8,9 @@ const PopularAreas = () => {
       title: "HSVP Sectors",
       sectors: "Sector 1, 2, 3, 25, 27",
       description:
-        "Premium residential plots with modern amenities and peaceful surroundings.",
+        "Residential plot enquiries in the listed HSVP sectors; confirm each property's details and availability.",
       icon: <Building2 className="w-6 h-6" />,
-      features: ["Modern Infrastructure", "Peaceful Environment", "High ROI"],
+      features: ["Sector details", "Nearby services", "Availability to confirm"],
       rating: 4.8,
     },
     {
@@ -35,10 +36,10 @@ const PopularAreas = () => {
           </h2>
           <div className="w-20 h-1 bg-orange-500 mx-auto mb-6"></div>
           <p className="text-gray-600 max-w-3xl mx-auto text-lg">
-            We exclusively operate within{" "}
-            <strong className="text-gray-800">Rohtak city</strong>, focusing on
-            prime residential sectors known for their growth potential,
-            amenities, and strong property value appreciation.
+            We handle property enquiries within{" "}
+            <strong className="text-gray-800">Rohtak</strong>, including the
+            sectors shown below. Details, services, and future values should be
+            checked for each property.
           </p>
         </div>
 
@@ -113,15 +114,15 @@ const PopularAreas = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Visit Our Office
+                  Rohtak service area
                 </h3>
                 <p className="text-gray-700">
-                  G74P, Sector-27, Rohtak, Haryana
+                  {companyInfo.address}
                 </p>
               </div>
             </div>
             <button className="px-6 py-3 bg-orange-500 text-white font-medium rounded-xl hover:bg-orange-600 transition-colors shadow-md">
-              Get Directions
+              Contact for directions
             </button>
           </div>
         </div>

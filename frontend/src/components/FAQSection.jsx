@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { useLanguage } from "../context/useLanguage";
 import { companyInfo } from "../data/companyInfo";
 
@@ -48,25 +47,8 @@ const FAQSection = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
   return (
     <section id="faq-section" className="bg-white py-12 md:py-16 border-t border-gray-200">
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
-      </Helmet>
-
       <div className="site-container">
         <div className="mx-auto max-w-4xl">
           {/* Standard Portal Heading Design */}

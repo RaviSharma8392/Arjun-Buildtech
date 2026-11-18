@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { companyInfo } from "../../data/companyInfo";
 
 import HomeHeader from "../../components/common/banner/HomeHeader";
 import TrustedBrands from "../../components/common/TrustedBrands";
@@ -42,39 +41,6 @@ const LoadingFallback = () => {
 
 const Home = () => {
   const { t } = useLanguage();
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        name: companyInfo.name,
-        url: "https://arjunbuildtech.com/",
-        potentialAction: {
-          "@type": "SearchAction",
-          target:
-            "https://arjunbuildtech.com/properties?location={search_term_string}",
-          "query-input": "required name=search_term_string",
-        },
-      },
-      {
-        "@type": "RealEstateAgent",
-        name: companyInfo.name,
-        url: "https://arjunbuildtech.com/",
-        telephone: companyInfo.phone,
-        email: companyInfo.email,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Sector 27 & Sector 1",
-          addressLocality: "Rohtak",
-          addressRegion: "Haryana",
-          postalCode: "124001",
-          addressCountry: "IN",
-        },
-        areaServed: { "@type": "City", name: "Rohtak" },
-        sameAs: Object.values(companyInfo.socials),
-      },
-    ],
-  };
 
   return (
     <div className="bg-[#F9F9F9] min-h-screen">
@@ -84,7 +50,6 @@ const Home = () => {
           Buildtech
         </title>
         <link rel="canonical" href="https://arjunbuildtech.com/" />
-        <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
       </Helmet>
 
       {/* 1️⃣ Hero Header */}
